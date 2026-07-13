@@ -1,0 +1,849 @@
+---
+title: "SIRP service categories — hierarchy and SI quantity mapping"
+subtitle: "Generated from the KCDB service category ABox graphs"
+format:
+  html:
+    embed-resources: true
+    toc: false
+    page-layout: full
+execute:
+  echo: false
+  warning: false
+---
+
+```{r setup}
+#| include: false
+library(rdflib)
+library(dplyr)
+library(tibble)
+library(tidyr)
+library(stringr)
+library(readr)
+library(purrr)
+library(fs)
+library(htmltools)
+
+data_dir        <- "data"
+annotations_dir <- "annotations"
+output_dir      <- "generated"
+dir_create(output_dir)
+dir_create(annotations_dir)
+
+# Metrology area codes -> ABox file names (data/<code>.ttl)
+areas <- c("AUV", "EM", "L", "M", "PR", "RI", "T", "TF")
+names(areas) <- areas
+
+# Hardcoded per-area classification scheme, rather than inferring it from
+# which columns happen to be non-NA in the parsed data. This keeps behaviour
+# predictable and makes adding a future scheme (e.g. QM) an explicit,
+# deliberate step -- register the area's scheme here, then add a matching
+# case to the switch() in parse_area() -- instead of relying on a pattern
+# that a third scheme's data could satisfy by accident.
+area_scheme <- c(
+  AUV = "generic", EM = "generic", L = "generic", M = "generic",
+  PR = "generic", RI = "section", T = "generic", TF = "generic"
+)
+
+# Consultative Committee acronym used as each tab's label.
+area_cc_label <- c(
+  AUV = "CCAUV", EM = "CCEM", L = "CCL", M = "CCM",
+  PR = "CCPR", RI = "CCRI", T = "CCT", TF = "CCTF"
+)
+```
+
+```{r queries}
+#| include: false
+
+# NOTE: every query below is a trivial, mandatory single- or two-triple
+# pattern with NO SPARQL OPTIONAL keyword anywhere. This is deliberate:
+# rasqal (the SPARQL engine behind the R rdflib package) doesn't reorder or
+# optimise joins the way a real triple store does, and even a modest number
+# of OPTIONAL blocks -- sibling or nested -- can blow up into a near-
+# cartesian evaluation on graphs the size of RI.ttl/EM.ttl (this is what
+# caused the render to hang). Instead, "optionality" (not every service
+# category has a label/status/medium/etc.) is handled entirely in R via
+# left_join(), which is fast, predictable, and doesn't touch the graph again.
+
+qp <- function(x) paste0(
+  "PREFIX sc:   <https://si-digital-framework.org/kcdb-sc#>\n",
+  "PREFIX skos: <http://www.w3.org/2004/02/skos/core#>\n",
+  "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n", x
+)
+
+sparql_universe   <- qp("SELECT ?sc WHERE { ?sc a sc:ServiceCategory }")
+sparql_notation   <- qp("SELECT ?sc ?notation WHERE { ?sc skos:notation ?notation }")
+sparql_label      <- qp("SELECT ?sc ?label WHERE { ?sc rdfs:label ?label . FILTER(lang(?label) = 'en') }")
+sparql_status     <- qp("SELECT ?sc ?statusURI WHERE { ?sc sc:hasStatus ?statusURI }")
+
+sparql_subservice        <- qp("SELECT ?sc ?subservice WHERE { ?sc sc:isIndividualServiceOf ?subservice }")
+sparql_subservice_label  <- qp("SELECT ?subservice ?subserviceLabel WHERE { ?subservice rdfs:label ?subserviceLabel . FILTER(lang(?subserviceLabel) = 'en') }")
+sparql_service            <- qp("SELECT ?subservice ?service WHERE { ?subservice sc:isSubserviceOf ?service }")
+sparql_service_label      <- qp("SELECT ?service ?serviceLabel WHERE { ?service rdfs:label ?serviceLabel . FILTER(lang(?serviceLabel) = 'en') }")
+sparql_branch             <- qp("SELECT ?service ?branch WHERE { ?service sc:isServiceOf ?branch }")
+sparql_branch_label       <- qp("SELECT ?branch ?branchLabel WHERE { ?branch rdfs:label ?branchLabel . FILTER(lang(?branchLabel) = 'en') }")
+
+sparql_section       <- qp("SELECT ?sc ?section WHERE { ?sc sc:hasSection ?section }")
+sparql_section_label <- qp("SELECT ?section ?sectionLabel WHERE { ?section rdfs:label ?sectionLabel . FILTER(lang(?sectionLabel) = 'en') }")
+sparql_medium        <- qp("SELECT ?sc ?medium WHERE { ?sc sc:hasMedium ?medium }")
+sparql_medium_label  <- qp("SELECT ?medium ?mediumLabel WHERE { ?medium rdfs:label ?mediumLabel . FILTER(lang(?mediumLabel) = 'en') }")
+sparql_source        <- qp("SELECT ?sc ?source WHERE { ?sc sc:hasSource ?source }")
+sparql_source_label  <- qp("SELECT ?source ?sourceLabel WHERE { ?source rdfs:label ?sourceLabel . FILTER(lang(?sourceLabel) = 'en') }")
+sparql_qaxis         <- qp("SELECT ?sc ?qaxis WHERE { ?sc sc:hasQuantity ?qaxis }")
+sparql_qaxis_label   <- qp("SELECT ?qaxis ?quantityAxisLabel WHERE { ?qaxis rdfs:label ?quantityAxisLabel . FILTER(lang(?quantityAxisLabel) = 'en') }")
+
+# Also mandatory/atomic -- a service category can have several, so this
+# stays long-format rather than being folded into the joins above.
+sparql_qty <- qp("SELECT ?sc ?quantity WHERE { ?sc sc:relatedSIQuantity ?quantity }")
+```
+
+```{r quantities-units}
+#| include: false
+
+# Parses reference/quantities.ttl once and builds a resolver that turns a
+# relatedSIQuantity code (e.g. "DENS", or a composite like "MASS.TIME-1") into
+# a formatted unit string (e.g. "kg\u00b7m\u207b\u00b3"), "1" for a genuinely
+# dimensionless quantity, or NA if the code isn't in the graph at all.
+#
+# si:hasUnit is either a direct units:<name> resource, or a blank-node tree of
+# si:UnitProduct (left * right) / si:UnitPower (base ^ exponent) nodes. This is
+# resolved recursively into a flat list of (symbol, exponent) pairs so exponents
+# compose correctly even when a composite code raises an already-compound unit
+# to a further power (e.g. "EMIR.AREA-1" must give m\u207b\u00b2, not (m\u00b2)\u207b\u00b9 mis-rendered as m\u00b2\u207b\u00b9).
+
+rdf_q <- rdf_parse(path("reference", "quantities.ttl"), format = "turtle")
+triples <- rdf_query(rdf_q, "SELECT * WHERE { ?s ?p ?o }")
+
+RDF_TYPE <- "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+SI    <- "https://si-digital-framework.org/SI#"
+QBASE <- "https://si-digital-framework.org/quantities/"
+
+# Only official SI base/named-derived units (plus neper/bel) appear as leaves
+# in this graph -- confirmed by inspecting every units:* URI actually used.
+symbol_map <- c(
+  ampere = "A", becquerel = "Bq", bel = "B", candela = "cd", coulomb = "C",
+  degreeCelsius = "\u00b0C", farad = "F", gray = "Gy", henry = "H", hertz = "Hz",
+  joule = "J", katal = "kat", kelvin = "K", kilogram = "kg", lumen = "lm",
+  lux = "lx", metre = "m", mole = "mol", neper = "Np", newton = "N",
+  ohm = "\u03a9", pascal = "Pa", radian = "rad", second = "s", siemens = "S",
+  sievert = "Sv", steradian = "sr", tesla = "T", volt = "V", watt = "W", weber = "Wb"
+)
+sup_map <- c(
+  "0" = "\u2070", "1" = "\u00b9", "2" = "\u00b2", "3" = "\u00b3", "4" = "\u2074",
+  "5" = "\u2075", "6" = "\u2076", "7" = "\u2077", "8" = "\u2078", "9" = "\u2079",
+  "-" = "\u207b"
+)
+to_sup <- function(n) paste0(sup_map[strsplit(as.character(n), "")[[1]]], collapse = "")
+
+empty_pairs <- function() tibble(sym = character(0), exp = numeric(0))
+scale_pairs <- function(pairs, k) { if (nrow(pairs) > 0) pairs$exp <- pairs$exp * k; pairs }
+
+# Recursively render one si:hasUnit node (a URI leaf or a blank-node tree)
+# into a tibble of (symbol, exponent) pairs.
+render_unit_node <- function(node) {
+  if (is.na(node)) return(empty_pairs())
+  if (grepl("^https?://", node)) {
+    local <- sub(".*/", "", sub("/$", "", node))
+    sym <- unname(symbol_map[local])
+    if (is.na(sym)) sym <- local
+    return(tibble(sym = sym, exp = 1))
+  }
+  props <- triples[triples$s == node, ]
+  type_row <- props$o[props$p == RDF_TYPE]
+  if (length(type_row) == 0) return(empty_pairs())
+  type <- sub(".*[#/]", "", type_row[1])
+  if (type == "UnitPower") {
+    base <- props$o[props$p == paste0(SI, "hasUnitBase")][1]
+    exponent <- as.numeric(props$o[props$p == paste0(SI, "hasNumericExponent")][1])
+    return(scale_pairs(render_unit_node(base), exponent))
+  }
+  if (type == "UnitProduct") {
+    left  <- props$o[props$p == paste0(SI, "hasLeftUnitTerm")][1]
+    right <- props$o[props$p == paste0(SI, "hasRightUnitTerm")][1]
+    return(bind_rows(render_unit_node(left), render_unit_node(right)))
+  }
+  empty_pairs()
+}
+
+# Direct lookup: quantity code -> pairs. An entry that exists but has no
+# si:hasUnit (a dimensionless quantity like RHUM, REFI) is stored as an empty
+# tibble, distinct from a code that has no entry at all (NULL on lookup).
+quantity_rows <- triples %>%
+  filter(p == RDF_TYPE, o == paste0(SI, "QuantityKind"), grepl(paste0("^", QBASE), s))
+
+direct_unit_pairs <- list()
+for (s_uri in quantity_rows$s) {
+  code <- sub(paste0("^", QBASE), "", s_uri)
+  unit_node <- triples$o[triples$s == s_uri & triples$p == paste0(SI, "hasUnit")]
+  direct_unit_pairs[[code]] <- if (length(unit_node) == 0) empty_pairs() else render_unit_node(unit_node[1])
+}
+
+# A composite relatedSIQuantity code like "MASS.TIME-1" or "PRES.VOLU.TIME-1"
+# is a dot-separated product of base codes, each optionally suffixed "-N" for
+# a negative exponent N (no genuine base code in this graph contains a
+# hyphen, confirmed, so this parsing is unambiguous).
+token_re <- "^([A-Za-z]+)(-([0-9]+))?$"
+
+resolve_quantity_code <- function(code, depth = 0) {
+  if (!is.null(direct_unit_pairs[[code]])) return(direct_unit_pairs[[code]])
+  if (depth > 5) return(NULL)
+  parts <- strsplit(code, ".", fixed = TRUE)[[1]]
+  out <- empty_pairs()
+  for (part in parts) {
+    m <- regmatches(part, regexec(token_re, part))[[1]]
+    if (length(m) == 0) return(NULL)
+    base_code <- m[2]
+    k <- if (nzchar(m[4])) -as.numeric(m[4]) else 1
+    base_pairs <- resolve_quantity_code(base_code, depth + 1)
+    if (is.null(base_pairs)) return(NULL)
+    out <- bind_rows(out, scale_pairs(base_pairs, k))
+  }
+  out
+}
+
+format_pairs <- function(pairs) {
+  if (is.null(pairs)) return(NA_character_)
+  if (nrow(pairs) == 0) return("1")
+  paste0(
+    map2_chr(pairs$sym, pairs$exp, function(sym, e) if (e == 1) sym else paste0(sym, to_sup(e))),
+    collapse = "\u00b7"
+  )
+}
+
+# Public entry point used by parse_area(): code -> formatted unit string, "1"
+# (dimensionless), or NA (code not present in quantities.ttl at all).
+unit_lookup <- function(code) format_pairs(resolve_quantity_code(code))
+
+# Spelled-out quantity names (e.g. "density"), resolved the same way as
+# units above: a direct dictionary from quantities.ttl's skos:prefLabel@en
+# for atomic codes, recursively combined for composite codes like
+# "MASS.TIME-1". This deliberately mirrors the symbolic unit notation
+# (word\u00b7word\u207b\u00b9) rather than attempting idiomatic English phrasing
+# ("mass per time") -- composing that kind of natural-language "per"
+# scoping correctly is exactly the open metrological-linguistics question,
+# so a literal symbolic join avoids silently taking a stance on it. Treat
+# these as a starting point to hand-adjust, not a finished gloss.
+sparql_quantity_pref_label <- "
+PREFIX si:   <https://si-digital-framework.org/SI#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+SELECT ?q ?label WHERE { ?q a si:QuantityKind ; skos:prefLabel ?label . FILTER(lang(?label) = 'en') }
+"
+pref_label_rows <- rdf_query(rdf_q, sparql_quantity_pref_label)
+
+direct_name_pairs <- list()
+for (i in seq_len(nrow(pref_label_rows))) {
+  code <- sub(paste0("^", QBASE), "", pref_label_rows$q[i])
+  direct_name_pairs[[code]] <- tibble(sym = pref_label_rows$label[i], exp = 1)
+}
+
+resolve_quantity_name <- function(code, depth = 0) {
+  if (!is.null(direct_name_pairs[[code]])) return(direct_name_pairs[[code]])
+  if (depth > 5) return(NULL)
+  parts <- strsplit(code, ".", fixed = TRUE)[[1]]
+  out <- empty_pairs()
+  for (part in parts) {
+    m <- regmatches(part, regexec(token_re, part))[[1]]
+    if (length(m) == 0) return(NULL)
+    base_code <- m[2]
+    k <- if (nzchar(m[4])) -as.numeric(m[4]) else 1
+    base_pairs <- resolve_quantity_name(base_code, depth + 1)
+    if (is.null(base_pairs)) return(NULL)
+    out <- bind_rows(out, scale_pairs(base_pairs, k))
+  }
+  out
+}
+
+format_name_pairs <- function(pairs) {
+  if (is.null(pairs) || nrow(pairs) == 0) return(NA_character_)
+  terms <- map2_chr(pairs$sym, pairs$exp, function(nm, e) if (e == 1) nm else paste0(nm, to_sup(e)))
+  # Only parenthesise when there's an actual join to disambiguate -- a
+  # single atomic name (e.g. "density") stays plain.
+  if (length(terms) > 1) terms <- paste0("(", terms, ")")
+  paste0(terms, collapse = "\u00b7")
+}
+
+quantity_name_lookup <- function(code) format_name_pairs(resolve_quantity_name(code))
+```
+
+```{r safe-query-helper}
+#| include: false
+
+# A query that legitimately matches nothing (e.g. sparql_section for a
+# non-RI area, which has no sc:hasSection triples at all) can come back from
+# rdf_query() as a bare 0-row/0-column data frame rather than a 0-row frame
+# with the expected variable names -- which then breaks a downstream
+# left_join() that expects those column names to exist. This wrapper
+# guarantees the expected columns are always present, even when empty.
+safe_query <- function(rdf, query, cols) {
+  res <- rdf_query(rdf, query)
+  if (nrow(res) == 0 || !all(cols %in% names(res))) {
+    res <- as_tibble(setNames(replicate(length(cols), character(0), simplify = FALSE), cols))
+  }
+  res
+}
+```
+
+```{r parse-function}
+#| include: false
+
+# Parses one metrology-area ABox file and returns a single merged table (plus
+# a human-readable title): one row per (service category, related SI
+# quantity) pair. Writes the fully-derived data to
+# generated/<code>_service_categories.csv (always overwritten) and
+# re-attaches any confirmation_status / comment from
+# annotations/<code>_annotations.csv, keyed by mapping_id -- that file is
+# only ever written once, the first time it doesn't exist; never overwritten.
+parse_area <- function(code) {
+
+  ttl_path <- path(data_dir, paste0(code, ".ttl"))
+  rdf <- rdf_parse(ttl_path, format = "turtle")
+
+  title <- tryCatch({
+    sparql_title <- paste0(
+      "PREFIX dcterms: <http://purl.org/dc/terms/>\n",
+      "SELECT ?title WHERE { <https://si-digital-framework.org/kcdb-sc/", code, "> dcterms:title ?title }"
+    )
+    t <- rdf_query(rdf, sparql_title)
+    if (nrow(t) > 0) t$title[1] else code
+  }, error = function(e) code)
+
+  # Build the wide table entirely via R-side left_join()s on atomic,
+  # OPTIONAL-free query results -- see the note in the `queries` chunk.
+  # safe_query() guards every call since several of these legitimately match
+  # zero rows for a given area (e.g. no Section/Medium/Source/Quantity-axis
+  # triples at all in the non-RI files).
+  universe <- safe_query(rdf, sparql_universe, "sc")
+
+  main_raw <- universe %>%
+    left_join(safe_query(rdf, sparql_notation, c("sc", "notation")), by = "sc") %>%
+    left_join(safe_query(rdf, sparql_label,    c("sc", "label")),    by = "sc") %>%
+    left_join(safe_query(rdf, sparql_status,   c("sc", "statusURI")), by = "sc") %>%
+    left_join(safe_query(rdf, sparql_subservice, c("sc", "subservice")), by = "sc") %>%
+    left_join(safe_query(rdf, sparql_subservice_label, c("subservice", "subserviceLabel")), by = "subservice") %>%
+    left_join(safe_query(rdf, sparql_service, c("subservice", "service")), by = "subservice") %>%
+    left_join(safe_query(rdf, sparql_service_label, c("service", "serviceLabel")), by = "service") %>%
+    left_join(safe_query(rdf, sparql_branch, c("service", "branch")), by = "service") %>%
+    left_join(safe_query(rdf, sparql_branch_label, c("branch", "branchLabel")), by = "branch") %>%
+    left_join(safe_query(rdf, sparql_section, c("sc", "section")), by = "sc") %>%
+    left_join(safe_query(rdf, sparql_section_label, c("section", "sectionLabel")), by = "section") %>%
+    left_join(safe_query(rdf, sparql_medium, c("sc", "medium")), by = "sc") %>%
+    left_join(safe_query(rdf, sparql_medium_label, c("medium", "mediumLabel")), by = "medium") %>%
+    left_join(safe_query(rdf, sparql_source, c("sc", "source")), by = "sc") %>%
+    left_join(safe_query(rdf, sparql_source_label, c("source", "sourceLabel")), by = "source") %>%
+    left_join(safe_query(rdf, sparql_qaxis, c("sc", "qaxis")), by = "sc") %>%
+    left_join(safe_query(rdf, sparql_qaxis_label, c("qaxis", "quantityAxisLabel")), by = "qaxis") %>%
+    distinct(sc, .keep_all = TRUE)
+
+  qty_raw  <- safe_query(rdf, sparql_qty, c("sc", "quantity")) %>%
+    left_join(safe_query(rdf, sparql_notation, c("sc", "notation")), by = "sc")
+
+  qty <- qty_raw %>%
+    mutate(related_si_quantity = str_remove(as.character(quantity), "^.*/")) %>%
+    transmute(notation, related_si_quantity) %>%
+    distinct() %>%
+    arrange(notation, related_si_quantity) %>%
+    mutate(
+      # A single explicit join key shared by the mappings CSV and the
+      # annotations CSV, rather than relying on (notation,
+      # related_si_quantity) as an implicit two-column key -- simpler to
+      # match on by hand (e.g. in Excel) and stays valid even if a service
+      # category later gains more quantities, since each new quantity just
+      # gets its own new mapping_id alongside the untouched existing ones.
+      mapping_id    = paste(notation, related_si_quantity, sep = "::"),
+      quantity_name = vapply(related_si_quantity, quantity_name_lookup, character(1)),
+      si_unit       = vapply(related_si_quantity, unit_lookup, character(1))
+    )
+
+  # The annotations file is the single persistent source of truth for
+  # confirmation_status/comment, and is NEVER overwritten once it exists --
+  # not even to append newly-appeared mappings, so a manual edit (or a
+  # replaced download) is never at risk of being silently clobbered by a
+  # re-render. It's only written the first time, as a starting point to edit
+  # directly on disk. A mapping_id that isn't in it yet (e.g. a service
+  # category just gained an additional related quantity) simply shows up
+  # with default values ("unknown", "") in the live report/CSV until it's
+  # added to this file -- by hand, or via the in-browser download button.
+  annot_path <- path(annotations_dir, paste0(code, "_annotations.csv"))
+  if (file_exists(annot_path)) {
+    prior <- read_csv(annot_path, show_col_types = FALSE) %>%
+      select(mapping_id, confirmation_status, comment)
+    qty <- qty %>% left_join(prior, by = "mapping_id")
+  } else {
+    qty$confirmation_status <- NA_character_
+    qty$comment <- NA_character_
+  }
+  qty <- qty %>%
+    mutate(
+      confirmation_status = coalesce(confirmation_status, "unknown"),
+      comment              = coalesce(comment, "")
+    )
+
+  if (!file_exists(annot_path)) {
+    write_csv(
+      qty %>% select(mapping_id, notation, related_si_quantity, confirmation_status, comment),
+      annot_path
+    )
+  }
+
+  main <- main_raw %>%
+    mutate(
+      status = str_remove(as.character(statusURI), "^.*#"),
+      individual_service = label
+    ) %>%
+    transmute(
+      notation,
+      branch        = branchLabel,
+      service       = serviceLabel,
+      subservice    = subserviceLabel,
+      individual_service,
+      section       = sectionLabel,
+      medium        = mediumLabel,
+      source        = sourceLabel,
+      quantity_axis = quantityAxisLabel,
+      status
+    ) %>%
+    distinct() %>%
+    arrange(notation)
+
+  # Branch/Service/Subservice and Section/Medium/Source/QuantityAxis are two
+  # mutually exclusive classification schemes (generic Consultative
+  # Committees vs. RI's Section-based one -- see the Overview note). Which
+  # scheme an area uses is looked up from the hardcoded area_scheme registry
+  # above, not inferred from the data, so a future third scheme can't be
+  # silently misclassified.
+  scheme <- area_scheme[[code]]
+  if (is.null(scheme)) {
+    stop(sprintf(
+      "Area '%s' has no entry in area_scheme -- add one (setup chunk) before rendering.",
+      code
+    ))
+  }
+  main <- switch(scheme,
+    generic = main %>% select(-section, -medium, -source, -quantity_axis),
+    section = main %>% select(-branch, -service, -subservice),
+    stop(sprintf(
+      "Unknown scheme '%s' for area '%s' -- add a matching case to the switch() in parse_area().",
+      scheme, code
+    ))
+  )
+
+  # This "mappings" CSV is fully derived from the source graphs plus
+  # quantities.ttl on every render, and is always safe to overwrite --
+  # confirmation_status/comment live only in the separate, never-overwritten
+  # annotations CSV above; they're merged in here purely for a convenient
+  # single-table view/export, not stored here.
+  combined <- main %>%
+    left_join(qty, by = "notation") %>%
+    select(
+      any_of(c(
+        "mapping_id", "notation", "branch", "service", "subservice", "individual_service",
+        "section", "medium", "source", "quantity_axis", "status",
+        "related_si_quantity", "quantity_name", "si_unit",
+        "confirmation_status", "comment"
+      ))
+    )
+
+  write_csv(combined, path(output_dir, paste0(code, "_service_categories.csv")))
+
+  list(code = code, title = title, combined = combined)
+}
+
+results <- map(areas, parse_area)
+```
+
+```{r editable-table-html}
+#| include: false
+
+# Builds one self-contained table per area covering every column present in
+# `combined` (which varies by area_scheme -- see parse_area()). notation,
+# branch/service/subservice or section/medium/source/quantity_axis,
+# individual_service, status, related_si_quantity, quantity_name and si_unit
+# are read-only; confirmation_status is a <select> and comment is an
+# editable cell -- except on a row with no related_si_quantity at all (a
+# service category with zero related SI quantities), where there is nothing
+# meaningful to confirm, so those two cells are left blank and non-editable
+# rather than offering an edit that can never be re-attached on the next
+# render (the annotation rejoin key requires a real related_si_quantity).
+#
+# Column headers are clickable to sort; the search box and per-column filter
+# row combine to filter rows (see the shared <script> block below). A
+# "Download updated annotations CSV" button exports just the annotation
+# columns (mapping_id, notation, related_si_quantity, confirmation_status,
+# comment) from the current DOM state via a Blob download. To carry edits
+# into the next render, replace annotations/<code>_annotations.csv with the
+# download -- that file is never auto-overwritten by the render itself.
+status_options <- c("unknown", "confirmed", "under discussion")
+
+# Per-column widths (px), the HTML equivalent of a LaTeX P{width} column
+# type: a fixed width with wrapping, rather than a natural/"l"-style column
+# that grows to fit its content. Anything not listed falls back to
+# default_col_width. Emitted as a <colgroup> so it applies regardless of
+# which columns are actually present for a given area's scheme.
+col_widths <- c(
+  mapping_id = 170, notation = 130, branch = 130, service = 130, subservice = 130,
+  individual_service = 190, section = 110, medium = 110, source = 110,
+  quantity_axis = 150, status = 90, related_si_quantity = 130,
+  quantity_name = 210, si_unit = 90, confirmation_status = 150, comment = 220
+)
+default_col_width <- 130
+
+opt_html <- function(selected) {
+  paste0(
+    map_chr(status_options, function(o) {
+      sel <- if (identical(o, selected)) " selected" else ""
+      paste0("<option value=\"", htmltools::htmlEscape(o), "\"", sel, ">",
+             htmltools::htmlEscape(o), "</option>")
+    }),
+    collapse = ""
+  )
+}
+
+editable_combined_table <- function(code, df) {
+  cols <- names(df)
+  table_id <- paste0("tbl-", code)
+
+  header_html <- paste0(
+    vapply(seq_along(cols), function(i) {
+      paste0("<th onclick=\"sortTable('", table_id, "',", i - 1, ")\">",
+             htmltools::htmlEscape(cols[i]), "</th>")
+    }, character(1)),
+    collapse = ""
+  )
+
+  # One filter control per column, under the header row: a dropdown for
+  # confirmation_status (fixed set of values), a plain text input everywhere
+  # else. All filters (plus the global search box) combine with AND.
+  filter_row_html <- paste0(
+    "<tr class=\"filter-row\">",
+    paste0(
+      vapply(cols, function(col) {
+        if (col == "confirmation_status") {
+          opts <- paste0(
+            "<option value=\"\"></option>",
+            paste0(vapply(status_options, function(o) {
+              paste0("<option value=\"", htmltools::htmlEscape(o), "\">", htmltools::htmlEscape(o), "</option>")
+            }, character(1)), collapse = "")
+          )
+          paste0("<th><select class=\"col-filter\" oninput=\"applyAllFilters('", table_id, "')\">",
+                 opts, "</select></th>")
+        } else {
+          paste0("<th><input type=\"text\" class=\"col-filter\" placeholder=\"filter\u2026\" ",
+                 "oninput=\"applyAllFilters('", table_id, "')\"></th>")
+        }
+      }, character(1)),
+      collapse = ""
+    ),
+    "</tr>"
+  )
+
+  # Soft background tint per confirmation status, applied to the whole row
+  # so it's visible at a glance while scanning -- updated live via JS if the
+  # dropdown is changed in-browser (see updateRowStatusClass()).
+  status_row_class <- c(
+    confirmed = "row-confirmed", `under discussion` = "row-under-discussion", unknown = "row-unknown"
+  )
+
+  row_html <- function(i) {
+    row <- df[i, ]
+    has_quantity <- "related_si_quantity" %in% cols && !is.na(row[["related_si_quantity"]])
+    cells <- vapply(cols, function(col) {
+      val <- row[[col]]
+      val <- if (is.na(val)) "" else as.character(val)
+      if (col == "confirmation_status") {
+        if (has_quantity) {
+          paste0("<td><select class=\"status-cell\" onchange=\"updateRowStatusClass(this)\">",
+                 opt_html(val), "</select></td>")
+        } else {
+          "<td></td>"
+        }
+      } else if (col == "comment") {
+        if (has_quantity) {
+          paste0("<td class=\"comment-cell\" contenteditable=\"true\">", htmltools::htmlEscape(val), "</td>")
+        } else {
+          "<td></td>"
+        }
+      } else if (col == "si_unit") {
+        paste0("<td class=\"unit-cell\">", htmltools::htmlEscape(val), "</td>")
+      } else {
+        paste0("<td>", htmltools::htmlEscape(val), "</td>")
+      }
+    }, character(1))
+    notation_key <- htmltools::htmlEscape(as.character(row[["notation"]]))
+    quantity_key <- if ("related_si_quantity" %in% cols) htmltools::htmlEscape(as.character(row[["related_si_quantity"]])) else ""
+    row_class <- if (has_quantity) unname(status_row_class[row[["confirmation_status"]]]) else NA
+    row_class <- if (is.na(row_class)) "" else row_class
+    paste0("<tr class=\"", row_class, "\" data-notation=\"", notation_key, "\" data-quantity=\"", quantity_key, "\">",
+           paste0(cells, collapse = ""), "</tr>")
+  }
+  rows_html <- vapply(seq_len(nrow(df)), row_html, character(1))
+
+  colgroup_html <- paste0(
+    "<colgroup>",
+    paste0(
+      vapply(cols, function(col) {
+        w <- unname(col_widths[col])
+        if (is.na(w)) w <- default_col_width
+        paste0("<col style=\"width:", w, "px\">")
+      }, character(1)),
+      collapse = ""
+    ),
+    "</colgroup>"
+  )
+
+  cols_json <- paste0("[", paste0("'", cols, "'", collapse = ","), "]")
+  annotation_cols <- intersect(
+    c("mapping_id", "notation", "related_si_quantity", "confirmation_status", "comment"), cols
+  )
+  annotation_cols_json <- paste0("[", paste0("'", annotation_cols, "'", collapse = ","), "]")
+
+  html <- paste0(
+    "<div class=\"editable-qty-wrap\">",
+    "<div class=\"table-toolbar\">",
+    "<button type=\"button\" class=\"dl-btn\" onclick=\"downloadAnnotationsCsv('", table_id, "', '", code, "', ",
+    cols_json, ", ", annotation_cols_json, ")\">",
+    "Download updated annotations CSV for ", code, "</button>",
+    "<input type=\"text\" class=\"search-box\" placeholder=\"Filter rows...\" oninput=\"applyAllFilters('", table_id, "')\">",
+    "</div>",
+    " <span class=\"dl-hint\">Edit confirmation status / comment below, then download and drop the file into ",
+    "<code>annotations/", code, "_annotations.csv</code> so it is picked up next render ",
+    "(the file already there is never overwritten automatically -- see the README).</span>",
+    "<div class=\"table-scroll\">",
+    "<table id=\"", table_id, "\" class=\"editable-qty-table\">",
+    colgroup_html,
+    "<thead><tr>", header_html, "</tr>", filter_row_html, "</thead>",
+    "<tbody>", paste0(rows_html, collapse = ""), "</tbody>",
+    "</table>",
+    "</div></div>"
+  )
+  html
+}
+```
+
+```{=html}
+<style>
+.table-scroll { overflow-x: auto; max-width: 100%; }
+.editable-qty-wrap { margin-bottom: 1.5em; }
+.table-toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 2px; }
+.editable-qty-table { border-collapse: collapse; font-size: 0.9em; table-layout: fixed; }
+.editable-qty-table th, .editable-qty-table td {
+  border: 1px solid #ccc; padding: 3px 6px; text-align: left; vertical-align: top;
+  overflow-wrap: break-word; word-break: break-word;
+}
+.editable-qty-table th { background: #f2f2f2; position: sticky; top: 0; cursor: pointer; user-select: none; }
+.editable-qty-table tr.filter-row th {
+  background: #fff; position: sticky; top: 1.9em; cursor: default; padding: 2px 4px;
+}
+.filter-row input, .filter-row select {
+  width: 100%; min-width: 0; box-sizing: border-box; font-size: 0.85em;
+  padding: 2px 4px; border: 1px solid #ccc; border-radius: 3px;
+}
+.editable-qty-table th:hover { background: #e6e6e6; }
+.comment-cell:focus { outline: 2px solid #2b4d7a; background: #ffffff; }
+.unit-cell { color: #444; font-variant-numeric: tabular-nums; }
+.status-cell { padding: 1px; }
+.editable-qty-table tr.row-confirmed { background: #e3f3e6; }
+.editable-qty-table tr.row-under-discussion { background: #fdf3d4; }
+.editable-qty-table tr.row-unknown { background: #fbe3d0; }
+.editable-qty-table tr.row-confirmed:hover,
+.editable-qty-table tr.row-under-discussion:hover,
+.editable-qty-table tr.row-unknown:hover { filter: brightness(0.97); }
+.status-cell select { width: 100%; min-width: 0; box-sizing: border-box; }
+.search-box { padding: 3px 6px; font-size: 0.85em; border: 1px solid #ccc; border-radius: 4px; width: 200px; }
+.dl-btn {
+  background: #2b4d7a; color: white; border: none; border-radius: 4px;
+  padding: 4px 10px; cursor: pointer; font-size: 0.85em;
+}
+.dl-btn:hover { background: #1d3557; }
+.dl-hint { font-size: 0.78em; color: #555; }
+</style>
+<script>
+function csvEscape(v) {
+  v = String(v == null ? "" : v);
+  if (/[",\n]/.test(v)) v = '"' + v.replace(/"/g, '""') + '"';
+  return v;
+}
+function cellValue(td) {
+  var sel = td.querySelector("select");
+  if (sel) return sel.value;
+  return td.textContent.trim();
+}
+var ROW_STATUS_CLASSES = ["row-confirmed", "row-under-discussion", "row-unknown"];
+var ROW_STATUS_CLASS_MAP = {
+  confirmed: "row-confirmed",
+  "under discussion": "row-under-discussion",
+  unknown: "row-unknown"
+};
+function updateRowStatusClass(selectEl) {
+  var tr = selectEl.closest("tr");
+  ROW_STATUS_CLASSES.forEach(function(c) { tr.classList.remove(c); });
+  var cls = ROW_STATUS_CLASS_MAP[selectEl.value];
+  if (cls) tr.classList.add(cls);
+}
+function sortTable(tableId, colIdx) {
+  var table = document.getElementById(tableId);
+  var tbody = table.querySelector("tbody");
+  var rows = Array.from(tbody.querySelectorAll("tr"));
+  var th = table.querySelectorAll("th")[colIdx];
+  var asc = th.getAttribute("data-asc") !== "true";
+  rows.sort(function(a, b) {
+    var av = cellValue(a.children[colIdx]), bv = cellValue(b.children[colIdx]);
+    return asc ? av.localeCompare(bv, undefined, {numeric: true})
+               : bv.localeCompare(av, undefined, {numeric: true});
+  });
+  rows.forEach(function(r) { tbody.appendChild(r); });
+  table.querySelectorAll("th").forEach(function(h) { h.removeAttribute("data-asc"); });
+  th.setAttribute("data-asc", asc ? "true" : "false");
+}
+function applyAllFilters(tableId) {
+  var table = document.getElementById(tableId);
+  var wrap = table.closest(".editable-qty-wrap");
+  var globalBox = wrap ? wrap.querySelector(".search-box") : null;
+  var globalQuery = globalBox ? globalBox.value.toLowerCase() : "";
+  var colFilters = Array.from(table.querySelectorAll(".filter-row .col-filter"))
+    .map(function(el) { return el.value.toLowerCase(); });
+  var rows = table.querySelectorAll("tbody tr");
+  rows.forEach(function(tr) {
+    var visible = !globalQuery || tr.textContent.toLowerCase().indexOf(globalQuery) !== -1;
+    if (visible) {
+      var cells = tr.children;
+      for (var i = 0; i < colFilters.length; i++) {
+        if (!colFilters[i]) continue;
+        if (cellValue(cells[i]).toLowerCase().indexOf(colFilters[i]) === -1) { visible = false; break; }
+      }
+    }
+    tr.style.display = visible ? "" : "none";
+  });
+}
+function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
+  var table = document.getElementById(tableId);
+  var rows = table.querySelectorAll("tbody tr");
+  var idx = exportCols.map(function(name) { return columns.indexOf(name); });
+  var mappingIdPos = exportCols.indexOf("mapping_id");
+  var lines = [exportCols.map(csvEscape).join(",")];
+  rows.forEach(function(tr) {
+    var cells = tr.querySelectorAll("td");
+    var vals = idx.map(function(i) { return cellValue(cells[i]); });
+    // Skip rows with no real quantity mapping (a service category with zero
+    // related quantities) -- there's nothing meaningful to annotate there.
+    if (mappingIdPos !== -1 && !vals[mappingIdPos]) return;
+    lines.push(vals.map(csvEscape).join(","));
+  });
+  var blob = new Blob([lines.join("\n")], {type: "text/csv;charset=utf-8;"});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  a.href = url;
+  a.download = code + "_annotations.csv";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
+```
+
+## Overview
+
+*This report — including the R/Quarto code, SPARQL queries, and unit/name
+resolution logic — was generated with the assistance of Anthropic's Claude
+(Sonnet 5, medium reasoning effort). It was validated against the actual
+uploaded files where possible, but hasn't been rendered end-to-end by that
+process; treat it as a solid draft to review rather than a finished,
+independently verified artifact.*
+
+This report reads the KCDB service category ABox graphs — one Turtle file per
+metrology area — together with the SI Digital Framework's `reference/quantities.ttl`,
+and for each metrology area produces a single combined table in the browser
+(one tab each below) backed by **two separate CSVs**:
+
+- `generated/<code>_service_categories.csv` — fully derived from the source
+  graphs on every render, safe to overwrite, and always overwritten.
+- `annotations/<code>_annotations.csv` — just `mapping_id, notation,
+  related_si_quantity, confirmation_status, comment`. This one is **never**
+  overwritten once it exists, even to add newly-appeared quantity mappings,
+  specifically so an edit made directly in that file (with a spreadsheet
+  app, a text editor, or by replacing it with a browser download) can never
+  be silently clobbered by a re-render. It's only written once, the first
+  time it doesn't exist yet, as a starting point.
+
+One row per (service category, related SI quantity) pair — a category with
+no related quantity at all keeps one row with those columns blank, rather
+than being dropped; a category with several related quantities gets one row
+per quantity. `mapping_id` (`notation::related_si_quantity`) is the shared
+join key between the two files, and is stable across re-renders: if a
+service category later gains an additional related quantity, that quantity
+gets its own new `mapping_id` (defaulting to `"unknown"` / `""` until
+confirmed) without disturbing any existing row's confirmation status or
+comment.
+
+Columns depend on which classification scheme the area uses (hardcoded per
+area, see `area_scheme` in `report.qmd`):
+
+- Generic Consultative Committee areas (`AUV`, `EM`, `L`, `M`, `PR`, `T`,
+  `TF`): `mapping_id, notation, branch, service, subservice,
+  individual_service, status, related_si_quantity, quantity_name, si_unit,
+  confirmation_status, comment`.
+- RI (ionizing radiation), which doesn't use the Branch/Service/Subservice
+  chain at all — its own `skos:note`s reference CCRI conventions
+  specifically: `mapping_id, notation, individual_service, section, medium,
+  source, quantity_axis, status, related_si_quantity, quantity_name,
+  si_unit, confirmation_status, comment`.
+
+`quantity_name` and `si_unit` are both resolved from `quantities.ttl`.
+`quantity_name` is the spelled-out quantity — `density` for `DENS` — with
+composite codes like `MASS.TIME-1` rendered as a parenthesised symbolic join
+of component names (`(mass)·(time⁻¹)`) rather than idiomatic English ("mass
+per time"): composing that "per" scoping correctly in natural language is
+exactly the open metrological-linguistics question, so this deliberately
+doesn't take a stance on it — treat it as a literal starting point to
+hand-adjust, not a finished gloss.
+
+Each table is sortable (click a column header) and filterable, both via the
+search box above it (matches anywhere in a row) and via a per-column filter
+row just under the headers (a text box for most columns, a dropdown for
+`confirmation_status`) — all filters combine, so narrowing one column and
+typing in another narrows to rows matching both. `confirmation_status` (a
+dropdown: confirmed / under discussion / unknown) and `comment` are editable in place
+— except on a row with no related quantity, where there's nothing to
+confirm, so those two cells are left blank. Rows are softly tinted by
+`confirmation_status` (green for confirmed, yellow for under discussion,
+orange for unknown) and update live if you change the dropdown. Click
+"Download updated annotations CSV", then drop the file into `annotations/`
+so it is picked up on the next render — the file there is never
+auto-overwritten, so this is the one intentional way to update it from the
+browser.
+
+Units are resolved from `quantities.ttl`'s `si:hasUnit` assertions, including
+compound units (`si:UnitProduct` / `si:UnitPower` trees) and composite
+`relatedSIQuantity` codes such as `MASS.TIME-1`. A quantity with no
+`si:hasUnit` at all (e.g. relative humidity, refractive index) is rendered as
+`1` (dimensionless); a code entirely absent from `quantities.ttl` is left
+blank. Across the current 8 files, 178 of 208 distinct quantity codes resolve
+to a unit, 28 are genuinely dimensionless, and 2 (`HUCO`, `PMDP`) aren't in
+`quantities.ttl` at all — worth checking whether that's expected.
+
+Every table is also written to `generated/` as a plain CSV.
+
+::: {.panel-tabset .column-screen-inset}
+
+```{r render-tables}
+#| results: asis
+walk(areas, function(code) {
+  res <- results[[code]]
+  cc <- area_cc_label[[code]]
+  cat("\n\n## ", cc, "\n\n", sep = "")
+  cat("\n\n*", res$title, "*\n\n", sep = "")
+  # Wrap in an explicit ```{=html} fence -- Quarto's html format enables
+  # Pandoc's native_divs extension, which tries to parse any *bare* <div> it
+  # finds in the markdown stream into its own AST (rather than just passing
+  # it through as raw text), using a line/tag heuristic rather than a full
+  # HTML parser. That heuristic was choking on these large single-line
+  # tables (hence the "Div ... unclosed ... closing implicitly" warnings,
+  # and the tabset only ever finding one real heading). A ```{=html} fence
+  # tells Pandoc unambiguously not to parse this content at all and pass it
+  # through verbatim -- exactly what the shared <style>/<script> block
+  # earlier in this file already does successfully.
+  cat("\n\n```{=html}\n", editable_combined_table(code, res$combined), "\n```\n\n", sep = "")
+})
+```
+
+:::
+
