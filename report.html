@@ -2293,8 +2293,9 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
   rows.forEach(function(tr) {
     var cells = tr.querySelectorAll("td");
     var vals = idx.map(function(i) { return cellValue(cells[i]); });
-    // Skip rows with no real quantity mapping (a service category with zero
-    // related quantities) -- there's nothing meaningful to annotate there.
+    // Every row has a mapping_id now (including the no-quantity placeholder
+    // rows), so this only ever skips something if that assumption is
+    // somehow violated -- a defensive fallback, not the expected case.
     if (mappingIdPos !== -1 && !vals[mappingIdPos]) return;
     lines.push(vals.map(csvEscape).join(","));
   });
@@ -2317,14 +2318,14 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <li><code>generated/&lt;code&gt;_service_categories.csv</code> — fully derived from the source graphs on every render, safe to overwrite, and always overwritten.</li>
 <li><code>annotations/&lt;code&gt;_annotations.csv</code> — just <code>mapping_id, notation, related_si_quantity, confirmation_status, comment</code>. This one is <strong>never</strong> overwritten once it exists, even to add newly-appeared quantity mappings, specifically so an edit made directly in that file (with a spreadsheet app, a text editor, or by replacing it with a browser download) can never be silently clobbered by a re-render. It’s only written once, the first time it doesn’t exist yet, as a starting point.</li>
 </ul>
-<p>One row per (service category, related SI quantity) pair — a category with no related quantity at all keeps one row with those columns blank, rather than being dropped; a category with several related quantities gets one row per quantity. <code>mapping_id</code> (<code>notation::related_si_quantity</code>) is the shared join key between the two files, and is stable across re-renders: if a service category later gains an additional related quantity, that quantity gets its own new <code>mapping_id</code> (defaulting to <code>&quot;unknown&quot;</code> / <code>&quot;&quot;</code> until confirmed) without disturbing any existing row’s confirmation status or comment.</p>
+<p>One row per (service category, related SI quantity) pair — a category with no related quantity at all keeps one row with <code>related_si_quantity</code>, <code>quantity_name</code>, and <code>si_unit</code> blank, rather than being dropped, but still gets its own <code>mapping_id</code> (<code>notation::</code> with an empty quantity part) so its <code>confirmation_status</code>/<code>comment</code> are just as editable and persistable as any real mapping’s; a category with several related quantities gets one row per quantity. <code>mapping_id</code> (<code>notation::related_si_quantity</code>) is the shared join key between the two files, and is stable across re-renders: if a service category later gains an additional related quantity, that quantity gets its own new <code>mapping_id</code> (defaulting to <code>&quot;unknown&quot;</code> / <code>&quot;&quot;</code> until confirmed) without disturbing any existing row’s confirmation status or comment — including the placeholder row, which is left as-is rather than reused or removed.</p>
 <p>Columns depend on which classification scheme the area uses (hardcoded per area, see <code>area_scheme</code> in <code>report.qmd</code>):</p>
 <ul>
 <li>Generic Consultative Committee areas (<code>AUV</code>, <code>EM</code>, <code>L</code>, <code>M</code>, <code>PR</code>, <code>T</code>, <code>TF</code>): <code>mapping_id, notation, branch, service, subservice, individual_service, status, related_si_quantity, quantity_name, si_unit, confirmation_status, comment</code>.</li>
 <li>RI (ionizing radiation), which doesn’t use the Branch/Service/Subservice chain at all — its own <code>skos:note</code>s reference CCRI conventions specifically: <code>mapping_id, notation, individual_service, section, medium, source, quantity_axis, status, related_si_quantity, quantity_name, si_unit, confirmation_status, comment</code>.</li>
 </ul>
 <p><code>quantity_name</code> and <code>si_unit</code> are both resolved from <code>quantities.ttl</code>. <code>quantity_name</code> is the spelled-out quantity — <code>density</code> for <code>DENS</code> — with composite codes like <code>MASS.TIME-1</code> rendered as a parenthesised symbolic join of component names (<code>(mass)·(time⁻¹)</code>) rather than idiomatic English (“mass per time”): composing that “per” scoping correctly in natural language is exactly the open metrological-linguistics question, so this deliberately doesn’t take a stance on it — treat it as a literal starting point to hand-adjust, not a finished gloss.</p>
-<p>Each table is sortable (click a column header) and filterable, both via the search box above it (matches anywhere in a row) and via a per-column filter row just under the headers (a text box for most columns, a dropdown for <code>confirmation_status</code>) — all filters combine, so narrowing one column and typing in another narrows to rows matching both. <code>confirmation_status</code> (a dropdown: confirmed / under discussion / unknown) and <code>comment</code> are editable in place — except on a row with no related quantity, where there’s nothing to confirm, so those two cells are left blank. Rows are softly tinted by <code>confirmation_status</code> (green for confirmed, yellow for under discussion, orange for unknown) and update live if you change the dropdown. Click “Download updated annotations CSV”, then drop the file into <code>annotations/</code> so it is picked up on the next render — the file there is never auto-overwritten, so this is the one intentional way to update it from the browser.</p>
+<p>Each table is sortable (click a column header) and filterable, both via the search box above it (matches anywhere in a row) and via a per-column filter row just under the headers (a text box for most columns, a dropdown for <code>confirmation_status</code>) — all filters combine, so narrowing one column and typing in another narrows to rows matching both. <code>confirmation_status</code> (a dropdown: confirmed / under discussion / unknown) and <code>comment</code> are editable in place on every row — including a service category with no related quantity yet, via a placeholder <code>mapping_id</code> of its own, so there’s somewhere to note e.g. “needs a quantity mapping” even before one exists. Rows are softly tinted by <code>confirmation_status</code> (green for confirmed, yellow for under discussion, orange for unknown) and update live if you change the dropdown. Click “Download updated annotations CSV”, then drop the file into <code>annotations/</code> so it is picked up on the next render — the file there is never auto-overwritten, so this is the one intentional way to update it from the browser.</p>
 <p>Units are resolved from <code>quantities.ttl</code>’s <code>si:hasUnit</code> assertions, including compound units (<code>si:UnitProduct</code> / <code>si:UnitPower</code> trees) and composite <code>relatedSIQuantity</code> codes such as <code>MASS.TIME-1</code>. A quantity with no <code>si:hasUnit</code> at all (e.g. relative humidity, refractive index) is rendered as <code>1</code> (dimensionless); a code entirely absent from <code>quantities.ttl</code> is left blank. Across the current 8 files, 178 of 208 distinct quantity codes resolve to a unit, 28 are genuinely dimensionless, and 2 (<code>HUCO</code>, <code>PMDP</code>) aren’t in <code>quantities.ttl</code> at all — worth checking whether that’s expected.</p>
 <p>Every table is also written to <code>generated/</code> as a plain CSV.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset column-screen-inset">
@@ -4728,8 +4729,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="odd" data-notation="EM/AC-7.2.1" data-quantity="NA">
-<td></td>
+<tr class="row-unknown odd" data-notation="EM/AC-7.2.1" data-quantity="NA">
+<td>EM/AC-7.2.1::</td>
 <td>EM/AC-7.2.1</td>
 <td>AC voltage, current, and power</td>
 <td>AC and DC power</td>
@@ -4739,10 +4740,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-1.1.1" data-quantity="ELPD">
+<tr class="row-confirmed even" data-notation="EM/DC-1.1.1" data-quantity="ELPD">
 <td>EM/DC-1.1.1::ELPD</td>
 <td>EM/DC-1.1.1</td>
 <td>DC voltage, current, and resistance</td>
@@ -4753,10 +4754,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELPD</td>
 <td>electric potential difference</td>
 <td class="unit-cell">V</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-1.1.1" data-quantity="ELPD.ELPD-1">
+<tr class="row-confirmed odd" data-notation="EM/DC-1.1.1" data-quantity="ELPD.ELPD-1">
 <td>EM/DC-1.1.1::ELPD.ELPD-1</td>
 <td>EM/DC-1.1.1</td>
 <td>DC voltage, current, and resistance</td>
@@ -4767,10 +4768,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELPD.ELPD-1</td>
 <td>(electric potential difference)·(electric potential difference⁻¹)</td>
 <td class="unit-cell">V·V⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-1.1.2" data-quantity="ELPD">
+<tr class="row-confirmed even" data-notation="EM/DC-1.1.2" data-quantity="ELPD">
 <td>EM/DC-1.1.2::ELPD</td>
 <td>EM/DC-1.1.2</td>
 <td>DC voltage, current, and resistance</td>
@@ -4781,10 +4782,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELPD</td>
 <td>electric potential difference</td>
 <td class="unit-cell">V</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-1.1.2" data-quantity="ELPD.ELPD-1">
+<tr class="row-confirmed odd" data-notation="EM/DC-1.1.2" data-quantity="ELPD.ELPD-1">
 <td>EM/DC-1.1.2::ELPD.ELPD-1</td>
 <td>EM/DC-1.1.2</td>
 <td>DC voltage, current, and resistance</td>
@@ -4795,10 +4796,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELPD.ELPD-1</td>
 <td>(electric potential difference)·(electric potential difference⁻¹)</td>
 <td class="unit-cell">V·V⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-1.1.3" data-quantity="ELPD">
+<tr class="row-confirmed even" data-notation="EM/DC-1.1.3" data-quantity="ELPD">
 <td>EM/DC-1.1.3::ELPD</td>
 <td>EM/DC-1.1.3</td>
 <td>DC voltage, current, and resistance</td>
@@ -4809,10 +4810,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELPD</td>
 <td>electric potential difference</td>
 <td class="unit-cell">V</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-1.1.3" data-quantity="ELPD.ELPD-1">
+<tr class="row-confirmed odd" data-notation="EM/DC-1.1.3" data-quantity="ELPD.ELPD-1">
 <td>EM/DC-1.1.3::ELPD.ELPD-1</td>
 <td>EM/DC-1.1.3</td>
 <td>DC voltage, current, and resistance</td>
@@ -4823,10 +4824,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELPD.ELPD-1</td>
 <td>(electric potential difference)·(electric potential difference⁻¹)</td>
 <td class="unit-cell">V·V⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-1.1.4" data-quantity="ELPD">
+<tr class="row-confirmed even" data-notation="EM/DC-1.1.4" data-quantity="ELPD">
 <td>EM/DC-1.1.4::ELPD</td>
 <td>EM/DC-1.1.4</td>
 <td>DC voltage, current, and resistance</td>
@@ -4837,10 +4838,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELPD</td>
 <td>electric potential difference</td>
 <td class="unit-cell">V</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-1.1.4" data-quantity="ELPD.ELPD-1">
+<tr class="row-confirmed odd" data-notation="EM/DC-1.1.4" data-quantity="ELPD.ELPD-1">
 <td>EM/DC-1.1.4::ELPD.ELPD-1</td>
 <td>EM/DC-1.1.4</td>
 <td>DC voltage, current, and resistance</td>
@@ -4851,10 +4852,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELPD.ELPD-1</td>
 <td>(electric potential difference)·(electric potential difference⁻¹)</td>
 <td class="unit-cell">V·V⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-1.2.1" data-quantity="ELPD">
+<tr class="row-confirmed even" data-notation="EM/DC-1.2.1" data-quantity="ELPD">
 <td>EM/DC-1.2.1::ELPD</td>
 <td>EM/DC-1.2.1</td>
 <td>DC voltage, current, and resistance</td>
@@ -4865,10 +4866,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELPD</td>
 <td>electric potential difference</td>
 <td class="unit-cell">V</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-1.2.1" data-quantity="ELPD.ELPD-1">
+<tr class="row-confirmed odd" data-notation="EM/DC-1.2.1" data-quantity="ELPD.ELPD-1">
 <td>EM/DC-1.2.1::ELPD.ELPD-1</td>
 <td>EM/DC-1.2.1</td>
 <td>DC voltage, current, and resistance</td>
@@ -4879,10 +4880,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELPD.ELPD-1</td>
 <td>(electric potential difference)·(electric potential difference⁻¹)</td>
 <td class="unit-cell">V·V⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-1.2.2" data-quantity="ELPD">
+<tr class="row-confirmed even" data-notation="EM/DC-1.2.2" data-quantity="ELPD">
 <td>EM/DC-1.2.2::ELPD</td>
 <td>EM/DC-1.2.2</td>
 <td>DC voltage, current, and resistance</td>
@@ -4893,10 +4894,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELPD</td>
 <td>electric potential difference</td>
 <td class="unit-cell">V</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-1.2.2" data-quantity="ELPD.ELPD-1">
+<tr class="row-confirmed odd" data-notation="EM/DC-1.2.2" data-quantity="ELPD.ELPD-1">
 <td>EM/DC-1.2.2::ELPD.ELPD-1</td>
 <td>EM/DC-1.2.2</td>
 <td>DC voltage, current, and resistance</td>
@@ -4907,10 +4908,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELPD.ELPD-1</td>
 <td>(electric potential difference)·(electric potential difference⁻¹)</td>
 <td class="unit-cell">V·V⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-1.3.1" data-quantity="ELPD.ELPD-1">
+<tr class="row-confirmed even" data-notation="EM/DC-1.3.1" data-quantity="ELPD.ELPD-1">
 <td>EM/DC-1.3.1::ELPD.ELPD-1</td>
 <td>EM/DC-1.3.1</td>
 <td>DC voltage, current, and resistance</td>
@@ -4921,10 +4922,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELPD.ELPD-1</td>
 <td>(electric potential difference)·(electric potential difference⁻¹)</td>
 <td class="unit-cell">V·V⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-1.3.2" data-quantity="ELPD.ELPD-1">
+<tr class="row-confirmed odd" data-notation="EM/DC-1.3.2" data-quantity="ELPD.ELPD-1">
 <td>EM/DC-1.3.2::ELPD.ELPD-1</td>
 <td>EM/DC-1.3.2</td>
 <td>DC voltage, current, and resistance</td>
@@ -4935,10 +4936,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELPD.ELPD-1</td>
 <td>(electric potential difference)·(electric potential difference⁻¹)</td>
 <td class="unit-cell">V·V⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-2.1.1" data-quantity="ELRE">
+<tr class="row-confirmed even" data-notation="EM/DC-2.1.1" data-quantity="ELRE">
 <td>EM/DC-2.1.1::ELRE</td>
 <td>EM/DC-2.1.1</td>
 <td>DC voltage, current, and resistance</td>
@@ -4949,10 +4950,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE</td>
 <td>electric resistance</td>
 <td class="unit-cell">Ω</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-2.1.1" data-quantity="ELRE.ELRE-1">
+<tr class="row-confirmed odd" data-notation="EM/DC-2.1.1" data-quantity="ELRE.ELRE-1">
 <td>EM/DC-2.1.1::ELRE.ELRE-1</td>
 <td>EM/DC-2.1.1</td>
 <td>DC voltage, current, and resistance</td>
@@ -4963,10 +4964,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE.ELRE-1</td>
 <td>(electric resistance)·(electric resistance⁻¹)</td>
 <td class="unit-cell">Ω·Ω⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-2.1.2" data-quantity="ELRE">
+<tr class="row-confirmed even" data-notation="EM/DC-2.1.2" data-quantity="ELRE">
 <td>EM/DC-2.1.2::ELRE</td>
 <td>EM/DC-2.1.2</td>
 <td>DC voltage, current, and resistance</td>
@@ -4977,10 +4978,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE</td>
 <td>electric resistance</td>
 <td class="unit-cell">Ω</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-2.1.2" data-quantity="ELRE.ELRE-1">
+<tr class="row-confirmed odd" data-notation="EM/DC-2.1.2" data-quantity="ELRE.ELRE-1">
 <td>EM/DC-2.1.2::ELRE.ELRE-1</td>
 <td>EM/DC-2.1.2</td>
 <td>DC voltage, current, and resistance</td>
@@ -4991,10 +4992,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE.ELRE-1</td>
 <td>(electric resistance)·(electric resistance⁻¹)</td>
 <td class="unit-cell">Ω·Ω⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-2.1.3" data-quantity="ELRE">
+<tr class="row-confirmed even" data-notation="EM/DC-2.1.3" data-quantity="ELRE">
 <td>EM/DC-2.1.3::ELRE</td>
 <td>EM/DC-2.1.3</td>
 <td>DC voltage, current, and resistance</td>
@@ -5005,10 +5006,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE</td>
 <td>electric resistance</td>
 <td class="unit-cell">Ω</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-2.1.3" data-quantity="ELRE.ELRE-1">
+<tr class="row-confirmed odd" data-notation="EM/DC-2.1.3" data-quantity="ELRE.ELRE-1">
 <td>EM/DC-2.1.3::ELRE.ELRE-1</td>
 <td>EM/DC-2.1.3</td>
 <td>DC voltage, current, and resistance</td>
@@ -5019,10 +5020,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE.ELRE-1</td>
 <td>(electric resistance)·(electric resistance⁻¹)</td>
 <td class="unit-cell">Ω·Ω⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-2.1.4" data-quantity="ELRE">
+<tr class="row-confirmed even" data-notation="EM/DC-2.1.4" data-quantity="ELRE">
 <td>EM/DC-2.1.4::ELRE</td>
 <td>EM/DC-2.1.4</td>
 <td>DC voltage, current, and resistance</td>
@@ -5033,10 +5034,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE</td>
 <td>electric resistance</td>
 <td class="unit-cell">Ω</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-2.1.4" data-quantity="ELRE.ELRE-1">
+<tr class="row-confirmed odd" data-notation="EM/DC-2.1.4" data-quantity="ELRE.ELRE-1">
 <td>EM/DC-2.1.4::ELRE.ELRE-1</td>
 <td>EM/DC-2.1.4</td>
 <td>DC voltage, current, and resistance</td>
@@ -5047,10 +5048,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE.ELRE-1</td>
 <td>(electric resistance)·(electric resistance⁻¹)</td>
 <td class="unit-cell">Ω·Ω⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-2.1.5" data-quantity="ELRE">
+<tr class="row-confirmed even" data-notation="EM/DC-2.1.5" data-quantity="ELRE">
 <td>EM/DC-2.1.5::ELRE</td>
 <td>EM/DC-2.1.5</td>
 <td>DC voltage, current, and resistance</td>
@@ -5061,10 +5062,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE</td>
 <td>electric resistance</td>
 <td class="unit-cell">Ω</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-2.1.5" data-quantity="ELRE.ELRE-1">
+<tr class="row-confirmed odd" data-notation="EM/DC-2.1.5" data-quantity="ELRE.ELRE-1">
 <td>EM/DC-2.1.5::ELRE.ELRE-1</td>
 <td>EM/DC-2.1.5</td>
 <td>DC voltage, current, and resistance</td>
@@ -5075,10 +5076,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE.ELRE-1</td>
 <td>(electric resistance)·(electric resistance⁻¹)</td>
 <td class="unit-cell">Ω·Ω⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-2.1.6" data-quantity="ELRE">
+<tr class="row-confirmed even" data-notation="EM/DC-2.1.6" data-quantity="ELRE">
 <td>EM/DC-2.1.6::ELRE</td>
 <td>EM/DC-2.1.6</td>
 <td>DC voltage, current, and resistance</td>
@@ -5089,10 +5090,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE</td>
 <td>electric resistance</td>
 <td class="unit-cell">Ω</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-2.1.6" data-quantity="ELRE.ELCU-1">
+<tr class="row-confirmed odd" data-notation="EM/DC-2.1.6" data-quantity="ELRE.ELCU-1">
 <td>EM/DC-2.1.6::ELRE.ELCU-1</td>
 <td>EM/DC-2.1.6</td>
 <td>DC voltage, current, and resistance</td>
@@ -5103,10 +5104,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE.ELCU-1</td>
 <td>(electric resistance)·(electric current⁻¹)</td>
 <td class="unit-cell">Ω·A⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-2.1.6" data-quantity="ELRE.ELRE-1">
+<tr class="row-confirmed even" data-notation="EM/DC-2.1.6" data-quantity="ELRE.ELRE-1">
 <td>EM/DC-2.1.6::ELRE.ELRE-1</td>
 <td>EM/DC-2.1.6</td>
 <td>DC voltage, current, and resistance</td>
@@ -5117,10 +5118,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE.ELRE-1</td>
 <td>(electric resistance)·(electric resistance⁻¹)</td>
 <td class="unit-cell">Ω·Ω⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-2.1.6" data-quantity="ELRE.ELRE-1.ITSK-1">
+<tr class="row-confirmed odd" data-notation="EM/DC-2.1.6" data-quantity="ELRE.ELRE-1.ITSK-1">
 <td>EM/DC-2.1.6::ELRE.ELRE-1.ITSK-1</td>
 <td>EM/DC-2.1.6</td>
 <td>DC voltage, current, and resistance</td>
@@ -5131,10 +5132,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE.ELRE-1.ITSK-1</td>
 <td>(electric resistance)·(electric resistance⁻¹)·(ITS-90 temperature (K)⁻¹)</td>
 <td class="unit-cell">Ω·Ω⁻¹·K⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-2.1.6" data-quantity="ELRE.ELRE-1.ITSK-2">
+<tr class="row-confirmed even" data-notation="EM/DC-2.1.6" data-quantity="ELRE.ELRE-1.ITSK-2">
 <td>EM/DC-2.1.6::ELRE.ELRE-1.ITSK-2</td>
 <td>EM/DC-2.1.6</td>
 <td>DC voltage, current, and resistance</td>
@@ -5145,10 +5146,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE.ELRE-1.ITSK-2</td>
 <td>(electric resistance)·(electric resistance⁻¹)·(ITS-90 temperature (K)⁻²)</td>
 <td class="unit-cell">Ω·Ω⁻¹·K⁻²</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-2.1.6" data-quantity="ELRE.ELRE-1.POWR-1">
+<tr class="row-confirmed odd" data-notation="EM/DC-2.1.6" data-quantity="ELRE.ELRE-1.POWR-1">
 <td>EM/DC-2.1.6::ELRE.ELRE-1.POWR-1</td>
 <td>EM/DC-2.1.6</td>
 <td>DC voltage, current, and resistance</td>
@@ -5159,10 +5160,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE.ELRE-1.POWR-1</td>
 <td>(electric resistance)·(electric resistance⁻¹)·(power⁻¹)</td>
 <td class="unit-cell">Ω·Ω⁻¹·W⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-2.1.6" data-quantity="ELRE.ELRE-1.PRES-1">
+<tr class="row-under-discussion even" data-notation="EM/DC-2.1.6" data-quantity="ELRE.ELRE-1.PRES-1">
 <td>EM/DC-2.1.6::ELRE.ELRE-1.PRES-1</td>
 <td>EM/DC-2.1.6</td>
 <td>DC voltage, current, and resistance</td>
@@ -5173,10 +5174,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE.ELRE-1.PRES-1</td>
 <td>(electric resistance)·(electric resistance⁻¹)·(pressure⁻¹)</td>
 <td class="unit-cell">Ω·Ω⁻¹·Pa⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
-<td class="comment-cell" contenteditable="true"></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed">confirmed</option><option value="under discussion" selected>under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true">[IB-NMIA] Add ELRE.ELRE-1.ELCU-1</td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-2.1.6" data-quantity="ELRE.ITSK-1">
+<tr class="row-confirmed odd" data-notation="EM/DC-2.1.6" data-quantity="ELRE.ITSK-1">
 <td>EM/DC-2.1.6::ELRE.ITSK-1</td>
 <td>EM/DC-2.1.6</td>
 <td>DC voltage, current, and resistance</td>
@@ -5187,10 +5188,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE.ITSK-1</td>
 <td>(electric resistance)·(ITS-90 temperature (K)⁻¹)</td>
 <td class="unit-cell">Ω·K⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-2.1.6" data-quantity="ELRE.POWR-1">
+<tr class="row-confirmed even" data-notation="EM/DC-2.1.6" data-quantity="ELRE.POWR-1">
 <td>EM/DC-2.1.6::ELRE.POWR-1</td>
 <td>EM/DC-2.1.6</td>
 <td>DC voltage, current, and resistance</td>
@@ -5201,10 +5202,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE.POWR-1</td>
 <td>(electric resistance)·(power⁻¹)</td>
 <td class="unit-cell">Ω·W⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-2.1.6" data-quantity="ELRE.PRES-1">
+<tr class="row-confirmed odd" data-notation="EM/DC-2.1.6" data-quantity="ELRE.PRES-1">
 <td>EM/DC-2.1.6::ELRE.PRES-1</td>
 <td>EM/DC-2.1.6</td>
 <td>DC voltage, current, and resistance</td>
@@ -5215,10 +5216,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE.PRES-1</td>
 <td>(electric resistance)·(pressure⁻¹)</td>
 <td class="unit-cell">Ω·Pa⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-2.1.6" data-quantity="HUCO">
+<tr class="row-under-discussion even" data-notation="EM/DC-2.1.6" data-quantity="HUCO">
 <td>EM/DC-2.1.6::HUCO</td>
 <td>EM/DC-2.1.6</td>
 <td>DC voltage, current, and resistance</td>
@@ -5229,10 +5230,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>HUCO</td>
 <td></td>
 <td class="unit-cell"></td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
-<td class="comment-cell" contenteditable="true"></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed">confirmed</option><option value="under discussion" selected>under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true">[CP-BIPM] HUCO is not defined in the KB. It will be deleted.</td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-2.2.1" data-quantity="ELRE">
+<tr class="row-confirmed odd" data-notation="EM/DC-2.2.1" data-quantity="ELRE">
 <td>EM/DC-2.2.1::ELRE</td>
 <td>EM/DC-2.2.1</td>
 <td>DC voltage, current, and resistance</td>
@@ -5243,10 +5244,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE</td>
 <td>electric resistance</td>
 <td class="unit-cell">Ω</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-2.2.1" data-quantity="ELRE.ELRE-1">
+<tr class="row-confirmed even" data-notation="EM/DC-2.2.1" data-quantity="ELRE.ELRE-1">
 <td>EM/DC-2.2.1::ELRE.ELRE-1</td>
 <td>EM/DC-2.2.1</td>
 <td>DC voltage, current, and resistance</td>
@@ -5257,10 +5258,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE.ELRE-1</td>
 <td>(electric resistance)·(electric resistance⁻¹)</td>
 <td class="unit-cell">Ω·Ω⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-2.2.2" data-quantity="ELRE">
+<tr class="row-confirmed odd" data-notation="EM/DC-2.2.2" data-quantity="ELRE">
 <td>EM/DC-2.2.2::ELRE</td>
 <td>EM/DC-2.2.2</td>
 <td>DC voltage, current, and resistance</td>
@@ -5271,10 +5272,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE</td>
 <td>electric resistance</td>
 <td class="unit-cell">Ω</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-2.2.2" data-quantity="ELRE.ELRE-1">
+<tr class="row-confirmed even" data-notation="EM/DC-2.2.2" data-quantity="ELRE.ELRE-1">
 <td>EM/DC-2.2.2::ELRE.ELRE-1</td>
 <td>EM/DC-2.2.2</td>
 <td>DC voltage, current, and resistance</td>
@@ -5285,10 +5286,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE.ELRE-1</td>
 <td>(electric resistance)·(electric resistance⁻¹)</td>
 <td class="unit-cell">Ω·Ω⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-2.2.3" data-quantity="ELRE">
+<tr class="row-confirmed odd" data-notation="EM/DC-2.2.3" data-quantity="ELRE">
 <td>EM/DC-2.2.3::ELRE</td>
 <td>EM/DC-2.2.3</td>
 <td>DC voltage, current, and resistance</td>
@@ -5299,10 +5300,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE</td>
 <td>electric resistance</td>
 <td class="unit-cell">Ω</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-2.2.3" data-quantity="ELRE.ELRE-1">
+<tr class="row-confirmed even" data-notation="EM/DC-2.2.3" data-quantity="ELRE.ELRE-1">
 <td>EM/DC-2.2.3::ELRE.ELRE-1</td>
 <td>EM/DC-2.2.3</td>
 <td>DC voltage, current, and resistance</td>
@@ -5313,10 +5314,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE.ELRE-1</td>
 <td>(electric resistance)·(electric resistance⁻¹)</td>
 <td class="unit-cell">Ω·Ω⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-2.3.1" data-quantity="ELRE.ELRE-1">
+<tr class="row-confirmed odd" data-notation="EM/DC-2.3.1" data-quantity="ELRE.ELRE-1">
 <td>EM/DC-2.3.1::ELRE.ELRE-1</td>
 <td>EM/DC-2.3.1</td>
 <td>DC voltage, current, and resistance</td>
@@ -5327,10 +5328,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE.ELRE-1</td>
 <td>(electric resistance)·(electric resistance⁻¹)</td>
 <td class="unit-cell">Ω·Ω⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-3.1.1" data-quantity="ELCU">
+<tr class="row-confirmed even" data-notation="EM/DC-3.1.1" data-quantity="ELCU">
 <td>EM/DC-3.1.1::ELCU</td>
 <td>EM/DC-3.1.1</td>
 <td>DC voltage, current, and resistance</td>
@@ -5341,10 +5342,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELCU</td>
 <td>electric current</td>
 <td class="unit-cell">A</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-3.1.1" data-quantity="ELCU.ELCU-1">
+<tr class="row-confirmed odd" data-notation="EM/DC-3.1.1" data-quantity="ELCU.ELCU-1">
 <td>EM/DC-3.1.1::ELCU.ELCU-1</td>
 <td>EM/DC-3.1.1</td>
 <td>DC voltage, current, and resistance</td>
@@ -5355,10 +5356,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELCU.ELCU-1</td>
 <td>(electric current)·(electric current⁻¹)</td>
 <td class="unit-cell">A·A⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-3.1.2" data-quantity="ELCU">
+<tr class="row-confirmed even" data-notation="EM/DC-3.1.2" data-quantity="ELCU">
 <td>EM/DC-3.1.2::ELCU</td>
 <td>EM/DC-3.1.2</td>
 <td>DC voltage, current, and resistance</td>
@@ -5369,10 +5370,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELCU</td>
 <td>electric current</td>
 <td class="unit-cell">A</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-3.1.2" data-quantity="ELCU.ELCU-1">
+<tr class="row-confirmed odd" data-notation="EM/DC-3.1.2" data-quantity="ELCU.ELCU-1">
 <td>EM/DC-3.1.2::ELCU.ELCU-1</td>
 <td>EM/DC-3.1.2</td>
 <td>DC voltage, current, and resistance</td>
@@ -5383,10 +5384,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELCU.ELCU-1</td>
 <td>(electric current)·(electric current⁻¹)</td>
 <td class="unit-cell">A·A⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-3.1.3" data-quantity="ELCU">
+<tr class="row-confirmed even" data-notation="EM/DC-3.1.3" data-quantity="ELCU">
 <td>EM/DC-3.1.3::ELCU</td>
 <td>EM/DC-3.1.3</td>
 <td>DC voltage, current, and resistance</td>
@@ -5397,10 +5398,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELCU</td>
 <td>electric current</td>
 <td class="unit-cell">A</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-3.1.3" data-quantity="ELCU.ELCU-1">
+<tr class="row-confirmed odd" data-notation="EM/DC-3.1.3" data-quantity="ELCU.ELCU-1">
 <td>EM/DC-3.1.3::ELCU.ELCU-1</td>
 <td>EM/DC-3.1.3</td>
 <td>DC voltage, current, and resistance</td>
@@ -5411,10 +5412,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELCU.ELCU-1</td>
 <td>(electric current)·(electric current⁻¹)</td>
 <td class="unit-cell">A·A⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-3.1.4" data-quantity="ELCO.ELCO-1">
+<tr class="row-confirmed even" data-notation="EM/DC-3.1.4" data-quantity="ELCO.ELCO-1">
 <td>EM/DC-3.1.4::ELCO.ELCO-1</td>
 <td>EM/DC-3.1.4</td>
 <td>DC voltage, current, and resistance</td>
@@ -5425,10 +5426,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELCO.ELCO-1</td>
 <td>(electric conductance)·(electric conductance⁻¹)</td>
 <td class="unit-cell">S·S⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-3.1.4" data-quantity="ELPD.ELCU-1">
+<tr class="row-confirmed odd" data-notation="EM/DC-3.1.4" data-quantity="ELPD.ELCU-1">
 <td>EM/DC-3.1.4::ELPD.ELCU-1</td>
 <td>EM/DC-3.1.4</td>
 <td>DC voltage, current, and resistance</td>
@@ -5439,10 +5440,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELPD.ELCU-1</td>
 <td>(electric potential difference)·(electric current⁻¹)</td>
 <td class="unit-cell">V·A⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-3.1.4" data-quantity="ELRE">
+<tr class="row-confirmed even" data-notation="EM/DC-3.1.4" data-quantity="ELRE">
 <td>EM/DC-3.1.4::ELRE</td>
 <td>EM/DC-3.1.4</td>
 <td>DC voltage, current, and resistance</td>
@@ -5453,10 +5454,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE</td>
 <td>electric resistance</td>
 <td class="unit-cell">Ω</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-3.1.5" data-quantity="ELCU">
+<tr class="row-confirmed odd" data-notation="EM/DC-3.1.5" data-quantity="ELCU">
 <td>EM/DC-3.1.5::ELCU</td>
 <td>EM/DC-3.1.5</td>
 <td>DC voltage, current, and resistance</td>
@@ -5467,10 +5468,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELCU</td>
 <td>electric current</td>
 <td class="unit-cell">A</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-3.1.5" data-quantity="ELCU.ELCU-1">
+<tr class="row-confirmed even" data-notation="EM/DC-3.1.5" data-quantity="ELCU.ELCU-1">
 <td>EM/DC-3.1.5::ELCU.ELCU-1</td>
 <td>EM/DC-3.1.5</td>
 <td>DC voltage, current, and resistance</td>
@@ -5481,10 +5482,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELCU.ELCU-1</td>
 <td>(electric current)·(electric current⁻¹)</td>
 <td class="unit-cell">A·A⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-3.2.1" data-quantity="ELCU">
+<tr class="row-confirmed odd" data-notation="EM/DC-3.2.1" data-quantity="ELCU">
 <td>EM/DC-3.2.1::ELCU</td>
 <td>EM/DC-3.2.1</td>
 <td>DC voltage, current, and resistance</td>
@@ -5495,10 +5496,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELCU</td>
 <td>electric current</td>
 <td class="unit-cell">A</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-3.2.1" data-quantity="ELCU.ELCU-1">
+<tr class="row-confirmed even" data-notation="EM/DC-3.2.1" data-quantity="ELCU.ELCU-1">
 <td>EM/DC-3.2.1::ELCU.ELCU-1</td>
 <td>EM/DC-3.2.1</td>
 <td>DC voltage, current, and resistance</td>
@@ -5509,10 +5510,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELCU.ELCU-1</td>
 <td>(electric current)·(electric current⁻¹)</td>
 <td class="unit-cell">A·A⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-3.2.2" data-quantity="ELCU">
+<tr class="row-confirmed odd" data-notation="EM/DC-3.2.2" data-quantity="ELCU">
 <td>EM/DC-3.2.2::ELCU</td>
 <td>EM/DC-3.2.2</td>
 <td>DC voltage, current, and resistance</td>
@@ -5523,10 +5524,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELCU</td>
 <td>electric current</td>
 <td class="unit-cell">A</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-3.2.2" data-quantity="ELCU.ELCU-1">
+<tr class="row-confirmed even" data-notation="EM/DC-3.2.2" data-quantity="ELCU.ELCU-1">
 <td>EM/DC-3.2.2::ELCU.ELCU-1</td>
 <td>EM/DC-3.2.2</td>
 <td>DC voltage, current, and resistance</td>
@@ -5537,10 +5538,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELCU.ELCU-1</td>
 <td>(electric current)·(electric current⁻¹)</td>
 <td class="unit-cell">A·A⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-3.2.3" data-quantity="ELCU">
+<tr class="row-confirmed odd" data-notation="EM/DC-3.2.3" data-quantity="ELCU">
 <td>EM/DC-3.2.3::ELCU</td>
 <td>EM/DC-3.2.3</td>
 <td>DC voltage, current, and resistance</td>
@@ -5551,10 +5552,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELCU</td>
 <td>electric current</td>
 <td class="unit-cell">A</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/DC-3.2.3" data-quantity="ELCU.ELCU-1">
+<tr class="row-confirmed even" data-notation="EM/DC-3.2.3" data-quantity="ELCU.ELCU-1">
 <td>EM/DC-3.2.3::ELCU.ELCU-1</td>
 <td>EM/DC-3.2.3</td>
 <td>DC voltage, current, and resistance</td>
@@ -5565,10 +5566,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELCU.ELCU-1</td>
 <td>(electric current)·(electric current⁻¹)</td>
 <td class="unit-cell">A·A⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/DC-3.3.1" data-quantity="ELCU.ELCU-1">
+<tr class="row-confirmed odd" data-notation="EM/DC-3.3.1" data-quantity="ELCU.ELCU-1">
 <td>EM/DC-3.3.1::ELCU.ELCU-1</td>
 <td>EM/DC-3.3.1</td>
 <td>DC voltage, current, and resistance</td>
@@ -5579,7 +5580,7 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELCU.ELCU-1</td>
 <td>(electric current)·(electric current⁻¹)</td>
 <td class="unit-cell">A·A⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-unknown even" data-notation="EM/Field-10.1.1" data-quantity="ELPD.LENG-1">
@@ -6576,8 +6577,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="odd" data-notation="EM/HV-8.4.2" data-quantity="NA">
-<td></td>
+<tr class="row-unknown odd" data-notation="EM/HV-8.4.2" data-quantity="NA">
+<td>EM/HV-8.4.2::</td>
 <td>EM/HV-8.4.2</td>
 <td>High voltage and current</td>
 <td>High voltage and current</td>
@@ -6587,8 +6588,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-unknown even" data-notation="EM/HV-8.4.3" data-quantity="ELPD">
 <td>EM/HV-8.4.3::ELPD</td>
@@ -6646,8 +6647,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="even" data-notation="EM/HV-8.4.4" data-quantity="NA">
-<td></td>
+<tr class="row-unknown even" data-notation="EM/HV-8.4.4" data-quantity="NA">
+<td>EM/HV-8.4.4::</td>
 <td>EM/HV-8.4.4</td>
 <td>High voltage and current</td>
 <td>High voltage and current</td>
@@ -6657,8 +6658,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-unknown odd" data-notation="EM/HV-8.4.5" data-quantity="ELCU">
 <td>EM/HV-8.4.5::ELCU</td>
@@ -6716,8 +6717,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="odd" data-notation="EM/HV-8.4.6" data-quantity="NA">
-<td></td>
+<tr class="row-unknown odd" data-notation="EM/HV-8.4.6" data-quantity="NA">
+<td>EM/HV-8.4.6::</td>
 <td>EM/HV-8.4.6</td>
 <td>High voltage and current</td>
 <td>High voltage and current</td>
@@ -6727,11 +6728,11 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="even" data-notation="EM/HV-8.4.7" data-quantity="NA">
-<td></td>
+<tr class="row-unknown even" data-notation="EM/HV-8.4.7" data-quantity="NA">
+<td>EM/HV-8.4.7::</td>
 <td>EM/HV-8.4.7</td>
 <td>High voltage and current</td>
 <td>High voltage and current</td>
@@ -6741,11 +6742,11 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="odd" data-notation="EM/HV-8.4.8" data-quantity="NA">
-<td></td>
+<tr class="row-unknown odd" data-notation="EM/HV-8.4.8" data-quantity="NA">
+<td>EM/HV-8.4.8::</td>
 <td>EM/HV-8.4.8</td>
 <td>High voltage and current</td>
 <td>High voltage and current</td>
@@ -6755,8 +6756,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-unknown even" data-notation="EM/HV-8.4.9" data-quantity="ELPD">
 <td>EM/HV-8.4.9::ELPD</td>
@@ -6884,8 +6885,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="odd" data-notation="EM/HV-8.6.1" data-quantity="NA">
-<td></td>
+<tr class="row-unknown odd" data-notation="EM/HV-8.6.1" data-quantity="NA">
+<td>EM/HV-8.6.1::</td>
 <td>EM/HV-8.6.1</td>
 <td>High voltage and current</td>
 <td>High voltage and current</td>
@@ -6895,11 +6896,11 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="even" data-notation="EM/HV-8.6.2" data-quantity="NA">
-<td></td>
+<tr class="row-unknown even" data-notation="EM/HV-8.6.2" data-quantity="NA">
+<td>EM/HV-8.6.2::</td>
 <td>EM/HV-8.6.2</td>
 <td>High voltage and current</td>
 <td>High voltage and current</td>
@@ -6909,8 +6910,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-unknown odd" data-notation="EM/HV-8.6.3" data-quantity="ELCU.ELCU-1">
 <td>EM/HV-8.6.3::ELCU.ELCU-1</td>
@@ -6940,8 +6941,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="odd" data-notation="EM/HV-8.6.4" data-quantity="NA">
-<td></td>
+<tr class="row-unknown odd" data-notation="EM/HV-8.6.4" data-quantity="NA">
+<td>EM/HV-8.6.4::</td>
 <td>EM/HV-8.6.4</td>
 <td>High voltage and current</td>
 <td>High voltage and current</td>
@@ -6951,8 +6952,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-unknown even" data-notation="EM/HV-8.6.5" data-quantity="ELCU">
 <td>EM/HV-8.6.5::ELCU</td>
@@ -7024,8 +7025,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="odd" data-notation="EM/HV-8.7.1" data-quantity="NA">
-<td></td>
+<tr class="row-unknown odd" data-notation="EM/HV-8.7.1" data-quantity="NA">
+<td>EM/HV-8.7.1::</td>
 <td>EM/HV-8.7.1</td>
 <td>High voltage and current</td>
 <td>High voltage and current</td>
@@ -7035,11 +7036,11 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="even" data-notation="EM/HV-8.7.2" data-quantity="NA">
-<td></td>
+<tr class="row-unknown even" data-notation="EM/HV-8.7.2" data-quantity="NA">
+<td>EM/HV-8.7.2::</td>
 <td>EM/HV-8.7.2</td>
 <td>High voltage and current</td>
 <td>High voltage and current</td>
@@ -7049,8 +7050,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-unknown odd" data-notation="EM/HV-8.7.3" data-quantity="ELCU.ELCU-1">
 <td>EM/HV-8.7.3::ELCU.ELCU-1</td>
@@ -7094,7 +7095,7 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/Imped-4.1.1" data-quantity="ELRE">
+<tr class="row-confirmed even" data-notation="EM/Imped-4.1.1" data-quantity="ELRE">
 <td>EM/Imped-4.1.1::ELRE</td>
 <td>EM/Imped-4.1.1</td>
 <td>Impedance up to the MHz range</td>
@@ -7105,10 +7106,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE</td>
 <td>electric resistance</td>
 <td class="unit-cell">Ω</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/Imped-4.1.1" data-quantity="ELRE.ELRE-1">
+<tr class="row-confirmed odd" data-notation="EM/Imped-4.1.1" data-quantity="ELRE.ELRE-1">
 <td>EM/Imped-4.1.1::ELRE.ELRE-1</td>
 <td>EM/Imped-4.1.1</td>
 <td>Impedance up to the MHz range</td>
@@ -7119,10 +7120,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE.ELRE-1</td>
 <td>(electric resistance)·(electric resistance⁻¹)</td>
 <td class="unit-cell">Ω·Ω⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/Imped-4.1.1" data-quantity="PHAS">
+<tr class="row-confirmed even" data-notation="EM/Imped-4.1.1" data-quantity="PHAS">
 <td>EM/Imped-4.1.1::PHAS</td>
 <td>EM/Imped-4.1.1</td>
 <td>Impedance up to the MHz range</td>
@@ -7133,10 +7134,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>PHAS</td>
 <td>phase angle</td>
 <td class="unit-cell">rad</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/Imped-4.1.1" data-quantity="TIME">
+<tr class="row-confirmed odd" data-notation="EM/Imped-4.1.1" data-quantity="TIME">
 <td>EM/Imped-4.1.1::TIME</td>
 <td>EM/Imped-4.1.1</td>
 <td>Impedance up to the MHz range</td>
@@ -7147,10 +7148,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>TIME</td>
 <td>time</td>
 <td class="unit-cell">s</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/Imped-4.1.2" data-quantity="ELRE">
+<tr class="row-confirmed even" data-notation="EM/Imped-4.1.2" data-quantity="ELRE">
 <td>EM/Imped-4.1.2::ELRE</td>
 <td>EM/Imped-4.1.2</td>
 <td>Impedance up to the MHz range</td>
@@ -7161,10 +7162,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE</td>
 <td>electric resistance</td>
 <td class="unit-cell">Ω</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/Imped-4.1.2" data-quantity="ELRE.ELRE-1">
+<tr class="row-confirmed odd" data-notation="EM/Imped-4.1.2" data-quantity="ELRE.ELRE-1">
 <td>EM/Imped-4.1.2::ELRE.ELRE-1</td>
 <td>EM/Imped-4.1.2</td>
 <td>Impedance up to the MHz range</td>
@@ -7175,10 +7176,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE.ELRE-1</td>
 <td>(electric resistance)·(electric resistance⁻¹)</td>
 <td class="unit-cell">Ω·Ω⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/Imped-4.1.3" data-quantity="ELRE">
+<tr class="row-confirmed even" data-notation="EM/Imped-4.1.3" data-quantity="ELRE">
 <td>EM/Imped-4.1.3::ELRE</td>
 <td>EM/Imped-4.1.3</td>
 <td>Impedance up to the MHz range</td>
@@ -7189,10 +7190,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE</td>
 <td>electric resistance</td>
 <td class="unit-cell">Ω</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/Imped-4.1.3" data-quantity="ELRE.ELRE-1">
+<tr class="row-confirmed odd" data-notation="EM/Imped-4.1.3" data-quantity="ELRE.ELRE-1">
 <td>EM/Imped-4.1.3::ELRE.ELRE-1</td>
 <td>EM/Imped-4.1.3</td>
 <td>Impedance up to the MHz range</td>
@@ -7203,10 +7204,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE.ELRE-1</td>
 <td>(electric resistance)·(electric resistance⁻¹)</td>
 <td class="unit-cell">Ω·Ω⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/Imped-4.1.3" data-quantity="PHAS">
+<tr class="row-confirmed even" data-notation="EM/Imped-4.1.3" data-quantity="PHAS">
 <td>EM/Imped-4.1.3::PHAS</td>
 <td>EM/Imped-4.1.3</td>
 <td>Impedance up to the MHz range</td>
@@ -7217,10 +7218,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>PHAS</td>
 <td>phase angle</td>
 <td class="unit-cell">rad</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/Imped-4.1.4" data-quantity="ELCA">
+<tr class="row-confirmed odd" data-notation="EM/Imped-4.1.4" data-quantity="ELCA">
 <td>EM/Imped-4.1.4::ELCA</td>
 <td>EM/Imped-4.1.4</td>
 <td>Impedance up to the MHz range</td>
@@ -7231,10 +7232,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELCA</td>
 <td>capacitance</td>
 <td class="unit-cell">F</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/Imped-4.1.4" data-quantity="ELCA.ELCA-1">
+<tr class="row-confirmed even" data-notation="EM/Imped-4.1.4" data-quantity="ELCA.ELCA-1">
 <td>EM/Imped-4.1.4::ELCA.ELCA-1</td>
 <td>EM/Imped-4.1.4</td>
 <td>Impedance up to the MHz range</td>
@@ -7245,10 +7246,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELCA.ELCA-1</td>
 <td>(capacitance)·(capacitance⁻¹)</td>
 <td class="unit-cell">F·F⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/Imped-4.1.4" data-quantity="ELIN">
+<tr class="row-confirmed odd" data-notation="EM/Imped-4.1.4" data-quantity="ELIN">
 <td>EM/Imped-4.1.4::ELIN</td>
 <td>EM/Imped-4.1.4</td>
 <td>Impedance up to the MHz range</td>
@@ -7259,10 +7260,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELIN</td>
 <td>inductance</td>
 <td class="unit-cell">H</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/Imped-4.1.4" data-quantity="ELIN.ELIN-1">
+<tr class="row-confirmed even" data-notation="EM/Imped-4.1.4" data-quantity="ELIN.ELIN-1">
 <td>EM/Imped-4.1.4::ELIN.ELIN-1</td>
 <td>EM/Imped-4.1.4</td>
 <td>Impedance up to the MHz range</td>
@@ -7273,10 +7274,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELIN.ELIN-1</td>
 <td>(inductance)·(inductance⁻¹)</td>
 <td class="unit-cell">H·H⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/Imped-4.1.4" data-quantity="ELRE">
+<tr class="row-confirmed odd" data-notation="EM/Imped-4.1.4" data-quantity="ELRE">
 <td>EM/Imped-4.1.4::ELRE</td>
 <td>EM/Imped-4.1.4</td>
 <td>Impedance up to the MHz range</td>
@@ -7287,10 +7288,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE</td>
 <td>electric resistance</td>
 <td class="unit-cell">Ω</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown even" data-notation="EM/Imped-4.1.4" data-quantity="ELRE.ELRE-1">
+<tr class="row-confirmed even" data-notation="EM/Imped-4.1.4" data-quantity="ELRE.ELRE-1">
 <td>EM/Imped-4.1.4::ELRE.ELRE-1</td>
 <td>EM/Imped-4.1.4</td>
 <td>Impedance up to the MHz range</td>
@@ -7301,10 +7302,10 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>ELRE.ELRE-1</td>
 <td>(electric resistance)·(electric resistance⁻¹)</td>
 <td class="unit-cell">Ω·Ω⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed" selected>confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-unknown odd" data-notation="EM/Imped-4.1.4" data-quantity="PHAS">
+<tr class="row-under-discussion odd" data-notation="EM/Imped-4.1.4" data-quantity="PHAS">
 <td>EM/Imped-4.1.4::PHAS</td>
 <td>EM/Imped-4.1.4</td>
 <td>Impedance up to the MHz range</td>
@@ -7315,8 +7316,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td>PHAS</td>
 <td>phase angle</td>
 <td class="unit-cell">rad</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
-<td class="comment-cell" contenteditable="true"></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown">unknown</option><option value="confirmed">confirmed</option><option value="under discussion" selected>under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true">[IB-NMIA] add degree[CP] phase angle will be added, with units rad</td>
 </tr>
 <tr class="row-unknown even" data-notation="EM/Imped-4.1.5" data-quantity="ELRE.ELRE-1">
 <td>EM/Imped-4.1.5::ELRE.ELRE-1</td>
@@ -8312,8 +8313,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="odd" data-notation="EM/Mater-12.7.7" data-quantity="NA">
-<td></td>
+<tr class="row-unknown odd" data-notation="EM/Mater-12.7.7" data-quantity="NA">
+<td>EM/Mater-12.7.7::</td>
 <td>EM/Mater-12.7.7</td>
 <td>Materials</td>
 <td>Measurements on materials</td>
@@ -8323,11 +8324,11 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="even" data-notation="EM/Mater-12.7.8" data-quantity="NA">
-<td></td>
+<tr class="row-unknown even" data-notation="EM/Mater-12.7.8" data-quantity="NA">
+<td>EM/Mater-12.7.8::</td>
 <td>EM/Mater-12.7.8</td>
 <td>Materials</td>
 <td>Measurements on materials</td>
@@ -8337,8 +8338,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-unknown odd" data-notation="EM/OtherDC-9.1.1" data-quantity="ELCH">
 <td>EM/OtherDC-9.1.1::ELCH</td>
@@ -8606,8 +8607,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="even" data-notation="EM/OtherDC-9.3.3" data-quantity="NA">
-<td></td>
+<tr class="row-unknown even" data-notation="EM/OtherDC-9.3.3" data-quantity="NA">
+<td>EM/OtherDC-9.3.3::</td>
 <td>EM/OtherDC-9.3.3</td>
 <td>Other DC and low frequency measurements</td>
 <td>Other DC and low frequency measurements</td>
@@ -8617,8 +8618,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-unknown odd" data-notation="EM/OtherDC-9.3.4" data-quantity="ELCU">
 <td>EM/OtherDC-9.3.4::ELCU</td>
@@ -8732,8 +8733,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="odd" data-notation="EM/OtherDC-9.3.6" data-quantity="NA">
-<td></td>
+<tr class="row-unknown odd" data-notation="EM/OtherDC-9.3.6" data-quantity="NA">
+<td>EM/OtherDC-9.3.6::</td>
 <td>EM/OtherDC-9.3.6</td>
 <td>Other DC and low frequency measurements</td>
 <td>Other DC and low frequency measurements</td>
@@ -8743,8 +8744,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-unknown even" data-notation="EM/OtherDC-9.3.7" data-quantity="ELCU">
 <td>EM/OtherDC-9.3.7::ELCU</td>
@@ -8872,8 +8873,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="odd" data-notation="EM/RF-11.1.3" data-quantity="NA">
-<td></td>
+<tr class="row-unknown odd" data-notation="EM/RF-11.1.3" data-quantity="NA">
+<td>EM/RF-11.1.3::</td>
 <td>EM/RF-11.1.3</td>
 <td>Radio frequency measurements</td>
 <td>Radio frequency measurements</td>
@@ -8883,11 +8884,11 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="even" data-notation="EM/RF-11.1.4" data-quantity="NA">
-<td></td>
+<tr class="row-unknown even" data-notation="EM/RF-11.1.4" data-quantity="NA">
+<td>EM/RF-11.1.4::</td>
 <td>EM/RF-11.1.4</td>
 <td>Radio frequency measurements</td>
 <td>Radio frequency measurements</td>
@@ -8897,8 +8898,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-unknown odd" data-notation="EM/RF-11.1.5" data-quantity="POWR">
 <td>EM/RF-11.1.5::POWR</td>
@@ -8956,8 +8957,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="odd" data-notation="EM/RF-11.2.1" data-quantity="NA">
-<td></td>
+<tr class="row-unknown odd" data-notation="EM/RF-11.2.1" data-quantity="NA">
+<td>EM/RF-11.2.1::</td>
 <td>EM/RF-11.2.1</td>
 <td>Radio frequency measurements</td>
 <td>Radio frequency measurements</td>
@@ -8967,11 +8968,11 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="even" data-notation="EM/RF-11.2.2" data-quantity="NA">
-<td></td>
+<tr class="row-unknown even" data-notation="EM/RF-11.2.2" data-quantity="NA">
+<td>EM/RF-11.2.2::</td>
 <td>EM/RF-11.2.2</td>
 <td>Radio frequency measurements</td>
 <td>Radio frequency measurements</td>
@@ -8981,8 +8982,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-unknown odd" data-notation="EM/RF-11.2.3" data-quantity="RLGB">
 <td>EM/RF-11.2.3::RLGB</td>
@@ -9026,8 +9027,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="even" data-notation="EM/RF-11.2.6" data-quantity="NA">
-<td></td>
+<tr class="row-unknown even" data-notation="EM/RF-11.2.6" data-quantity="NA">
+<td>EM/RF-11.2.6::</td>
 <td>EM/RF-11.2.6</td>
 <td>Radio frequency measurements</td>
 <td>Radio frequency measurements</td>
@@ -9037,8 +9038,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-unknown odd" data-notation="EM/RF-11.3.1" data-quantity="PHAS">
 <td>EM/RF-11.3.1::PHAS</td>
@@ -12075,8 +12076,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="even" data-notation="L/DimMet-6.7.1" data-quantity="NA">
-<td></td>
+<tr class="row-unknown even" data-notation="L/DimMet-6.7.1" data-quantity="NA">
+<td>L/DimMet-6.7.1::</td>
 <td>L/DimMet-6.7.1</td>
 <td>Dimensional metrology</td>
 <td>Various dimensional</td>
@@ -12086,11 +12087,11 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="odd" data-notation="L/DimMet-6.7.2" data-quantity="NA">
-<td></td>
+<tr class="row-unknown odd" data-notation="L/DimMet-6.7.2" data-quantity="NA">
+<td>L/DimMet-6.7.2::</td>
 <td>L/DimMet-6.7.2</td>
 <td>Dimensional metrology</td>
 <td>Various dimensional</td>
@@ -12100,8 +12101,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-unknown even" data-notation="L/Laser-1.1.1" data-quantity="FREQ">
 <td>L/Laser-1.1.1::FREQ</td>
@@ -12604,8 +12605,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="even" data-notation="M/Har-7.1.1" data-quantity="NA">
-<td></td>
+<tr class="row-unknown even" data-notation="M/Har-7.1.1" data-quantity="NA">
+<td>M/Har-7.1.1::</td>
 <td>M/Har-7.1.1</td>
 <td>Hardness</td>
 <td>Hardness</td>
@@ -12615,8 +12616,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-unknown odd" data-notation="M/Mass-1.1.1" data-quantity="MASS">
 <td>M/Mass-1.1.1::MASS</td>
@@ -13259,8 +13260,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="even" data-notation="PR/Detector-5.4.0" data-quantity="NA">
-<td></td>
+<tr class="row-unknown even" data-notation="PR/Detector-5.4.0" data-quantity="NA">
+<td>PR/Detector-5.4.0::</td>
 <td>PR/Detector-5.4.0</td>
 <td>Properties of detectors and sources</td>
 <td>Spectral.-int. meas. for sources and detectors</td>
@@ -13270,11 +13271,11 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="odd" data-notation="PR/Detector-5.4.1" data-quantity="NA">
-<td></td>
+<tr class="row-unknown odd" data-notation="PR/Detector-5.4.1" data-quantity="NA">
+<td>PR/Detector-5.4.1::</td>
 <td>PR/Detector-5.4.1</td>
 <td>Properties of detectors and sources</td>
 <td>Spectral.-int. meas. for sources and detectors</td>
@@ -13284,11 +13285,11 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="even" data-notation="PR/Detector-5.4.2" data-quantity="NA">
-<td></td>
+<tr class="row-unknown even" data-notation="PR/Detector-5.4.2" data-quantity="NA">
+<td>PR/Detector-5.4.2::</td>
 <td>PR/Detector-5.4.2</td>
 <td>Properties of detectors and sources</td>
 <td>Spectral.-int. meas. for sources and detectors</td>
@@ -13298,11 +13299,11 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="odd" data-notation="PR/Detector-5.4.3" data-quantity="NA">
-<td></td>
+<tr class="row-unknown odd" data-notation="PR/Detector-5.4.3" data-quantity="NA">
+<td>PR/Detector-5.4.3::</td>
 <td>PR/Detector-5.4.3</td>
 <td>Properties of detectors and sources</td>
 <td>Spectral.-int. meas. for sources and detectors</td>
@@ -13312,11 +13313,11 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="even" data-notation="PR/Detector-5.5.0" data-quantity="NA">
-<td></td>
+<tr class="row-unknown even" data-notation="PR/Detector-5.5.0" data-quantity="NA">
+<td>PR/Detector-5.5.0::</td>
 <td>PR/Detector-5.5.0</td>
 <td>Properties of detectors and sources</td>
 <td>Spectral.-int. meas. for sources and detectors</td>
@@ -13326,11 +13327,11 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="odd" data-notation="PR/Detector-5.6.0" data-quantity="NA">
-<td></td>
+<tr class="row-unknown odd" data-notation="PR/Detector-5.6.0" data-quantity="NA">
+<td>PR/Detector-5.6.0::</td>
 <td>PR/Detector-5.6.0</td>
 <td>Properties of detectors and sources</td>
 <td>Spectral.-int. meas. for sources and detectors</td>
@@ -13340,8 +13341,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-unknown even" data-notation="PR/Detector-5.7.0" data-quantity="RADI.LENG-1">
 <td>PR/Detector-5.7.0::RADI.LENG-1</td>
@@ -14099,8 +14100,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="even" data-notation="PR/Mater-6.1.0" data-quantity="NA">
-<td></td>
+<tr class="row-unknown even" data-notation="PR/Mater-6.1.0" data-quantity="NA">
+<td>PR/Mater-6.1.0::</td>
 <td>PR/Mater-6.1.0</td>
 <td>Properties of materials</td>
 <td>Colour and other spectral.-int. meas. of materials</td>
@@ -14110,11 +14111,11 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="odd" data-notation="PR/Mater-6.1.1" data-quantity="NA">
-<td></td>
+<tr class="row-unknown odd" data-notation="PR/Mater-6.1.1" data-quantity="NA">
+<td>PR/Mater-6.1.1::</td>
 <td>PR/Mater-6.1.1</td>
 <td>Properties of materials</td>
 <td>Colour and other spectral.-int. meas. of materials</td>
@@ -14124,11 +14125,11 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="even" data-notation="PR/Mater-6.1.2" data-quantity="NA">
-<td></td>
+<tr class="row-unknown even" data-notation="PR/Mater-6.1.2" data-quantity="NA">
+<td>PR/Mater-6.1.2::</td>
 <td>PR/Mater-6.1.2</td>
 <td>Properties of materials</td>
 <td>Colour and other spectral.-int. meas. of materials</td>
@@ -14138,8 +14139,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-unknown odd" data-notation="PR/Mater-6.10.0" data-quantity="LUCO">
 <td>PR/Mater-6.10.0::LUCO</td>
@@ -14169,8 +14170,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="odd" data-notation="PR/Mater-6.2.0" data-quantity="NA">
-<td></td>
+<tr class="row-unknown odd" data-notation="PR/Mater-6.2.0" data-quantity="NA">
+<td>PR/Mater-6.2.0::</td>
 <td>PR/Mater-6.2.0</td>
 <td>Properties of materials</td>
 <td>Colour and other spectral.-int. meas. of materials</td>
@@ -14180,11 +14181,11 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="even" data-notation="PR/Mater-6.2.1" data-quantity="NA">
-<td></td>
+<tr class="row-unknown even" data-notation="PR/Mater-6.2.1" data-quantity="NA">
+<td>PR/Mater-6.2.1::</td>
 <td>PR/Mater-6.2.1</td>
 <td>Properties of materials</td>
 <td>Colour and other spectral.-int. meas. of materials</td>
@@ -14194,11 +14195,11 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="odd" data-notation="PR/Mater-6.2.2" data-quantity="NA">
-<td></td>
+<tr class="row-unknown odd" data-notation="PR/Mater-6.2.2" data-quantity="NA">
+<td>PR/Mater-6.2.2::</td>
 <td>PR/Mater-6.2.2</td>
 <td>Properties of materials</td>
 <td>Colour and other spectral.-int. meas. of materials</td>
@@ -14208,11 +14209,11 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="even" data-notation="PR/Mater-6.3.0" data-quantity="NA">
-<td></td>
+<tr class="row-unknown even" data-notation="PR/Mater-6.3.0" data-quantity="NA">
+<td>PR/Mater-6.3.0::</td>
 <td>PR/Mater-6.3.0</td>
 <td>Properties of materials</td>
 <td>Colour and other spectral.-int. meas. of materials</td>
@@ -14222,11 +14223,11 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="odd" data-notation="PR/Mater-6.4.0" data-quantity="NA">
-<td></td>
+<tr class="row-unknown odd" data-notation="PR/Mater-6.4.0" data-quantity="NA">
+<td>PR/Mater-6.4.0::</td>
 <td>PR/Mater-6.4.0</td>
 <td>Properties of materials</td>
 <td>Colour and other spectral.-int. meas. of materials</td>
@@ -14236,8 +14237,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-unknown even" data-notation="PR/Mater-6.5.0" data-quantity="OPRE">
 <td>PR/Mater-6.5.0::OPRE</td>
@@ -20092,8 +20093,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="even" data-notation="T/T-2.8.1" data-quantity="NA">
-<td></td>
+<tr class="row-unknown even" data-notation="T/T-2.8.1" data-quantity="NA">
+<td>T/T-2.8.1::</td>
 <td>T/T-2.8.1</td>
 <td>Temperature</td>
 <td>Items for disseminating ITS-90 and PLTS 2000</td>
@@ -20103,8 +20104,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-unknown odd" data-notation="T/T-2.8.2" data-quantity="ITSC">
 <td>T/T-2.8.2::ITSC</td>
@@ -20134,8 +20135,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="odd" data-notation="T/T-2.8.3" data-quantity="NA">
-<td></td>
+<tr class="row-unknown odd" data-notation="T/T-2.8.3" data-quantity="NA">
+<td>T/T-2.8.3::</td>
 <td>T/T-2.8.3</td>
 <td>Temperature</td>
 <td>Items for disseminating ITS-90 and PLTS 2000</td>
@@ -20145,8 +20146,8 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 <td></td>
 <td></td>
 <td class="unit-cell"></td>
-<td></td>
-<td></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="unknown" selected>unknown</option><option value="confirmed">confirmed</option><option value="under discussion">under discussion</option></select></td>
+<td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-unknown even" data-notation="T/T-2.8.4" data-quantity="ITSC">
 <td>T/T-2.8.4::ITSC</td>

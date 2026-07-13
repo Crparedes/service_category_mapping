@@ -340,7 +340,23 @@ parse_area <- function(code) {
     mutate(related_si_quantity = str_remove(as.character(quantity), "^.*/")) %>%
     transmute(notation, related_si_quantity) %>%
     distinct() %>%
-    arrange(notation, related_si_quantity) %>%
+    arrange(notation, related_si_quantity)
+
+  # A service category with zero related quantities still gets a single
+  # placeholder row here (related_si_quantity left blank), so it has a
+  # mapping_id of its own and its confirmation_status/comment are editable
+  # and persistable too -- e.g. to note "needs a quantity mapping" -- rather
+  # than being permanently locked out just because there's no quantity yet.
+  no_quantity_notations <- setdiff(unique(main_raw$notation), qty$notation)
+  if (length(no_quantity_notations) > 0) {
+    qty <- bind_rows(
+      qty,
+      tibble(notation = no_quantity_notations, related_si_quantity = NA_character_)
+    ) %>%
+      arrange(notation, related_si_quantity)
+  }
+
+  qty <- qty %>%
     mutate(
       # A single explicit join key shared by the mappings CSV and the
       # annotations CSV, rather than relying on (notation,
@@ -348,9 +364,20 @@ parse_area <- function(code) {
       # match on by hand (e.g. in Excel) and stays valid even if a service
       # category later gains more quantities, since each new quantity just
       # gets its own new mapping_id alongside the untouched existing ones.
-      mapping_id    = paste(notation, related_si_quantity, sep = "::"),
-      quantity_name = vapply(related_si_quantity, quantity_name_lookup, character(1)),
-      si_unit       = vapply(related_si_quantity, unit_lookup, character(1))
+      # For the no-quantity placeholder rows above, related_si_quantity is
+      # blank in the key too (e.g. "M/Dens-2.3.3::"), still unique per
+      # notation, and stable if a real quantity is added later (that gets
+      # its own new, different mapping_id rather than reusing this one).
+      mapping_id    = paste(notation, coalesce(related_si_quantity, ""), sep = "::"),
+      quantity_name = vapply(coalesce(related_si_quantity, ""), quantity_name_lookup, character(1)),
+      si_unit       = vapply(coalesce(related_si_quantity, ""), unit_lookup, character(1))
+    ) %>%
+    # unit_lookup("") resolves to "1" (its "genuinely dimensionless" case),
+    # which is wrong here -- there's no quantity at all, not a dimensionless
+    # one -- so blank it back out specifically for the placeholder rows.
+    mutate(
+      quantity_name = ifelse(is.na(related_si_quantity), NA_character_, quantity_name),
+      si_unit       = ifelse(is.na(related_si_quantity), NA_character_, si_unit)
     )
 
   # The annotations file is the single persistent source of truth for
@@ -458,11 +485,11 @@ results <- map(areas, parse_area)
 # branch/service/subservice or section/medium/source/quantity_axis,
 # individual_service, status, related_si_quantity, quantity_name and si_unit
 # are read-only; confirmation_status is a <select> and comment is an
-# editable cell -- except on a row with no related_si_quantity at all (a
-# service category with zero related SI quantities), where there is nothing
-# meaningful to confirm, so those two cells are left blank and non-editable
-# rather than offering an edit that can never be re-attached on the next
-# render (the annotation rejoin key requires a real related_si_quantity).
+# editable cell on any row with a mapping_id -- which now includes service
+# categories with zero related quantities too, via the placeholder rows
+# parse_area() adds for them (blank related_si_quantity, but a real,
+# stable mapping_id), so there's somewhere to note e.g. "needs a quantity
+# mapping" even before one exists.
 #
 # Column headers are clickable to sort; the search box and per-column filter
 # row combine to filter rows (see the shared <script> block below). A
@@ -544,19 +571,24 @@ editable_combined_table <- function(code, df) {
 
   row_html <- function(i) {
     row <- df[i, ]
-    has_quantity <- "related_si_quantity" %in% cols && !is.na(row[["related_si_quantity"]])
+    # Every row now has a mapping_id -- either a real quantity mapping or
+    # the no-quantity placeholder from parse_area() -- so confirmation
+    # status/comment are editable either way; only truly absent (this
+    # would mean parse_area()'s placeholder logic didn't run) leaves them
+    # locked, as a defensive fallback rather than the normal case.
+    has_mapping_id <- "mapping_id" %in% cols && !is.na(row[["mapping_id"]])
     cells <- vapply(cols, function(col) {
       val <- row[[col]]
       val <- if (is.na(val)) "" else as.character(val)
       if (col == "confirmation_status") {
-        if (has_quantity) {
+        if (has_mapping_id) {
           paste0("<td><select class=\"status-cell\" onchange=\"updateRowStatusClass(this)\">",
                  opt_html(val), "</select></td>")
         } else {
           "<td></td>"
         }
       } else if (col == "comment") {
-        if (has_quantity) {
+        if (has_mapping_id) {
           paste0("<td class=\"comment-cell\" contenteditable=\"true\">", htmltools::htmlEscape(val), "</td>")
         } else {
           "<td></td>"
@@ -569,7 +601,7 @@ editable_combined_table <- function(code, df) {
     }, character(1))
     notation_key <- htmltools::htmlEscape(as.character(row[["notation"]]))
     quantity_key <- if ("related_si_quantity" %in% cols) htmltools::htmlEscape(as.character(row[["related_si_quantity"]])) else ""
-    row_class <- if (has_quantity) unname(status_row_class[row[["confirmation_status"]]]) else NA
+    row_class <- if (has_mapping_id) unname(status_row_class[row[["confirmation_status"]]]) else NA
     row_class <- if (is.na(row_class)) "" else row_class
     paste0("<tr class=\"", row_class, "\" data-notation=\"", notation_key, "\" data-quantity=\"", quantity_key, "\">",
            paste0(cells, collapse = ""), "</tr>")
@@ -722,8 +754,9 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
   rows.forEach(function(tr) {
     var cells = tr.querySelectorAll("td");
     var vals = idx.map(function(i) { return cellValue(cells[i]); });
-    // Skip rows with no real quantity mapping (a service category with zero
-    // related quantities) -- there's nothing meaningful to annotate there.
+    // Every row has a mapping_id now (including the no-quantity placeholder
+    // rows), so this only ever skips something if that assumption is
+    // somehow violated -- a defensive fallback, not the expected case.
     if (mappingIdPos !== -1 && !vals[mappingIdPos]) return;
     lines.push(vals.map(csvEscape).join(","));
   });
@@ -765,14 +798,18 @@ and for each metrology area produces a single combined table in the browser
   time it doesn't exist yet, as a starting point.
 
 One row per (service category, related SI quantity) pair — a category with
-no related quantity at all keeps one row with those columns blank, rather
-than being dropped; a category with several related quantities gets one row
-per quantity. `mapping_id` (`notation::related_si_quantity`) is the shared
-join key between the two files, and is stable across re-renders: if a
-service category later gains an additional related quantity, that quantity
-gets its own new `mapping_id` (defaulting to `"unknown"` / `""` until
-confirmed) without disturbing any existing row's confirmation status or
-comment.
+no related quantity at all keeps one row with `related_si_quantity`,
+`quantity_name`, and `si_unit` blank, rather than being dropped, but still
+gets its own `mapping_id` (`notation::` with an empty quantity part) so its
+`confirmation_status`/`comment` are just as editable and persistable as any
+real mapping's; a category with several related quantities gets one row per
+quantity. `mapping_id` (`notation::related_si_quantity`) is the shared join
+key between the two files, and is stable across re-renders: if a service
+category later gains an additional related quantity, that quantity gets its
+own new `mapping_id` (defaulting to `"unknown"` / `""` until confirmed)
+without disturbing any existing row's confirmation status or comment —
+including the placeholder row, which is left as-is rather than reused or
+removed.
 
 Columns depend on which classification scheme the area uses (hardcoded per
 area, see `area_scheme` in `report.qmd`):
@@ -801,15 +838,16 @@ search box above it (matches anywhere in a row) and via a per-column filter
 row just under the headers (a text box for most columns, a dropdown for
 `confirmation_status`) — all filters combine, so narrowing one column and
 typing in another narrows to rows matching both. `confirmation_status` (a
-dropdown: confirmed / under discussion / unknown) and `comment` are editable in place
-— except on a row with no related quantity, where there's nothing to
-confirm, so those two cells are left blank. Rows are softly tinted by
-`confirmation_status` (green for confirmed, yellow for under discussion,
-orange for unknown) and update live if you change the dropdown. Click
-"Download updated annotations CSV", then drop the file into `annotations/`
-so it is picked up on the next render — the file there is never
-auto-overwritten, so this is the one intentional way to update it from the
-browser.
+dropdown: confirmed / under discussion / unknown) and `comment` are editable
+in place on every row — including a service category with no related
+quantity yet, via a placeholder `mapping_id` of its own, so there's
+somewhere to note e.g. "needs a quantity mapping" even before one exists.
+Rows are softly tinted by `confirmation_status` (green for confirmed,
+yellow for under discussion, orange for unknown) and update live if you
+change the dropdown. Click "Download updated annotations CSV", then drop the
+file into `annotations/` so it is picked up on the next render — the file
+there is never auto-overwritten, so this is the one intentional way to
+update it from the browser.
 
 Units are resolved from `quantities.ttl`'s `si:hasUnit` assertions, including
 compound units (`si:UnitProduct` / `si:UnitPower` trees) and composite

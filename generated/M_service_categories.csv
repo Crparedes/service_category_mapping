@@ -28,7 +28,7 @@ M/Force-4.1.1::FORC,M/Force-4.1.1,Force,Force,Tension,Tension,assigned,FORC,forc
 M/Force-4.2.1::FORC,M/Force-4.2.1,Force,Force,Compression,Compression,assigned,FORC,force,N,unknown,
 M/Force-4.3.1::FORC,M/Force-4.3.1,Force,Force,Tension and compression,Tension and compression,assigned,FORC,force,N,unknown,
 M/Gra-8.1.1::ACCE,M/Gra-8.1.1,Gravity,Gravity,Gravity,Gravity,assigned,ACCE,acceleration,m·s⁻²,unknown,
-NA,M/Har-7.1.1,Hardness,Hardness,Hardness,Hardness,assigned,NA,NA,NA,NA,NA
+M/Har-7.1.1::,M/Har-7.1.1,Hardness,Hardness,Hardness,Hardness,assigned,NA,NA,NA,unknown,
 M/Mass-1.1.1::MASS,M/Mass-1.1.1,"Mass, mass standards",Mass,Mass standard,Mass standard,assigned,MASS,mass,kg,unknown,
 M/Pres-3.1.1::PRES,M/Pres-3.1.1,Pressure,Pressure,Absolute pressure,Gas medium,assigned,PRES,pressure,Pa,unknown,
 M/Pres-3.1.2::PRES,M/Pres-3.1.2,Pressure,Pressure,Absolute pressure,Liquid medium,assigned,PRES,pressure,Pa,unknown,

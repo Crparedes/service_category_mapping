@@ -140,8 +140,8 @@ L/DimMet-6.4.1::LENG,L/DimMet-6.4.1,Dimensional metrology,Various dimensional,Lo
 L/DimMet-6.5.1::LENG,L/DimMet-6.5.1,Dimensional metrology,Various dimensional,Reference materials,Standard particle,assigned,LENG,length,m,unknown,
 L/DimMet-6.5.2::LENG,L/DimMet-6.5.2,Dimensional metrology,Various dimensional,Reference materials,Sieve or mesh opening,assigned,LENG,length,m,unknown,
 L/DimMet-6.6.1::LENG,L/DimMet-6.6.1,Dimensional metrology,Various dimensional,Layer thickness,Layer thickness standard,assigned,LENG,length,m,unknown,
-NA,L/DimMet-6.7.1,Dimensional metrology,Various dimensional,Not attributed 1,Not attributed 2,notYetAssigned,NA,NA,NA,NA,NA
-NA,L/DimMet-6.7.2,Dimensional metrology,Various dimensional,Not attributed 1,Not attributed 1,notYetAssigned,NA,NA,NA,NA,NA
+L/DimMet-6.7.1::,L/DimMet-6.7.1,Dimensional metrology,Various dimensional,Not attributed 1,Not attributed 2,notYetAssigned,NA,NA,NA,unknown,
+L/DimMet-6.7.2::,L/DimMet-6.7.2,Dimensional metrology,Various dimensional,Not attributed 1,Not attributed 1,notYetAssigned,NA,NA,NA,unknown,
 L/Laser-1.1.1::FREQ,L/Laser-1.1.1,Laser frequencies,Radiations of the mise en pratique,Laser radiations,Frequency stabilized laser,assigned,FREQ,frequency,Hz,unknown,
 L/Laser-1.1.1::LENG,L/Laser-1.1.1,Laser frequencies,Radiations of the mise en pratique,Laser radiations,Frequency stabilized laser,assigned,LENG,length,m,unknown,
 L/Laser-1.2.1::FREQ,L/Laser-1.2.1,Laser frequencies,Radiations of the mise en pratique,Lamp radiations,Spectral lamp,assigned,FREQ,frequency,Hz,unknown,

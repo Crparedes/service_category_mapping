@@ -26,12 +26,12 @@ PR/Detector-3.5.1::RAFL.LENG-1,PR/Detector-3.5.1,Properties of detectors and sou
 PR/Detector-5.1.0::MTTE,PR/Detector-5.1.0,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,Distribution temperature,Tungsten lamp,assigned,MTTE,distribution temperature,K,unknown,
 PR/Detector-5.2.1::CCTE,PR/Detector-5.2.1,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,Correlated colour temperature,Tungsten lamp,assigned,CCTE,correlated colour temperature,K,unknown,
 PR/Detector-5.3.0::CCTE-1,PR/Detector-5.3.0,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,Correlated colour temperature response,Colour temperature meter,assigned,CCTE-1,correlated colour temperature⁻¹,K⁻¹,unknown,
-NA,PR/Detector-5.4.0,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,"Colour, emitted","General source, colour space: x, y",assigned,NA,NA,NA,NA,NA
-NA,PR/Detector-5.4.1,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,"Colour, emitted","General source, colour space: u, v",assigned,NA,NA,NA,NA,NA
-NA,PR/Detector-5.4.2,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,"Colour, emitted","General source, colour space: u-prime, v-prime",assigned,NA,NA,NA,NA,NA
-NA,PR/Detector-5.4.3,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,"Colour, emitted","Display, colour space: L*a*b",assigned,NA,NA,NA,NA,NA
-NA,PR/Detector-5.5.0,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,Chromaticity response,Colorimeter,assigned,NA,NA,NA,NA,NA
-NA,PR/Detector-5.6.0,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,"Colour rendering, Ra",General source,assigned,NA,NA,NA,NA,NA
+PR/Detector-5.4.0::,PR/Detector-5.4.0,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,"Colour, emitted","General source, colour space: x, y",assigned,NA,NA,NA,unknown,
+PR/Detector-5.4.1::,PR/Detector-5.4.1,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,"Colour, emitted","General source, colour space: u, v",assigned,NA,NA,NA,unknown,
+PR/Detector-5.4.2::,PR/Detector-5.4.2,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,"Colour, emitted","General source, colour space: u-prime, v-prime",assigned,NA,NA,NA,unknown,
+PR/Detector-5.4.3::,PR/Detector-5.4.3,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,"Colour, emitted","Display, colour space: L*a*b",assigned,NA,NA,NA,unknown,
+PR/Detector-5.5.0::,PR/Detector-5.5.0,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,Chromaticity response,Colorimeter,assigned,NA,NA,NA,unknown,
+PR/Detector-5.6.0::,PR/Detector-5.6.0,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,"Colour rendering, Ra",General source,assigned,NA,NA,NA,unknown,
 PR/Detector-5.7.0::RADI.LENG-1,PR/Detector-5.7.0,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,"Radiance, total",Blackbody,assigned,RADI.LENG-1,(radiance)·(length⁻¹),W·sr⁻¹·m⁻²·m⁻¹,unknown,
 PR/Detector-5.8.0::RAFL,PR/Detector-5.8.0,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,"Radiant flux, total",General source,assigned,RAFL,radiant flux,W,unknown,
 PR/Detector-5.8.1::RAFL,PR/Detector-5.8.1,Properties of detectors and sources,Spectral.-int. meas. for sources and detectors,"Radiant flux, total",LED,assigned,RAFL,radiant flux,W,unknown,
@@ -86,16 +86,16 @@ PR/Mater-4.5.1::OPRE,PR/Mater-4.5.1,Properties of materials,Spectral properties 
 PR/Mater-4.6.1::OPRE,PR/Mater-4.6.1,Properties of materials,Spectral properties of materials,"Reflectance, regular, spectral",Spectrally-neutral material,assigned,OPRE,reflectance,1,unknown,
 PR/Mater-4.7.1::OPRE,PR/Mater-4.7.1,Properties of materials,Spectral properties of materials,"Reflectance, hemispherical, spectral",Spectrally-neutral material,assigned,OPRE,reflectance,1,unknown,
 PR/Mater-4.9.0::REXI,PR/Mater-4.9.0,Properties of materials,Spectral properties of materials,Emissivity,General material,assigned,REXI,relative radiant exitance,1,unknown,
-NA,PR/Mater-6.1.0,Properties of materials,Colour and other spectral.-int. meas. of materials,"Colour, surface, x, y, Y",General material,assigned,NA,NA,NA,NA,NA
-NA,PR/Mater-6.1.1,Properties of materials,Colour and other spectral.-int. meas. of materials,"Colour, surface, x, y, Y",Fluorescent material,assigned,NA,NA,NA,NA,NA
-NA,PR/Mater-6.1.2,Properties of materials,Colour and other spectral.-int. meas. of materials,"Colour, surface, x, y, Y",Diffusely reflecting material,assigned,NA,NA,NA,NA,NA
+PR/Mater-6.1.0::,PR/Mater-6.1.0,Properties of materials,Colour and other spectral.-int. meas. of materials,"Colour, surface, x, y, Y",General material,assigned,NA,NA,NA,unknown,
+PR/Mater-6.1.1::,PR/Mater-6.1.1,Properties of materials,Colour and other spectral.-int. meas. of materials,"Colour, surface, x, y, Y",Fluorescent material,assigned,NA,NA,NA,unknown,
+PR/Mater-6.1.2::,PR/Mater-6.1.2,Properties of materials,Colour and other spectral.-int. meas. of materials,"Colour, surface, x, y, Y",Diffusely reflecting material,assigned,NA,NA,NA,unknown,
 PR/Mater-6.10.0::LUCO,PR/Mater-6.10.0,Properties of materials,Colour and other spectral.-int. meas. of materials,Luminance coefficient,General material,assigned,LUCO,luminance coefficient,sr⁻¹,unknown,
 PR/Mater-6.12.0::WHIT,PR/Mater-6.12.0,Properties of materials,Colour and other spectral.-int. meas. of materials,Whiteness,General material,assigned,WHIT,whiteness,1,unknown,
-NA,PR/Mater-6.2.0,Properties of materials,Colour and other spectral.-int. meas. of materials,"Colour, surface, Lab",General material,assigned,NA,NA,NA,NA,NA
-NA,PR/Mater-6.2.1,Properties of materials,Colour and other spectral.-int. meas. of materials,"Colour, surface, Lab",Fluorescent material,assigned,NA,NA,NA,NA,NA
-NA,PR/Mater-6.2.2,Properties of materials,Colour and other spectral.-int. meas. of materials,"Colour, surface, Lab",Diffusely reflecting material,assigned,NA,NA,NA,NA,NA
-NA,PR/Mater-6.3.0,Properties of materials,Colour and other spectral.-int. meas. of materials,"Colour, transmitted, x, y, Y",General material,assigned,NA,NA,NA,NA,NA
-NA,PR/Mater-6.4.0,Properties of materials,Colour and other spectral.-int. meas. of materials,"Colour, transmitted, Lab",General material,assigned,NA,NA,NA,NA,NA
+PR/Mater-6.2.0::,PR/Mater-6.2.0,Properties of materials,Colour and other spectral.-int. meas. of materials,"Colour, surface, Lab",General material,assigned,NA,NA,NA,unknown,
+PR/Mater-6.2.1::,PR/Mater-6.2.1,Properties of materials,Colour and other spectral.-int. meas. of materials,"Colour, surface, Lab",Fluorescent material,assigned,NA,NA,NA,unknown,
+PR/Mater-6.2.2::,PR/Mater-6.2.2,Properties of materials,Colour and other spectral.-int. meas. of materials,"Colour, surface, Lab",Diffusely reflecting material,assigned,NA,NA,NA,unknown,
+PR/Mater-6.3.0::,PR/Mater-6.3.0,Properties of materials,Colour and other spectral.-int. meas. of materials,"Colour, transmitted, x, y, Y",General material,assigned,NA,NA,NA,unknown,
+PR/Mater-6.4.0::,PR/Mater-6.4.0,Properties of materials,Colour and other spectral.-int. meas. of materials,"Colour, transmitted, Lab",General material,assigned,NA,NA,NA,unknown,
 PR/Mater-6.5.0::OPRE,PR/Mater-6.5.0,Properties of materials,Colour and other spectral.-int. meas. of materials,Retroreflectance,General material,assigned,OPRE,reflectance,1,unknown,
 PR/Mater-6.6.0::GLOS,PR/Mater-6.6.0,Properties of materials,Colour and other spectral.-int. meas. of materials,Gloss,General material,assigned,GLOS,gloss,1,unknown,
 PR/Mater-6.7.0::OPTR.OPTR-1,PR/Mater-6.7.0,Properties of materials,Colour and other spectral.-int. meas. of materials,Haze,General material,assigned,OPTR.OPTR-1,(transmittance)·(transmittance⁻¹),1,unknown,
