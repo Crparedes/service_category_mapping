@@ -1,4 +1,8 @@
 mapping_id,notation,branch,service,subservice,individual_service,status,related_si_quantity,quantity_name,si_unit,confirmation_status,comment
+L/Laser-1.1.1::FREQ,L/Laser-1.1.1,Laser frequencies,Radiations of the mise en pratique,Laser radiations,Frequency stabilized laser,assigned,FREQ,frequency,Hz,unknown,
+L/Laser-1.1.1::LENG,L/Laser-1.1.1,Laser frequencies,Radiations of the mise en pratique,Laser radiations,Frequency stabilized laser,assigned,LENG,length,m,unknown,
+L/Laser-1.2.1::FREQ,L/Laser-1.2.1,Laser frequencies,Radiations of the mise en pratique,Lamp radiations,Spectral lamp,assigned,FREQ,frequency,Hz,unknown,
+L/Laser-1.2.1::LENG,L/Laser-1.2.1,Laser frequencies,Radiations of the mise en pratique,Lamp radiations,Spectral lamp,assigned,LENG,length,m,unknown,
 L/DimMet-2.1.1::FREQ,L/DimMet-2.1.1,Dimensional metrology,Linear dimensions,Length instruments,"(Laser, length) interferometer (system, optics, refractometer)",assigned,FREQ,frequency,Hz,unknown,
 L/DimMet-2.1.1::LENG,L/DimMet-2.1.1,Dimensional metrology,Linear dimensions,Length instruments,"(Laser, length) interferometer (system, optics, refractometer)",assigned,LENG,length,m,unknown,
 L/DimMet-2.1.1::REFI,L/DimMet-2.1.1,Dimensional metrology,Linear dimensions,Length instruments,"(Laser, length) interferometer (system, optics, refractometer)",assigned,REFI,refractive index,1,unknown,
@@ -142,7 +146,3 @@ L/DimMet-6.5.2::LENG,L/DimMet-6.5.2,Dimensional metrology,Various dimensional,Re
 L/DimMet-6.6.1::LENG,L/DimMet-6.6.1,Dimensional metrology,Various dimensional,Layer thickness,Layer thickness standard,assigned,LENG,length,m,unknown,
 L/DimMet-6.7.1::,L/DimMet-6.7.1,Dimensional metrology,Various dimensional,Not attributed 1,Not attributed 2,notYetAssigned,NA,NA,NA,unknown,
 L/DimMet-6.7.2::,L/DimMet-6.7.2,Dimensional metrology,Various dimensional,Not attributed 1,Not attributed 1,notYetAssigned,NA,NA,NA,unknown,
-L/Laser-1.1.1::FREQ,L/Laser-1.1.1,Laser frequencies,Radiations of the mise en pratique,Laser radiations,Frequency stabilized laser,assigned,FREQ,frequency,Hz,unknown,
-L/Laser-1.1.1::LENG,L/Laser-1.1.1,Laser frequencies,Radiations of the mise en pratique,Laser radiations,Frequency stabilized laser,assigned,LENG,length,m,unknown,
-L/Laser-1.2.1::FREQ,L/Laser-1.2.1,Laser frequencies,Radiations of the mise en pratique,Lamp radiations,Spectral lamp,assigned,FREQ,frequency,Hz,unknown,
-L/Laser-1.2.1::LENG,L/Laser-1.2.1,Laser frequencies,Radiations of the mise en pratique,Lamp radiations,Spectral lamp,assigned,LENG,length,m,unknown,
