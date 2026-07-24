@@ -665,7 +665,7 @@ The tables have one row for each mapped category/quantity pair (i.e. a service c
 - <span class="status-badge status-confirmed">Confirmed</span> The quantity assignment (name and units) has been <u>confirmed by the CC delegate</u>.
 - <span class="status-badge status-under-discussion">Under discussion</span> Feedback has been received from the CC delegate and <u>an action is pending from the BIPM</u> (e.g. an update to the [SI Reference Point](https://preprod.si-digital-framework.org/SI) to support new unit expressions).
 - <span class="status-badge status-unknown">Unknown</span> Confirmation or feedback is <u>required from the CC delegate</u>.
-- <span class="status-badge status-delete">Must delete</span> The mapping is incorrect or the service category is obsolete and it should be <u>deleted by the BIPM.</u>
+- <span class="status-badge status-delete">Must delete</span> The mapping is incorrect or the service category is obsolete and it should be <u>deleted by the BIPM</u>.
 
 **Note:** If you modify a confirmation status or add a comment, please download the updated csv file and share it with [Cristhian Paredes](https://www.bipm.org/fr/people?userId=280082042) for updating. We kindly ask you to indicate your name and organization initials in square brackets before your comment, and to separate each comment by three dashes (e.g. `[FL-NMI] comment 1. --- [CP-BIPM] reply or request. --- [FL-NMI] comment 2.`).
 
