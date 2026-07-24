@@ -706,8 +706,9 @@ The tables have one row for each mapped category/quantity pair (i.e. a service c
 **Note:** The unit expression presented in the column `si_unit` is the default assigned to the quantity. However, other unit expressions that are dimensionally consistent will also be accepted in the CMCs of that service category (e.g. a quantity set to radians per second will also accept degrees per hour. Dimensionless quantities will accept percent values).
 
 <!-- The columns `quantity_name` and `si_unit` are resolved from the ontology graph `quantities.ttl`. `quantity_name` is the spelled-out quantity (e.g. `DENS` is shown as `density`, and `MASS.TIME-1` as (`(mass)·(time⁻¹)`). A quantity with no units is rendered as `1` (dimensionless), and will accept values expressed as percentages. -->
-:::
 
+:::
+___
 ::: {.panel-tabset .column-screen-inset}
 
 ```{r render-tables}
@@ -738,7 +739,7 @@ cat(
 )
 ```
 :::
-
+___
 ::: {.column-screen-inset}
 
 <i>This [Quarto](https://quarto.org/) report was written in R with assistance from a Large Language Model (Anthropic's Claude, Sonnet 5, medium reasoning effort).</i>

@@ -1,59 +1,59 @@
 mapping_id,notation,related_si_quantity,confirmation_status,comment
-T/T-1.1.1::ITSC,T/T-1.1.1,ITSC,unknown,
-T/T-1.1.1::ITSK,T/T-1.1.1,ITSK,unknown,
-T/T-1.1.2::ITSC,T/T-1.1.2,ITSC,unknown,
-T/T-1.1.2::ITSK,T/T-1.1.2,ITSK,unknown,
-T/T-1.2.1::ITSC,T/T-1.2.1,ITSC,unknown,
-T/T-1.2.1::ITSK,T/T-1.2.1,ITSK,unknown,
-T/T-1.2.2::ITSC,T/T-1.2.2,ITSC,unknown,
-T/T-1.2.2::ITSK,T/T-1.2.2,ITSK,unknown,
-T/T-1.3.1::ITSC,T/T-1.3.1,ITSC,unknown,
-T/T-1.3.1::ITSK,T/T-1.3.1,ITSK,unknown,
-T/T-1.3.2::ITSC,T/T-1.3.2,ITSC,unknown,
-T/T-1.3.2::ITSK,T/T-1.3.2,ITSK,unknown,
-T/T-1.4.1::ITSC,T/T-1.4.1,ITSC,unknown,
-T/T-1.4.1::ITSK,T/T-1.4.1,ITSK,unknown,
-T/T-2.1.1::ITSC,T/T-2.1.1,ITSC,unknown,
-T/T-2.1.1::ITSK,T/T-2.1.1,ITSK,unknown,
-T/T-2.2.1::ITSC,T/T-2.2.1,ITSC,unknown,
-T/T-2.2.1::ITSK,T/T-2.2.1,ITSK,unknown,
-T/T-2.2.2::ITSC,T/T-2.2.2,ITSC,unknown,
-T/T-2.2.2::ITSK,T/T-2.2.2,ITSK,unknown,
-T/T-2.2.3::ITSC,T/T-2.2.3,ITSC,unknown,
-T/T-2.2.3::ITSK,T/T-2.2.3,ITSK,unknown,
-T/T-2.3.1::ITSC,T/T-2.3.1,ITSC,unknown,
-T/T-2.3.1::ITSK,T/T-2.3.1,ITSK,unknown,
-T/T-2.3.2::ITSC,T/T-2.3.2,ITSC,unknown,
-T/T-2.3.2::ITSK,T/T-2.3.2,ITSK,unknown,
-T/T-2.3.3::ITSC,T/T-2.3.3,ITSC,unknown,
-T/T-2.3.3::ITSK,T/T-2.3.3,ITSK,unknown,
-T/T-2.4.1::ITSC,T/T-2.4.1,ITSC,unknown,
-T/T-2.4.1::ITSK,T/T-2.4.1,ITSK,unknown,
-T/T-2.5.1::ITSC,T/T-2.5.1,ITSC,unknown,
-T/T-2.5.1::ITSK,T/T-2.5.1,ITSK,unknown,
-T/T-2.5.2::ITSC,T/T-2.5.2,ITSC,unknown,
-T/T-2.5.2::ITSK,T/T-2.5.2,ITSK,unknown,
-T/T-2.5.3::ITSC,T/T-2.5.3,ITSC,unknown,
-T/T-2.5.3::ITSK,T/T-2.5.3,ITSK,unknown,
-T/T-2.5.4::ITSC,T/T-2.5.4,ITSC,unknown,
-T/T-2.5.4::ITSK,T/T-2.5.4,ITSK,unknown,
-T/T-2.6.1::ITSC,T/T-2.6.1,ITSC,unknown,
-T/T-2.6.1::ITSK,T/T-2.6.1,ITSK,unknown,
-T/T-2.6.2::ITSC,T/T-2.6.2,ITSC,unknown,
-T/T-2.6.2::ITSK,T/T-2.6.2,ITSK,unknown,
-T/T-2.7.1::ITSC,T/T-2.7.1,ITSC,unknown,
-T/T-2.7.1::ITSK,T/T-2.7.1,ITSK,unknown,
+T/T-1.1.1::ITSC,T/T-1.1.1,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-1.1.1::ITSK,T/T-1.1.1,ITSK,under discussion,"[PR-NRC] ITS-90 temperature is a quantity that can be expressed in K or °C. --- [CP-BIPM] The quantities ITSC and ITSK will be merged, and the duplication will be removed from the mapping."
+T/T-1.1.2::ITSC,T/T-1.1.2,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-1.1.2::ITSK,T/T-1.1.2,ITSK,under discussion,(See comment in T/T-1.1.1::ITSK)
+T/T-1.2.1::ITSC,T/T-1.2.1,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-1.2.1::ITSK,T/T-1.2.1,ITSK,under discussion,(See comment in T/T-1.1.1::ITSK)
+T/T-1.2.2::ITSC,T/T-1.2.2,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-1.2.2::ITSK,T/T-1.2.2,ITSK,under discussion,(See comment in T/T-1.1.1::ITSK)
+T/T-1.3.1::ITSC,T/T-1.3.1,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-1.3.1::ITSK,T/T-1.3.1,ITSK,under discussion,(See comment in T/T-1.1.1::ITSK)
+T/T-1.3.2::ITSC,T/T-1.3.2,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-1.3.2::ITSK,T/T-1.3.2,ITSK,under discussion,(See comment in T/T-1.1.1::ITSK)
+T/T-1.4.1::ITSC,T/T-1.4.1,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-1.4.1::ITSK,T/T-1.4.1,ITSK,under discussion,(See comment in T/T-1.1.1::ITSK)
+T/T-2.1.1::ITSC,T/T-2.1.1,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-2.1.1::ITSK,T/T-2.1.1,ITSK,under discussion,(See comment in T/T-1.1.1::ITSK)
+T/T-2.2.1::ITSC,T/T-2.2.1,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-2.2.1::ITSK,T/T-2.2.1,ITSK,under discussion,(See comment in T/T-1.1.1::ITSK)
+T/T-2.2.2::ITSC,T/T-2.2.2,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-2.2.2::ITSK,T/T-2.2.2,ITSK,under discussion,(See comment in T/T-1.1.1::ITSK)
+T/T-2.2.3::ITSC,T/T-2.2.3,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-2.2.3::ITSK,T/T-2.2.3,ITSK,under discussion,(See comment in T/T-1.1.1::ITSK)
+T/T-2.3.1::ITSC,T/T-2.3.1,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-2.3.1::ITSK,T/T-2.3.1,ITSK,under discussion,(See comment in T/T-1.1.1::ITSK)
+T/T-2.3.2::ITSC,T/T-2.3.2,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-2.3.2::ITSK,T/T-2.3.2,ITSK,under discussion,(See comment in T/T-1.1.1::ITSK)
+T/T-2.3.3::ITSC,T/T-2.3.3,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-2.3.3::ITSK,T/T-2.3.3,ITSK,under discussion,(See comment in T/T-1.1.1::ITSK)
+T/T-2.4.1::ITSC,T/T-2.4.1,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-2.4.1::ITSK,T/T-2.4.1,ITSK,under discussion,(See comment in T/T-1.1.1::ITSK)
+T/T-2.5.1::ITSC,T/T-2.5.1,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-2.5.1::ITSK,T/T-2.5.1,ITSK,under discussion,(See comment in T/T-1.1.1::ITSK)
+T/T-2.5.2::ITSC,T/T-2.5.2,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-2.5.2::ITSK,T/T-2.5.2,ITSK,under discussion,(See comment in T/T-1.1.1::ITSK)
+T/T-2.5.3::ITSC,T/T-2.5.3,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-2.5.3::ITSK,T/T-2.5.3,ITSK,under discussion,(See comment in T/T-1.1.1::ITSK)
+T/T-2.5.4::ITSC,T/T-2.5.4,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-2.5.4::ITSK,T/T-2.5.4,ITSK,under discussion,(See comment in T/T-1.1.1::ITSK)
+T/T-2.6.1::ITSC,T/T-2.6.1,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-2.6.1::ITSK,T/T-2.6.1,ITSK,under discussion,(See comment in T/T-1.1.1::ITSK)
+T/T-2.6.2::ITSC,T/T-2.6.2,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-2.6.2::ITSK,T/T-2.6.2,ITSK,under discussion,(See comment in T/T-1.1.1::ITSK)
+T/T-2.7.1::ITSC,T/T-2.7.1,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-2.7.1::ITSK,T/T-2.7.1,ITSK,under discussion,(See comment in T/T-1.1.1::ITSK)
 T/T-2.8.1::,T/T-2.8.1,,unknown,
-T/T-2.8.2::ITSC,T/T-2.8.2,ITSC,unknown,
-T/T-2.8.2::ITSK,T/T-2.8.2,ITSK,unknown,
+T/T-2.8.2::ITSC,T/T-2.8.2,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-2.8.2::ITSK,T/T-2.8.2,ITSK,under discussion,(See comment in T/T-1.1.1::ITSK)
 T/T-2.8.3::,T/T-2.8.3,,unknown,
-T/T-2.8.4::ITSC,T/T-2.8.4,ITSC,unknown,
-T/T-2.8.4::ITSK,T/T-2.8.4,ITSK,unknown,
-T/T-2.8.5::ITSC,T/T-2.8.5,ITSC,unknown,
-T/T-2.8.5::ITSK,T/T-2.8.5,ITSK,unknown,
-T/T-2.8.6::ITSC,T/T-2.8.6,ITSC,unknown,
-T/T-2.8.6::ITSK,T/T-2.8.6,ITSK,unknown,
-T/H-3.1.1::DEWP,T/H-3.1.1,DEWP,unknown,
+T/T-2.8.4::ITSC,T/T-2.8.4,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-2.8.4::ITSK,T/T-2.8.4,ITSK,under discussion,(See comment in T/T-1.1.1::ITSK)
+T/T-2.8.5::ITSC,T/T-2.8.5,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-2.8.5::ITSK,T/T-2.8.5,ITSK,under discussion,(See comment in T/T-1.1.1::ITSK)
+T/T-2.8.6::ITSC,T/T-2.8.6,ITSC,must delete,(See comment in T/T-1.1.1::ITSK)
+T/T-2.8.6::ITSK,T/T-2.8.6,ITSK,under discussion,(See comment in T/T-1.1.1::ITSK)
+T/H-3.1.1::DEWP,T/H-3.1.1,DEWP,under discussion,
 T/H-3.2.1::RHUM,T/H-3.2.1,RHUM,unknown,
 T/H-3.3.1::RHUM,T/H-3.3.1,RHUM,unknown,
 T/H-3.4.1::AMSU.AMSU-1,T/H-3.4.1,AMSU.AMSU-1,unknown,
@@ -85,9 +85,9 @@ T/TQ-6.4.1::LENG.LENG-1.ITSC-1,T/TQ-6.4.1,LENG.LENG-1.ITSC-1,unknown,
 T/TQ-6.4.1::LENG.LENG-1.ITSK-1,T/TQ-6.4.1,LENG.LENG-1.ITSK-1,unknown,
 T/TQ-6.4.1::VOLU.VOLU-1.ITSC-1,T/TQ-6.4.1,VOLU.VOLU-1.ITSC-1,unknown,
 T/TQ-6.4.1::VOLU.VOLU-1.ITSK-1,T/TQ-6.4.1,VOLU.VOLU-1.ITSK-1,unknown,
-T/T-7.1.1::TEMC,T/T-7.1.1,TEMC,unknown,
-T/T-7.1.1::TEMT,T/T-7.1.1,TEMT,unknown,
-T/T-7.1.2::TEMC,T/T-7.1.2,TEMC,unknown,
-T/T-7.1.2::TEMT,T/T-7.1.2,TEMT,unknown,
-T/T-7.1.3::TEMC,T/T-7.1.3,TEMC,unknown,
-T/T-7.1.3::TEMT,T/T-7.1.3,TEMT,unknown,
+T/T-7.1.1::TEMC,T/T-7.1.1,TEMC,must delete,"[PR-NRC] Thermodinamic temperature is a quantity that can be expressed in K or °C. --- [CP-BIPM] The quantities TEMT and TEMC will be merged, and the duplication will be removed from the mapping."
+T/T-7.1.1::TEMT,T/T-7.1.1,TEMT,confirmed,
+T/T-7.1.2::TEMC,T/T-7.1.2,TEMC,must delete,(See comment in T/T-7.1.1::TEMC)
+T/T-7.1.2::TEMT,T/T-7.1.2,TEMT,confirmed,
+T/T-7.1.3::TEMC,T/T-7.1.3,TEMC,must delete,(See comment in T/T-7.1.1::TEMC)
+T/T-7.1.3::TEMT,T/T-7.1.3,TEMT,confirmed,
