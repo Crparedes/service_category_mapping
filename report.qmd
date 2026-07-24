@@ -477,7 +477,43 @@ parse_area <- function(code) {
 
   write_csv(combined, path(output_dir, paste0(code, "_service_categories.csv")))
 
-  list(code = code, title = title, combined = combined)
+  real_qty <- qty %>% filter(!is.na(related_si_quantity))
+  n_quantities <- nrow(real_qty)
+
+  category_rollup <- real_qty %>%
+    group_by(notation) %>%
+    summarise(
+      all_confirmed        = all(confirmation_status == "confirmed"),
+      any_under_discussion = any(confirmation_status == "under discussion"),
+      .groups = "drop"
+    ) %>%
+    mutate(
+      category_status = case_when(
+        all_confirmed        ~ "confirmed",
+        any_under_discussion ~ "under_discussion",
+        TRUE                 ~ "pending"
+      )
+    )
+
+  n_categories_mapped <- nrow(category_rollup)
+  n_confirmed         <- sum(category_rollup$category_status == "confirmed")
+  n_under_discussion  <- sum(category_rollup$category_status == "under_discussion")
+  n_pending           <- n_categories_mapped - n_confirmed - n_under_discussion
+  n_no_quantity       <- length(no_quantity_notations)
+
+  summary_text <- sprintf(
+    "%s has **%d individual service categories** that have been mapped to a total of **%d quantities or quantity expressions** from the SI Digital Framework. At the moment of the last rendering (%s): <ul>
+    <li>%d individual services have been confirmed for all its quantity mappings.</li>
+    <li>%d individual services are under discussion for at least one of the quantity mappings.</li>
+    <li>%d individual services are pending feedback or confirmation from the CC delegate.</li>
+    </ul>Additionally, <ul>
+    <li>%d service %s not yet been mapped to any quantity or present a mapping that needs to be deleted.</li></ul>",
+    area_cc_label[[code]], n_categories_mapped, n_quantities, Sys.Date(),
+    n_confirmed, n_under_discussion, n_pending,
+    n_no_quantity, if (n_no_quantity == 1) "category has" else "categories have"
+  )
+  
+  list(code = code, title = title, combined = combined, summary_text = summary_text)
 }
 
 results <- map(areas, parse_area)
@@ -533,7 +569,7 @@ opt_html <- function(selected) {
 editable_combined_table <- function(code, df) {
   cols <- names(df)
   table_id <- paste0("tbl-", code)
-
+  cc_label <- area_cc_label[[code]]
   header_html <- paste0(
     vapply(seq_along(cols), function(i) {
       paste0("<th onclick=\"sortTable('", table_id, "',", i - 1, ")\">",
@@ -638,10 +674,10 @@ editable_combined_table <- function(code, df) {
     "<div class=\"table-toolbar\">",
     "<button type=\"button\" class=\"dl-btn\" onclick=\"downloadAnnotationsCsv('", table_id, "', '", code, "', ",
     cols_json, ", ", annotation_cols_json, ")\">",
-    "Download updated CSV file for ", code, "</button>",
+    "Download updated CSV file for ", cc_label, "</button>",
     "<input type=\"text\" class=\"search-box\" placeholder=\"Filter rows...\" oninput=\"applyAllFilters('", table_id, "')\">",
     "</div>",
-    " <span class=\"dl-hint\">The table can be reorganized by clicking on any column header. Organization of table by column <b>notation</b> (default) considers only the numbers. There is a general filter (above) and filters per each column that can be applied simultaneously. Filter by ",
+    " <span class=\"dl-hint\">The table can be reorganized by clicking on any column header. Organization of table by column <b>notation</b> (default) considers only the numbers of the category. There is a general filter (above) and filters per each column that can be applied simultaneously. Filter by ",
     "<code>=empty</code> to see the rows with a missing field.</span>",
     "<div class=\"table-scroll\">",
     "<table id=\"", table_id, "\" class=\"editable-qty-table\">",
@@ -655,7 +691,7 @@ editable_combined_table <- function(code, df) {
 }
 ```
 
----
+
 
 ::: {.column-screen-inset}
 This webpage reports the status of the mapping between the [KCDB service categories](https://www.bipm.org/en/cipm-mra/cipm-mra-documents/service-categories) of the CIPM Consultative Committees and the quantities in the SI Digital Framework, as retrieved from the ontology graphs of the [preproduction server](https://preprod.si-digital-framework.org/kcdb-sc) (only available for whitelisted IP addresses).
@@ -667,14 +703,10 @@ The tables have one row for each mapped category/quantity pair (i.e. a service c
 - <span class="status-badge status-unknown">Unknown</span> Confirmation or feedback is <u>required from the CC delegate</u>.
 - <span class="status-badge status-delete">Must delete</span> The mapping is incorrect or the service category is obsolete and it should be <u>deleted by the BIPM</u>.
 
-**Note:** If you modify a confirmation status or add a comment, please download the updated csv file and share it with [Cristhian Paredes](https://www.bipm.org/fr/people?userId=280082042) for updating. We kindly ask you to indicate your name and organization initials in square brackets before your comment, and to separate each comment by three dashes (e.g. `[FL-NMI] comment 1. --- [CP-BIPM] reply or request. --- [FL-NMI] comment 2.`).
-
-**Note:** The unit presented in the column `si_unit` is the default unit expression assigned to the quantity. However, other unit expressions that are dimensionally consistent will also be accepted in the CMCs of that service category (e.g. a quantity set to radians per second will also accept degrees per hour. Dimensionless quantities will accept percent values).
+**Note:** The unit expression presented in the column `si_unit` is the default assigned to the quantity. However, other unit expressions that are dimensionally consistent will also be accepted in the CMCs of that service category (e.g. a quantity set to radians per second will also accept degrees per hour. Dimensionless quantities will accept percent values).
 
 <!-- The columns `quantity_name` and `si_unit` are resolved from the ontology graph `quantities.ttl`. `quantity_name` is the spelled-out quantity (e.g. `DENS` is shown as `density`, and `MASS.TIME-1` as (`(mass)·(time⁻¹)`). A quantity with no units is rendered as `1` (dimensionless), and will accept values expressed as percentages. -->
 :::
-
---
 
 ::: {.panel-tabset .column-screen-inset}
 
@@ -684,7 +716,9 @@ walk(areas, function(code) {
   res <- results[[code]]
   cc <- area_cc_label[[code]]
   cat("\n\n## ", cc, "\n\n", sep = "")
-  cat("\n\n*", res$title, "*\n\n", sep = "")
+  cat("\n\n**", res$title, "**\n\n", sep = "")
+  cat("\n\n", res$summary_text, "\n\n", sep = "")
+  cat("\n\n **Note:** If you modify a confirmation status or add a comment, please download the updated csv file and share it with [Cristhian Paredes](mailto:cristhian.paredes@bipm.org) for updating. We kindly ask you to indicate your name and organization initials in square brackets before your comment, and to separate each comment by three dashes (e.g. `[FL-NMI] comment 1. --- [CP-BIPM] reply or request. --- [FL-NMI] comment 2.`).\n\n")
   cat("\n\n```{=html}\n", editable_combined_table(code, res$combined), "\n```\n\n", sep = "")
 })
 ```
@@ -705,4 +739,8 @@ cat(
 ```
 :::
 
-**Disclaimer** *This [Quarto](https://quarto.org/) report was written in R with assistance from a Large Language Model (Anthropic's Claude, Sonnet 5, medium reasoning effort).*
+::: {.column-screen-inset}
+
+<i>This [Quarto](https://quarto.org/) report was written in R with assistance from a Large Language Model (Anthropic's Claude, Sonnet 5, medium reasoning effort).</i>
+:::
+

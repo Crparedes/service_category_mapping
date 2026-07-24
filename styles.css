@@ -46,3 +46,5 @@
 }
 .dl-btn:hover { background: #1d3557; }
 .dl-hint { font-size: 0.78em; color: #555; }
+
+.panel-tabset .nav-link.active { font-weight: bold; color: #718096;}
