@@ -1,0 +1,110 @@
+<script>
+function csvEscape(v) {
+  v = String(v == null ? "" : v);
+  if (/[",\n]/.test(v)) v = '"' + v.replace(/"/g, '""') + '"';
+  return v;
+}
+function cellValue(td) {
+  var sel = td.querySelector("select");
+  if (sel) return sel.value;
+  return td.textContent.trim();
+}
+var ROW_STATUS_CLASSES = ["row-confirmed", "row-under-discussion", "row-unknown", "row-delete"];
+var ROW_STATUS_CLASS_MAP = {
+  confirmed: "row-confirmed",
+  "under discussion": "row-under-discussion",
+  unknown: "row-unknown",
+  "must delete": "row-delete"
+};
+function updateRowStatusClass(selectEl) {
+  var tr = selectEl.closest("tr");
+  ROW_STATUS_CLASSES.forEach(function(c) { tr.classList.remove(c); });
+  var cls = ROW_STATUS_CLASS_MAP[selectEl.value];
+  if (cls) tr.classList.add(cls);
+}
+function numericKey(text) {
+  var matches = text.match(/\d+/g);
+  return matches ? matches.map(Number) : [];
+}
+function compareNumericKey(a, b) {
+  var ka = numericKey(a), kb = numericKey(b);
+  var len = Math.max(ka.length, kb.length);
+  for (var i = 0; i < len; i++) {
+    var va = i < ka.length ? ka[i] : -1;
+    var vb = i < kb.length ? kb[i] : -1;
+    if (va !== vb) return va - vb;
+  }
+  return 0;
+}
+function sortTable(tableId, colIdx) {
+  var table = document.getElementById(tableId);
+  var tbody = table.querySelector("tbody");
+  var rows = Array.from(tbody.querySelectorAll("tr"));
+  var th = table.querySelectorAll("th")[colIdx];
+  var asc = th.getAttribute("data-asc") !== "true";
+  var isNotationCol = th.textContent.trim() === "notation";
+  rows.sort(function(a, b) {
+    var av = cellValue(a.children[colIdx]), bv = cellValue(b.children[colIdx]);
+    var cmp = isNotationCol
+      ? compareNumericKey(av, bv)
+      : av.localeCompare(bv, undefined, {numeric: true});
+    return asc ? cmp : -cmp;
+  });
+  rows.forEach(function(r) { tbody.appendChild(r); });
+  table.querySelectorAll("th").forEach(function(h) { h.removeAttribute("data-asc"); });
+  th.setAttribute("data-asc", asc ? "true" : "false");
+}
+function applyAllFilters(tableId) {
+  var table = document.getElementById(tableId);
+  var wrap = table.closest(".editable-qty-wrap");
+  var globalBox = wrap ? wrap.querySelector(".search-box") : null;
+  var globalQuery = globalBox ? globalBox.value.toLowerCase() : "";
+  var colFilters = Array.from(table.querySelectorAll(".filter-row .col-filter"))
+    .map(function(el) { return el.value.toLowerCase(); });
+  var rows = table.querySelectorAll("tbody tr");
+  rows.forEach(function(tr) {
+    var visible = !globalQuery || tr.textContent.toLowerCase().indexOf(globalQuery) !== -1;
+    if (visible) {
+      var cells = tr.children;
+      for (var i = 0; i < colFilters.length; i++) {
+        var f = colFilters[i];
+        if (!f) continue;
+        var cellText = cellValue(cells[i]).toLowerCase();
+        if (f === "=empty") {
+          if (cellText !== "") { visible = false; break; }
+        } else if (f === "=nonempty") {
+          if (cellText === "") { visible = false; break; }
+        } else if (cellText.indexOf(f) === -1) {
+          visible = false; break;
+        }
+      }
+    }
+    tr.style.display = visible ? "" : "none";
+  });
+}
+function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
+  var table = document.getElementById(tableId);
+  var rows = table.querySelectorAll("tbody tr");
+  var idx = exportCols.map(function(name) { return columns.indexOf(name); });
+  var mappingIdPos = exportCols.indexOf("mapping_id");
+  var lines = [exportCols.map(csvEscape).join(",")];
+  rows.forEach(function(tr) {
+    var cells = tr.querySelectorAll("td");
+    var vals = idx.map(function(i) { return cellValue(cells[i]); });
+    // Every row has a mapping_id now (including the no-quantity placeholder 
+    // rows), so this only ever skips something if that assumption is
+    // somehow violated -- a defensive fallback, not the expected case.
+    if (mappingIdPos !== -1 && !vals[mappingIdPos]) return;
+    lines.push(vals.map(csvEscape).join(","));
+  });
+  var blob = new Blob([lines.join("\n")], {type: "text/csv;charset=utf-8;"});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement("a");
+  a.href = url;
+  a.download = code + "_annotations.csv";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>

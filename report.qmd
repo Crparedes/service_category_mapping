@@ -1,10 +1,15 @@
 ---
-title: "KCBD Service Categories and SIDF quantities"
+title: "Service Categories in the KCBD"
+subtitle: "Mapping to the quantities in the SI Digital Framework"
 format:
   html:
     embed-resources: true
     toc: false
     page-layout: full
+    css: styles.css
+    include-after-body: scripts.html
+    link-external-icon: true
+    link-external-newwindow: true
 params:
   default_tab: "CCEM"
 execute:
@@ -34,12 +39,6 @@ dir_create(annotations_dir)
 areas <- c("AUV", "EM", "L", "M", "PR", "RI", "T", "TF")
 names(areas) <- areas
 
-# Hardcoded per-area classification scheme, rather than inferring it from
-# which columns happen to be non-NA in the parsed data. This keeps behaviour
-# predictable and makes adding a future scheme (e.g. QM) an explicit,
-# deliberate step -- register the area's scheme here, then add a matching
-# case to the switch() in parse_area() -- instead of relying on a pattern
-# that a third scheme's data could satisfy by accident.
 area_scheme <- c(
   AUV = "generic", EM = "generic", L = "generic", M = "generic",
   PR = "generic", RI = "section", T = "generic", TF = "generic"
@@ -64,15 +63,7 @@ notation_sort_key <- function(x) {
 ```{r queries}
 #| include: false
 
-# NOTE: every query below is a trivial, mandatory single- or two-triple
-# pattern with NO SPARQL OPTIONAL keyword anywhere. This is deliberate:
-# rasqal (the SPARQL engine behind the R rdflib package) doesn't reorder or
-# optimise joins the way a real triple store does, and even a modest number
-# of OPTIONAL blocks -- sibling or nested -- can blow up into a near-
-# cartesian evaluation on graphs the size of RI.ttl/EM.ttl (this is what
-# caused the render to hang). Instead, "optionality" (not every service
-# category has a label/status/medium/etc.) is handled entirely in R via
-# left_join(), which is fast, predictable, and doesn't touch the graph again.
+# NOTE: every query below is a trivial, mandatory single- or two-triple pattern with NO SPARQL OPTIONAL keyword anywhere.
 
 qp <- function(x) paste0(
   "PREFIX sc:   <https://si-digital-framework.org/kcdb-sc#>\n",
@@ -127,16 +118,21 @@ RDF_TYPE <- "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
 SI    <- "https://si-digital-framework.org/SI#"
 QBASE <- "https://si-digital-framework.org/quantities/"
 
-# Only official SI base/named-derived units (plus neper/bel) appear as leaves
-# in this graph -- confirmed by inspecting every units:* URI actually used.
-symbol_map <- c(
-  ampere = "A", becquerel = "Bq", bel = "B", candela = "cd", coulomb = "C",
-  degreeCelsius = "\u00b0C", farad = "F", gray = "Gy", henry = "H", hertz = "Hz",
-  joule = "J", katal = "kat", kelvin = "K", kilogram = "kg", lumen = "lm",
-  lux = "lx", metre = "m", mole = "mol", neper = "Np", newton = "N",
-  ohm = "\u03a9", pascal = "Pa", radian = "rad", second = "s", siemens = "S",
-  sievert = "Sv", steradian = "sr", tesla = "T", volt = "V", watt = "W", weber = "Wb"
-)
+# symbol_map <- c(
+#   ampere = "A", becquerel = "Bq", bel = "B", candela = "cd", coulomb = "C",
+#   degreeCelsius = "\u00b0C", farad = "F", gray = "Gy", henry = "H", hertz = "Hz",
+#   joule = "J", katal = "kat", kelvin = "K", kilogram = "kg", lumen = "lm",
+#   lux = "lx", metre = "m", mole = "mol", neper = "Np", newton = "N",
+#   ohm = "\u03a9", pascal = "Pa", radian = "rad", second = "s", siemens = "S",
+#   sievert = "Sv", steradian = "sr", tesla = "T", volt = "V", watt = "W", weber = "Wb"
+# )
+rdf_units <- rdf_parse(path("reference", "units.ttl"), format = "turtle")
+symbol_rows <- rdf_query(rdf_units, "
+  PREFIX si: <https://si-digital-framework.org/SI#>
+  SELECT ?u ?symbol WHERE { ?u si:hasSymbol ?symbol }
+")
+symbol_map <- setNames(symbol_rows$symbol, sub(".*/", "", symbol_rows$u))
+
 sup_map <- c(
   "0" = "\u2070", "1" = "\u00b9", "2" = "\u00b2", "3" = "\u00b3", "4" = "\u2074",
   "5" = "\u2075", "6" = "\u2076", "7" = "\u2077", "8" = "\u2078", "9" = "\u2079",
@@ -659,166 +655,24 @@ editable_combined_table <- function(code, df) {
 }
 ```
 
-```{=html}
-<style>
-.table-scroll { overflow-x: auto; max-width: 100%; }
-.editable-qty-wrap { margin-bottom: 1.5em; }
-.table-toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 2px; }
-.editable-qty-table { border-collapse: collapse; font-size: 0.9em; table-layout: fixed; }
-.editable-qty-table th, .editable-qty-table td {
-  border: 1px solid #ccc; padding: 3px 6px; text-align: left; vertical-align: top;
-  overflow-wrap: break-word; word-break: break-word;
-}
-.editable-qty-table th { background: #f2f2f2; position: sticky; top: 0; cursor: pointer; user-select: none; }
-.editable-qty-table tr.filter-row th {
-  background: #fff; position: sticky; top: 1.9em; cursor: default; padding: 2px 4px;
-}
-.filter-row input, .filter-row select {
-  width: 100%; min-width: 0; box-sizing: border-box; font-size: 0.85em;
-  padding: 2px 4px; border: 1px solid #ccc; border-radius: 3px;
-}
-.editable-qty-table th:hover { background: #e6e6e6; }
-.comment-cell:focus { outline: 2px solid #2b4d7a; background: #ffffff; }
-.unit-cell { color: #444; font-variant-numeric: tabular-nums; }
-.status-cell { padding: 1px; }
-.editable-qty-table tr.row-confirmed { background: #e3f3e6; }
-.editable-qty-table tr.row-under-discussion { background: #fdf3d4; }
-.editable-qty-table tr.row-unknown { background: #fbe3d0; }
-.editable-qty-table tr.row-delete { background: #f7d4d4; }
-.editable-qty-table tr.row-confirmed:hover,
-.editable-qty-table tr.row-under-discussion:hover,
-.editable-qty-table tr.row-unknown:hover,
-.editable-qty-table tr.row-delete:hover { filter: brightness(0.97); }
-.status-cell select { width: 100%; min-width: 0; box-sizing: border-box; }
-.search-box { padding: 3px 6px; font-size: 0.85em; border: 1px solid #ccc; border-radius: 4px; width: 200px; }
-.dl-btn {
-  background: #2b4d7a; color: white; border: none; border-radius: 4px;
-  padding: 4px 10px; cursor: pointer; font-size: 0.85em;
-}
-.dl-btn:hover { background: #1d3557; }
-.dl-hint { font-size: 0.78em; color: #555; }
-</style>
-<script>
-function csvEscape(v) {
-  v = String(v == null ? "" : v);
-  if (/[",\n]/.test(v)) v = '"' + v.replace(/"/g, '""') + '"';
-  return v;
-}
-function cellValue(td) {
-  var sel = td.querySelector("select");
-  if (sel) return sel.value;
-  return td.textContent.trim();
-}
-var ROW_STATUS_CLASSES = ["row-confirmed", "row-under-discussion", "row-unknown", "row-delete"];
-var ROW_STATUS_CLASS_MAP = {
-  confirmed: "row-confirmed",
-  "under discussion": "row-under-discussion",
-  unknown: "row-unknown",
-  "must delete": "row-delete"
-};
-function updateRowStatusClass(selectEl) {
-  var tr = selectEl.closest("tr");
-  ROW_STATUS_CLASSES.forEach(function(c) { tr.classList.remove(c); });
-  var cls = ROW_STATUS_CLASS_MAP[selectEl.value];
-  if (cls) tr.classList.add(cls);
-}
-function numericKey(text) {
-  var matches = text.match(/\d+/g);
-  return matches ? matches.map(Number) : [];
-}
-function compareNumericKey(a, b) {
-  var ka = numericKey(a), kb = numericKey(b);
-  var len = Math.max(ka.length, kb.length);
-  for (var i = 0; i < len; i++) {
-    var va = i < ka.length ? ka[i] : -1;
-    var vb = i < kb.length ? kb[i] : -1;
-    if (va !== vb) return va - vb;
-  }
-  return 0;
-}
-function sortTable(tableId, colIdx) {
-  var table = document.getElementById(tableId);
-  var tbody = table.querySelector("tbody");
-  var rows = Array.from(tbody.querySelectorAll("tr"));
-  var th = table.querySelectorAll("th")[colIdx];
-  var asc = th.getAttribute("data-asc") !== "true";
-  var isNotationCol = th.textContent.trim() === "notation";
-  rows.sort(function(a, b) {
-    var av = cellValue(a.children[colIdx]), bv = cellValue(b.children[colIdx]);
-    var cmp = isNotationCol
-      ? compareNumericKey(av, bv)
-      : av.localeCompare(bv, undefined, {numeric: true});
-    return asc ? cmp : -cmp;
-  });
-  rows.forEach(function(r) { tbody.appendChild(r); });
-  table.querySelectorAll("th").forEach(function(h) { h.removeAttribute("data-asc"); });
-  th.setAttribute("data-asc", asc ? "true" : "false");
-}
-function applyAllFilters(tableId) {
-  var table = document.getElementById(tableId);
-  var wrap = table.closest(".editable-qty-wrap");
-  var globalBox = wrap ? wrap.querySelector(".search-box") : null;
-  var globalQuery = globalBox ? globalBox.value.toLowerCase() : "";
-  var colFilters = Array.from(table.querySelectorAll(".filter-row .col-filter"))
-    .map(function(el) { return el.value.toLowerCase(); });
-  var rows = table.querySelectorAll("tbody tr");
-  rows.forEach(function(tr) {
-    var visible = !globalQuery || tr.textContent.toLowerCase().indexOf(globalQuery) !== -1;
-    if (visible) {
-      var cells = tr.children;
-      for (var i = 0; i < colFilters.length; i++) {
-        var f = colFilters[i];
-        if (!f) continue;
-        var cellText = cellValue(cells[i]).toLowerCase();
-        if (f === "=empty") {
-          if (cellText !== "") { visible = false; break; }
-        } else if (f === "=nonempty") {
-          if (cellText === "") { visible = false; break; }
-        } else if (cellText.indexOf(f) === -1) {
-          visible = false; break;
-        }
-      }
-    }
-    tr.style.display = visible ? "" : "none";
-  });
-}
-function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
-  var table = document.getElementById(tableId);
-  var rows = table.querySelectorAll("tbody tr");
-  var idx = exportCols.map(function(name) { return columns.indexOf(name); });
-  var mappingIdPos = exportCols.indexOf("mapping_id");
-  var lines = [exportCols.map(csvEscape).join(",")];
-  rows.forEach(function(tr) {
-    var cells = tr.querySelectorAll("td");
-    var vals = idx.map(function(i) { return cellValue(cells[i]); });
-    // Every row has a mapping_id now (including the no-quantity placeholder 
-    // rows), so this only ever skips something if that assumption is
-    // somehow violated -- a defensive fallback, not the expected case.
-    if (mappingIdPos !== -1 && !vals[mappingIdPos]) return;
-    lines.push(vals.map(csvEscape).join(","));
-  });
-  var blob = new Blob([lines.join("\n")], {type: "text/csv;charset=utf-8;"});
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement("a");
-  a.href = url;
-  a.download = code + "_annotations.csv";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-}
-</script>
-```
+---
 
---
+::: {.column-screen-inset}
+This webpage reports the status of the mapping between the [KCDB service categories](https://www.bipm.org/en/cipm-mra/cipm-mra-documents/service-categories) of the CIPM Consultative Committees and the quantities in the SI Digital Framework, as retrieved from the ontology graphs of the [preproduction server](https://preprod.si-digital-framework.org/kcdb-sc) (only available for whitelisted IP addresses).
 
-This webpage reports the status of mapping between the [KCDB service categories](https://www.bipm.org/en/cipm-mra/cipm-mra-documents/service-categories) and the [quantities in the SI Digital Framework](https://si-digital-framework.org/quantities?lang=en), as retrieved from the [ontology graphs of the preproduction server](https://preprod.si-digital-framework.org/kcdb-sc).
+The tables have one row for each mapped category/quantity pair (i.e. a service category with several related quantities gets several rows, one per quantity). Each pair has a confirmation status value and a field to add optional comments:
 
-The tables have one row per each category/quantity pair (i.e. a service category with several related quantities gets one row per quantity). Each pair has a confirmation status value (confirmed, under discussion, unknown, must delete) and an optional comment. **If you modify a confirmation status or add a comment, please download the updated csv file and share it with [Cristhian Paredes](https://www.bipm.org/fr/people?userId=280082042) for updating**.
+- <span class="status-badge status-confirmed">Confirmed</span> The quantity assignment (name and units) has been <u>confirmed by the CC delegate</u>.
+- <span class="status-badge status-under-discussion">Under discussion</span> Feedback has been received from the CC delegate and <u>an action is pending from the BIPM</u> (e.g. an update to the [SI Reference Point](https://preprod.si-digital-framework.org/SI) to support new unit expressions).
+- <span class="status-badge status-unknown">Unknown</span> Confirmation or feedback is <u>required from the CC delegate</u>.
+- <span class="status-badge status-delete">Must delete</span> The mapping is incorrect or the service category is obsolete and it should be <u>deleted by the BIPM.</u>
 
-We kindly ask you indicate your name and organization initials in square brackets before your comment, and to separate each comment by three dashes (e.g. `[FL-NMI] comment 1. --- [CP-BIPM] comment 2. --- [FL-NMI] comment 3.`). Please note that the units presented in the column `si_unit` is the default unit expression for the quantity, but other unit expressions that are dimensionally consistent will also be accepted in the CMCs (e.g. a quantity set to radians per second will also accept degrees per hour, and dimentionless quantities will accept percent values).
+**Note:** If you modify a confirmation status or add a comment, please download the updated csv file and share it with [Cristhian Paredes](https://www.bipm.org/fr/people?userId=280082042) for updating. We kindly ask you to indicate your name and organization initials in square brackets before your comment, and to separate each comment by three dashes (e.g. `[FL-NMI] comment 1. --- [CP-BIPM] reply or request. --- [FL-NMI] comment 2.`).
+
+**Note:** The unit presented in the column `si_unit` is the default unit expression assigned to the quantity. However, other unit expressions that are dimensionally consistent will also be accepted in the CMCs of that service category (e.g. a quantity set to radians per second will also accept degrees per hour. Dimensionless quantities will accept percent values).
 
 <!-- The columns `quantity_name` and `si_unit` are resolved from the ontology graph `quantities.ttl`. `quantity_name` is the spelled-out quantity (e.g. `DENS` is shown as `density`, and `MASS.TIME-1` as (`(mass)·(time⁻¹)`). A quantity with no units is rendered as `1` (dimensionless), and will accept values expressed as percentages. -->
+:::
 
 --
 
