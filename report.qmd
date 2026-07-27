@@ -480,40 +480,65 @@ parse_area <- function(code) {
   real_qty <- qty %>% filter(!is.na(related_si_quantity))
   n_quantities <- nrow(real_qty)
 
-  category_rollup <- real_qty %>%
+  category_rollup <- qty %>%
     group_by(notation) %>%
     summarise(
       all_confirmed        = all(confirmation_status == "confirmed"),
       any_under_discussion = any(confirmation_status == "under discussion"),
+      any_must_delete       = any(confirmation_status == "must delete"),
       .groups = "drop"
     ) %>%
     mutate(
       category_status = case_when(
-        all_confirmed        ~ "confirmed",
-        any_under_discussion ~ "under_discussion",
-        TRUE                 ~ "pending"
+        any_must_delete       ~ "must_delete",
+        all_confirmed         ~ "confirmed",
+        any_under_discussion  ~ "under_discussion",
+        TRUE                    ~ "pending"
       )
     )
 
-  n_categories_mapped <- nrow(category_rollup)
-  n_confirmed         <- sum(category_rollup$category_status == "confirmed")
-  n_under_discussion  <- sum(category_rollup$category_status == "under_discussion")
-  n_pending           <- n_categories_mapped - n_confirmed - n_under_discussion
-  n_no_quantity       <- length(no_quantity_notations)
+  n_categories_mapped      <- length(unique(real_qty$notation))
+  n_total_categories       <- nrow(category_rollup)
+  n_confirmed               <- sum(category_rollup$category_status == "confirmed")
+  n_under_discussion        <- sum(category_rollup$category_status == "under_discussion")
+  n_must_delete_categories  <- sum(category_rollup$category_status == "must_delete")
+  n_pending                 <- n_total_categories - n_confirmed - n_under_discussion - n_must_delete_categories
+  
+  
+  total_for_bar <- n_confirmed + n_under_discussion + n_pending + n_must_delete_categories  # == n_total_categories
+  pct <- function(n) if (total_for_bar > 0) round(100 * n / total_for_bar, 1) else 0
+
+  progress_bar_html <- sprintf(
+    '<div class="progress-bar-wrap">
+      <div style="display: flex; width: 100%%; height: 22px; border-radius: 4px; overflow: hidden; border: 1px solid #ccc;">
+        <div style="width: %s%%; height: 100%%; background: #a8d5b0;" title="%d confirmed"></div>
+        <div style="width: %s%%; height: 100%%; background: #a9c9e8;" title="%d under discussion"></div>
+        <div style="width: %s%%; height: 100%%; background: #f3c79a;" title="%d flagged for deletion"></div>
+        <div style="width: %s%%; height: 100%%; background: #e2938f;" title="%d pending"></div>
+      </div>
+      <ul class="progress-legend">
+        <li><span class="dot dot-confirmed"></span>%d individual services have been confirmed for all its quantity mappings.</li>
+        <li><span class="dot dot-under-discussion"></span>%d individual services are under discussion for at least one of the quantity mappings.</li>
+        <li><span class="dot dot-delete"></span>%d individual %s at least one mapping flagged for deletion.</li>
+        <li><span class="dot dot-pending"></span>%d individual services are pending feedback or confirmation from the CC delegate, including those not yet mapped to any quantity.</li>
+      </ul>
+    </div>',
+    pct(n_confirmed), n_confirmed,
+    pct(n_under_discussion), n_under_discussion,
+    pct(n_must_delete_categories), n_must_delete_categories,
+    pct(n_pending), n_pending,
+    n_confirmed, n_under_discussion,
+    n_must_delete_categories, if (n_must_delete_categories == 1) "service has" else "services have",
+    n_pending
+  )
 
   summary_text <- sprintf(
-    "%s has **%d individual service categories** that have been mapped to a total of **%d quantities or quantity expressions** from the SI Digital Framework. At the moment of the last rendering (%s): <ul>
-    <li>%d individual services have been confirmed for all its quantity mappings.</li>
-    <li>%d individual services are under discussion for at least one of the quantity mappings.</li>
-    <li>%d individual services are pending feedback or confirmation from the CC delegate.</li>
-    </ul>Additionally, <ul>
-    <li>%d service %s not yet been mapped to any quantity or present a mapping that needs to be deleted.</li></ul>",
-    area_cc_label[[code]], n_categories_mapped, n_quantities, Sys.Date(),
-    n_confirmed, n_under_discussion, n_pending,
-    n_no_quantity, if (n_no_quantity == 1) "category has" else "categories have"
+    "%s has **%d service categories**, of which %d have at least one quantity mapped, totalling **%d quantities** from the SI Digital Framework. At the moment of the last update (%s):",
+    area_cc_label[[code]], n_total_categories, n_categories_mapped, n_quantities, Sys.Date()
   )
   
-  list(code = code, title = title, combined = combined, summary_text = summary_text)
+  list(code = code, title = title, combined = combined,
+       summary_text = summary_text, progress_bar_html = progress_bar_html)
 }
 
 results <- map(areas, parse_area)
@@ -694,22 +719,23 @@ editable_combined_table <- function(code, df) {
 
 
 ::: {.column-screen-inset}
-This webpage reports the status of the mapping between the [KCDB service categories](https://www.bipm.org/en/cipm-mra/cipm-mra-documents/service-categories) of the CIPM Consultative Committees and the quantities in the SI Digital Framework, as retrieved from the ontology graphs of the [preproduction server](https://preprod.si-digital-framework.org/kcdb-sc) (only available for whitelisted IP addresses).
+The BIPM is working with the Consultative Committees of the CIPM (CCs) to make the CMCs machine-actionable. Establishing a solid semantic link between the information in the KCDB and the knowledge model of the SI Reference Point requires relating each [KCDB service categories](https://www.bipm.org/en/cipm-mra/cipm-mra-documents/service-categories) to appropiate quantities and quantity expressions of the [SI Digital Framework](https://si-digital-framework.org/). The mappings must be confirmed by experts in each CC. This webpage reports the confirmation status of these mappings, which are currently published as ontology graphs available in the [preproduction server](https://preprod.si-digital-framework.org/kcdb-sc) (only available for whitelisted IP addresses).
 
-The tables have one row for each mapped category/quantity pair (i.e. a service category with several related quantities gets several rows, one per quantity). Each pair has a confirmation status value and a field to add optional comments:
+The information for each CC's Service Categories is presented in each of the tabs in the panel below, including a short summary, a progress bar, and a table with one row for each mapped category/quantity pair (an individual service category may have several rows). Each pair has a confirmation status value and a field to add optional comments:
 
-- <span class="status-badge status-confirmed">Confirmed</span> The quantity assignment (name and units) has been <u>confirmed by the CC delegate</u>.
-- <span class="status-badge status-under-discussion">Under discussion</span> Feedback has been received from the CC delegate and <u>an action is pending from the BIPM</u> (e.g. an update to the [SI Reference Point](https://preprod.si-digital-framework.org/SI) to support new unit expressions).
-- <span class="status-badge status-unknown">Unknown</span> Confirmation or feedback is <u>required from the CC delegate</u>.
-- <span class="status-badge status-delete">Must delete</span> The mapping is incorrect or the service category is obsolete and it should be <u>deleted by the BIPM</u>.
+- <span class="status-badge status-confirmed">Confirmed:</span> The quantity assignment (name and units) has been <u>confirmed by the CC delegate</u>.
+- <span class="status-badge status-under-discussion">Under discussion:</span> Feedback has been received from the CC delegate and <u>an action is pending from the BIPM</u> (e.g. an update to the [SI Reference Point](https://preprod.si-digital-framework.org/SI) to support new unit expressions).
+- <span class="status-badge status-delete">Must delete:</span> The mapping is incorrect or the service category is obsolete and it should be <u>deleted by the BIPM</u>.
+- <span class="status-badge status-unknown">Unknown:</span> Confirmation or feedback is <u>required from the CC delegate</u>.
 
-**Note:** The unit expression presented in the column `si_unit` is the default assigned to the quantity. However, other unit expressions that are dimensionally consistent will also be accepted in the CMCs of that service category (e.g. a quantity set to radians per second will also accept degrees per hour. Dimensionless quantities will accept percent values).
+
+
 
 <!-- The columns `quantity_name` and `si_unit` are resolved from the ontology graph `quantities.ttl`. `quantity_name` is the spelled-out quantity (e.g. `DENS` is shown as `density`, and `MASS.TIME-1` as (`(mass)·(time⁻¹)`). A quantity with no units is rendered as `1` (dimensionless), and will accept values expressed as percentages. -->
 
 :::
-___
 ::: {.panel-tabset .column-screen-inset}
+___
 
 ```{r render-tables}
 #| results: asis
@@ -719,7 +745,10 @@ walk(areas, function(code) {
   cat("\n\n## ", cc, "\n\n", sep = "")
   cat("\n\n**", res$title, "**\n\n", sep = "")
   cat("\n\n", res$summary_text, "\n\n", sep = "")
-  cat("\n\n **Note:** If you modify a confirmation status or add a comment, please download the updated csv file and share it with [Cristhian Paredes](mailto:cristhian.paredes@bipm.org) for updating. We kindly ask you to indicate your name and organization initials in square brackets before your comment, and to separate each comment by three dashes (e.g. `[FL-NMI] comment 1. --- [CP-BIPM] reply or request. --- [FL-NMI] comment 2.`).\n\n")
+  cat("\n\n```{=html}\n", res$progress_bar_html, "\n```\n\n", sep = "")
+  cat("\n\n **Note:** If you modify a confirmation status or add a comment, please download the updated csv file and share it with [Cristhian Paredes](mailto:cristhian.paredes@bipm.org) for updating. We kindly ask you to indicate your name and organization initials in square brackets before your comment, and to separate each comment by three dashes (e.g. `[FL-NMI] comment 1. --- [CP-BIPM] reply or request. --- [FL-NMI] comment 2.`).\n\n ")
+  cat("**Note:** The unit expression presented in the column `si_unit` is the default assigned to the quantity. However, other unit expressions that are dimensionally consistent will also be accepted in the CMCs of that service category (e.g. a quantity set to radians per second will also accept degrees per hour. Dimensionless quantities will accept percent values).\n\n ___ ")
+  
   cat("\n\n```{=html}\n", editable_combined_table(code, res$combined), "\n```\n\n", sep = "")
 })
 ```
@@ -738,8 +767,10 @@ cat(
   sep = ""
 )
 ```
-:::
 ___
+
+:::
+
 ::: {.column-screen-inset}
 
 <i>This [Quarto](https://quarto.org/) report was written in R with assistance from a Large Language Model (Anthropic's Claude, Sonnet 5, medium reasoning effort).</i>
