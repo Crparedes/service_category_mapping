@@ -23,17 +23,17 @@ EM/DC-2.1.4::ELRE,EM/DC-2.1.4,ELRE,confirmed,
 EM/DC-2.1.4::ELRE.ELRE-1,EM/DC-2.1.4,ELRE.ELRE-1,confirmed,
 EM/DC-2.1.5::ELRE,EM/DC-2.1.5,ELRE,confirmed,
 EM/DC-2.1.5::ELRE.ELRE-1,EM/DC-2.1.5,ELRE.ELRE-1,confirmed,
-EM/DC-2.1.6::ELRE,EM/DC-2.1.6,ELRE,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/DC-2.1.6::ELRE.ELCU-1,EM/DC-2.1.6,ELRE.ELCU-1,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/DC-2.1.6::ELRE.ELRE-1,EM/DC-2.1.6,ELRE.ELRE-1,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/DC-2.1.6::ELRE.ELRE-1.ITSK-1,EM/DC-2.1.6,ELRE.ELRE-1.ITSK-1,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/DC-2.1.6::ELRE.ELRE-1.ITSK-2,EM/DC-2.1.6,ELRE.ELRE-1.ITSK-2,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/DC-2.1.6::ELRE.ELRE-1.POWR-1,EM/DC-2.1.6,ELRE.ELRE-1.POWR-1,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/DC-2.1.6::ELRE.ELRE-1.PRES-1,EM/DC-2.1.6,ELRE.ELRE-1.PRES-1,under discussion,[IB-NMIA] Add ohm per ohm per ampere --- [CP-BIPM] Quantity ELRE.ELRE-1.ELCU-1 will be added
-EM/DC-2.1.6::ELRE.ITSK-1,EM/DC-2.1.6,ELRE.ITSK-1,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/DC-2.1.6::ELRE.POWR-1,EM/DC-2.1.6,ELRE.POWR-1,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/DC-2.1.6::ELRE.PRES-1,EM/DC-2.1.6,ELRE.PRES-1,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/DC-2.1.6::HUCO,EM/DC-2.1.6,HUCO,must delete,[CP-BIPM] HUCO is not defined in the KB. It will be deleted.
+EM/DC-2.1.6::ELRE,EM/DC-2.1.6,ELRE,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/DC-2.1.6::ELRE.ELCU-1,EM/DC-2.1.6,ELRE.ELCU-1,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/DC-2.1.6::ELRE.ELRE-1,EM/DC-2.1.6,ELRE.ELRE-1,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/DC-2.1.6::ELRE.ELRE-1.ITSK-1,EM/DC-2.1.6,ELRE.ELRE-1.ITSK-1,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/DC-2.1.6::ELRE.ELRE-1.ITSK-2,EM/DC-2.1.6,ELRE.ELRE-1.ITSK-2,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/DC-2.1.6::ELRE.ELRE-1.POWR-1,EM/DC-2.1.6,ELRE.ELRE-1.POWR-1,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/DC-2.1.6::ELRE.ELRE-1.PRES-1,EM/DC-2.1.6,ELRE.ELRE-1.PRES-1,pending BIPM,[IB-NMIA] Add ohm per ohm per ampere --- [CP-BIPM] Quantity ELRE.ELRE-1.ELCU-1 will be added
+EM/DC-2.1.6::ELRE.ITSK-1,EM/DC-2.1.6,ELRE.ITSK-1,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/DC-2.1.6::ELRE.POWR-1,EM/DC-2.1.6,ELRE.POWR-1,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/DC-2.1.6::ELRE.PRES-1,EM/DC-2.1.6,ELRE.PRES-1,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/DC-2.1.6::HUCO,EM/DC-2.1.6,HUCO,pending BIPM,[CP-BIPM] HUCO is not defined in the KB. It will be deleted.
 EM/DC-2.2.1::ELRE,EM/DC-2.2.1,ELRE,confirmed,
 EM/DC-2.2.1::ELRE.ELRE-1,EM/DC-2.2.1,ELRE.ELRE-1,confirmed,
 EM/DC-2.2.2::ELRE,EM/DC-2.2.2,ELRE,confirmed,
@@ -80,11 +80,11 @@ EM/Imped-4.2.1::ELCA,EM/Imped-4.2.1,ELCA,confirmed,
 EM/Imped-4.2.1::ELCA.ELCA-1,EM/Imped-4.2.1,ELCA.ELCA-1,confirmed,
 EM/Imped-4.2.1::ELCO.ELCA-1.FREQ-1,EM/Imped-4.2.1,ELCO.ELCA-1.FREQ-1,confirmed,
 EM/Imped-4.2.1::PHAS,EM/Imped-4.2.1,PHAS,confirmed,
-EM/Imped-4.2.2::ELCA,EM/Imped-4.2.2,ELCA,under discussion,[IB-NMIA] Add farad per farad --- [CP-BIPM] kind of quantity capacitance per capacitance will be added
-EM/Imped-4.2.2::ELCO.ELCA-1.FREQ-1,EM/Imped-4.2.2,ELCO.ELCA-1.FREQ-1,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/Imped-4.2.2::PHAS,EM/Imped-4.2.2,PHAS,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/Imped-4.2.3::ELCA,EM/Imped-4.2.3,ELCA,under discussion,[IB-NMIA] Add Farad per Farad --- [CP-BIPM] ELCA.ELCA-1
-EM/Imped-4.2.3::ELCO.ELCA-1.FREQ-1,EM/Imped-4.2.3,ELCO.ELCA-1.FREQ-1,under discussion,[IB-NMIA] Add radian --- [CP-BIPM] Phase angle will be added
+EM/Imped-4.2.2::ELCA,EM/Imped-4.2.2,ELCA,pending BIPM,[IB-NMIA] Add farad per farad --- [CP-BIPM] kind of quantity capacitance per capacitance will be added
+EM/Imped-4.2.2::ELCO.ELCA-1.FREQ-1,EM/Imped-4.2.2,ELCO.ELCA-1.FREQ-1,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/Imped-4.2.2::PHAS,EM/Imped-4.2.2,PHAS,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/Imped-4.2.3::ELCA,EM/Imped-4.2.3,ELCA,pending BIPM,[IB-NMIA] Add Farad per Farad --- [CP-BIPM] ELCA.ELCA-1
+EM/Imped-4.2.3::ELCO.ELCA-1.FREQ-1,EM/Imped-4.2.3,ELCO.ELCA-1.FREQ-1,pending BIPM,[IB-NMIA] Add radian --- [CP-BIPM] Phase angle will be added
 EM/Imped-4.2.4::ELCA,EM/Imped-4.2.4,ELCA,confirmed,
 EM/Imped-4.2.4::ELCA.ELCA-1,EM/Imped-4.2.4,ELCA.ELCA-1,confirmed,
 EM/Imped-4.2.4::ELIN,EM/Imped-4.2.4,ELIN,confirmed,
@@ -103,9 +103,9 @@ EM/Imped-4.3.3::ELRE,EM/Imped-4.3.3,ELRE,confirmed,
 EM/Imped-4.3.3::ELRE.ELRE-1,EM/Imped-4.3.3,ELRE.ELRE-1,confirmed,
 EM/Imped-4.3.4::ELIN,EM/Imped-4.3.4,ELIN,confirmed,
 EM/Imped-4.3.4::ELIN.ELIN-1,EM/Imped-4.3.4,ELIN.ELIN-1,confirmed,
-EM/Imped-4.3.5::ELCA,EM/Imped-4.3.5,ELCA,under discussion,[IB-NMIA] Add Ohm --- [CP-BIPM] ELRE will be added
-EM/Imped-4.3.5::ELIN,EM/Imped-4.3.5,ELIN,under discussion,[IB-NMIA] Add Henry per Henry --- [CP-BIPM] ELIN.ELIN-1 will be added
-EM/Imped-4.3.6::QFAC,EM/Imped-4.3.6,QFAC,under discussion,[IB-NMIA] Add watt per watt --- [CP-BIPM] will be added
+EM/Imped-4.3.5::ELCA,EM/Imped-4.3.5,ELCA,pending BIPM,[IB-NMIA] Add Ohm --- [CP-BIPM] ELRE will be added
+EM/Imped-4.3.5::ELIN,EM/Imped-4.3.5,ELIN,pending BIPM,[IB-NMIA] Add Henry per Henry --- [CP-BIPM] ELIN.ELIN-1 will be added
+EM/Imped-4.3.6::QFAC,EM/Imped-4.3.6,QFAC,pending BIPM,[IB-NMIA] Add watt per watt --- [CP-BIPM] will be added
 EM/AC-5.1.1::ELPD,EM/AC-5.1.1,ELPD,confirmed,
 EM/AC-5.1.1::ELPD.ELPD-1,EM/AC-5.1.1,ELPD.ELPD-1,confirmed,
 EM/AC-5.1.2::ELPD,EM/AC-5.1.2,ELPD,confirmed,
@@ -129,20 +129,20 @@ EM/AC-6.2.2::ELCU,EM/AC-6.2.2,ELCU,confirmed,
 EM/AC-6.2.2::ELCU.ELCU-1,EM/AC-6.2.2,ELCU.ELCU-1,confirmed,
 EM/AC-6.3.1::ELCU.ELCU-1,EM/AC-6.3.1,ELCU.ELCU-1,confirmed,
 EM/AC-6.3.1::PHAS,EM/AC-6.3.1,PHAS,confirmed,
-EM/AC-7.1.1::ELPD.ELCU,EM/AC-7.1.1,ELPD.ELCU,under discussion,"[IB-NMIA] Add var, var-second, var-hour, var per volt-ampere, watt-second per volt-ampere-second, watt-hour per watt-hour, var-hour per var-hour, joule per volt-ampere-second, var-second per volt-ampere-second ---[CP-BIPM] var-second will be added, but var-hour will not. Similar case for watt-hour per watt-hour, where hour will be replaced by second"
-EM/AC-7.1.1::ENGY,EM/AC-7.1.1,ENGY,under discussion,"[IB-NMIA] create reactive power quantity, with unit var --- {CP-BIPM} Will do"
-EM/AC-7.1.1::POWR,EM/AC-7.1.1,POWR,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/AC-7.1.1::POWR.ELPD-1.ELCU-1,EM/AC-7.1.1,POWR.ELPD-1.ELCU-1,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/AC-7.1.1::POWR.TIME,EM/AC-7.1.1,POWR.TIME,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/AC-7.1.2::POWR,EM/AC-7.1.2,POWR,under discussion,"[IB-NMIA] Add var, var-second, joule, watt-hour, var-hour, volt-ampere, var per volt-ampere, watt-second per volt-ampere-second, watt-hour per watt-hour, var-hour per var-hour, joule per volt-ampere-second, var-second per volt-ampere-second --- [CP-BIPM] var-second will be added, but var-hour will not. Similar case for watt-hour per watt-hour, where hour will be replaced by second"
-EM/AC-7.1.2::POWR.ELPD-1.ELCU-1,EM/AC-7.1.2,POWR.ELPD-1.ELCU-1,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/AC-7.1.3::POWR,EM/AC-7.1.3,POWR,under discussion,"[IB-NMIA] Add var, var-second, joule, watt-hour, var-hour, volt-ampere, var per volt-ampere, watt-second per volt-ampere-second, watt-hour per watt-hour, var-hour per var-hour, joule per volt-ampere-second, var-second per volt-ampere-second --- [CP-BIPM] var-second will be added, but var-hour will not. Similar case for watt-hour per watt-hour, where hour will be replaced by second"
-EM/AC-7.1.3::POWR.ELPD-1.ELCU-1,EM/AC-7.1.3,POWR.ELPD-1.ELCU-1,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/AC-7.2.1::,EM/AC-7.2.1,,unknown,"[CP-BIPM] for service category ""DC power meters and sources: power meter, energy meter, power calibrator, energy calibrator"" there is no quantity assigned"
-EM/HV-8.1.1::ELPD,EM/HV-8.1.1,ELPD,unknown,[CP-BIPM] SC is deleted from PDF file - version 11 ---
-EM/HV-8.1.1::ELPD.ELPD-1,EM/HV-8.1.1,ELPD.ELPD-1,unknown,[CP-BIPM] SC is deleted from PDF file - version 11 ---
-EM/HV-8.1.2::ELPD,EM/HV-8.1.2,ELPD,unknown,[CP-BIPM] SC is deleted from PDF file - version 11 ---
-EM/HV-8.1.2::ELPD.ELPD-1,EM/HV-8.1.2,ELPD.ELPD-1,unknown,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/AC-7.1.1::ELPD.ELCU,EM/AC-7.1.1,ELPD.ELCU,pending BIPM,"[IB-NMIA] Add var, var-second, var-hour, var per volt-ampere, watt-second per volt-ampere-second, watt-hour per watt-hour, var-hour per var-hour, joule per volt-ampere-second, var-second per volt-ampere-second ---[CP-BIPM] var-second will be added, but var-hour will not. Similar case for watt-hour per watt-hour, where hour will be replaced by second"
+EM/AC-7.1.1::ENGY,EM/AC-7.1.1,ENGY,pending BIPM,"[IB-NMIA] create reactive power quantity, with unit var --- {CP-BIPM} Will do"
+EM/AC-7.1.1::POWR,EM/AC-7.1.1,POWR,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/AC-7.1.1::POWR.ELPD-1.ELCU-1,EM/AC-7.1.1,POWR.ELPD-1.ELCU-1,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/AC-7.1.1::POWR.TIME,EM/AC-7.1.1,POWR.TIME,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/AC-7.1.2::POWR,EM/AC-7.1.2,POWR,pending BIPM,"[IB-NMIA] Add var, var-second, joule, watt-hour, var-hour, volt-ampere, var per volt-ampere, watt-second per volt-ampere-second, watt-hour per watt-hour, var-hour per var-hour, joule per volt-ampere-second, var-second per volt-ampere-second --- [CP-BIPM] var-second will be added, but var-hour will not. Similar case for watt-hour per watt-hour, where hour will be replaced by second"
+EM/AC-7.1.2::POWR.ELPD-1.ELCU-1,EM/AC-7.1.2,POWR.ELPD-1.ELCU-1,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/AC-7.1.3::POWR,EM/AC-7.1.3,POWR,pending BIPM,"[IB-NMIA] Add var, var-second, joule, watt-hour, var-hour, volt-ampere, var per volt-ampere, watt-second per volt-ampere-second, watt-hour per watt-hour, var-hour per var-hour, joule per volt-ampere-second, var-second per volt-ampere-second --- [CP-BIPM] var-second will be added, but var-hour will not. Similar case for watt-hour per watt-hour, where hour will be replaced by second"
+EM/AC-7.1.3::POWR.ELPD-1.ELCU-1,EM/AC-7.1.3,POWR.ELPD-1.ELCU-1,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/AC-7.2.1::,EM/AC-7.2.1,,pending CC,"[CP-BIPM] for service category ""DC power meters and sources: power meter, energy meter, power calibrator, energy calibrator"" there is no quantity assigned"
+EM/HV-8.1.1::ELPD,EM/HV-8.1.1,ELPD,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/HV-8.1.1::ELPD.ELPD-1,EM/HV-8.1.1,ELPD.ELPD-1,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/HV-8.1.2::ELPD,EM/HV-8.1.2,ELPD,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/HV-8.1.2::ELPD.ELPD-1,EM/HV-8.1.2,ELPD.ELPD-1,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
 EM/HV-8.1.3::ELPD,EM/HV-8.1.3,ELPD,confirmed,
 EM/HV-8.1.3::ELPD.ELPD-1,EM/HV-8.1.3,ELPD.ELPD-1,confirmed,
 EM/HV-8.1.4::ELPD,EM/HV-8.1.4,ELPD,confirmed,
@@ -157,20 +157,20 @@ EM/HV-8.2.2::ELIN,EM/HV-8.2.2,ELIN,confirmed,
 EM/HV-8.2.2::ELIN.ELIN-1,EM/HV-8.2.2,ELIN.ELIN-1,confirmed,
 EM/HV-8.2.2::PHAS,EM/HV-8.2.2,PHAS,confirmed,
 EM/HV-8.2.2::PHAS.PHAS-1,EM/HV-8.2.2,PHAS.PHAS-1,confirmed,
-EM/HV-8.2.3::ELPD.ELCU,EM/HV-8.2.3,ELPD.ELCU,under discussion,[IB-NMIA] Add volt-ampere per volt-ampere --- [CP-BIPM] will be added
-EM/HV-8.2.3::ELRE,EM/HV-8.2.3,ELRE,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/HV-8.2.3::ELRE.ELRE-1,EM/HV-8.2.3,ELRE.ELRE-1,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/HV-8.2.3::PHAS,EM/HV-8.2.3,PHAS,under discussion,(This SC has at least one comment pending solution from the BIPM)
+EM/HV-8.2.3::ELPD.ELCU,EM/HV-8.2.3,ELPD.ELCU,pending BIPM,[IB-NMIA] Add volt-ampere per volt-ampere --- [CP-BIPM] will be added
+EM/HV-8.2.3::ELRE,EM/HV-8.2.3,ELRE,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/HV-8.2.3::ELRE.ELRE-1,EM/HV-8.2.3,ELRE.ELRE-1,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/HV-8.2.3::PHAS,EM/HV-8.2.3,PHAS,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
 EM/HV-8.2.4::ELRE,EM/HV-8.2.4,ELRE,confirmed,
 EM/HV-8.2.4::ELRE.ELRE-1,EM/HV-8.2.4,ELRE.ELRE-1,confirmed,
-EM/HV-8.3.1::ELPD,EM/HV-8.3.1,ELPD,unknown,[CP-BIPM] SC is deleted from PDF file - version 11 ---
-EM/HV-8.3.1::ELPD.ELPD-1,EM/HV-8.3.1,ELPD.ELPD-1,unknown,[CP-BIPM] SC is deleted from PDF file - version 11 ---
-EM/HV-8.3.2::ELPD,EM/HV-8.3.2,ELPD,unknown,[CP-BIPM] SC is deleted from PDF file - version 11 ---
-EM/HV-8.3.2::ELPD.ELPD-1,EM/HV-8.3.2,ELPD.ELPD-1,unknown,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/HV-8.3.1::ELPD,EM/HV-8.3.1,ELPD,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/HV-8.3.1::ELPD.ELPD-1,EM/HV-8.3.1,ELPD.ELPD-1,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/HV-8.3.2::ELPD,EM/HV-8.3.2,ELPD,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/HV-8.3.2::ELPD.ELPD-1,EM/HV-8.3.2,ELPD.ELPD-1,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
 EM/HV-8.3.3::ELPD,EM/HV-8.3.3,ELPD,confirmed,
 EM/HV-8.3.3::ELPD.ELPD-1,EM/HV-8.3.3,ELPD.ELPD-1,confirmed,
-EM/HV-8.3.4::ELPD.ELPD-1,EM/HV-8.3.4,ELPD.ELPD-1,under discussion,"[IB-NMIA] add arcminute --- [CP-BIPM] Phase angle, units rad, will be added with arcminute as equivalent"
-EM/HV-8.3.4::PHAS,EM/HV-8.3.4,PHAS,under discussion,(This SC has at least one comment pending solution from the BIPM)
+EM/HV-8.3.4::ELPD.ELPD-1,EM/HV-8.3.4,ELPD.ELPD-1,pending BIPM,"[IB-NMIA] add arcminute --- [CP-BIPM] Phase angle, units rad, will be added with arcminute as equivalent"
+EM/HV-8.3.4::PHAS,EM/HV-8.3.4,PHAS,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
 EM/HV-8.3.5::ELPD,EM/HV-8.3.5,ELPD,confirmed,
 EM/HV-8.3.5::ELPD.ELPD-1,EM/HV-8.3.5,ELPD.ELPD-1,confirmed,
 EM/HV-8.3.6::ELPD,EM/HV-8.3.6,ELPD,confirmed,
@@ -179,40 +179,40 @@ EM/HV-8.4.1::ELPD,EM/HV-8.4.1,ELPD,confirmed,
 EM/HV-8.4.1::ELPD.ELPD-1,EM/HV-8.4.1,ELPD.ELPD-1,confirmed,
 EM/HV-8.4.1::TIME,EM/HV-8.4.1,TIME,confirmed,
 EM/HV-8.4.1::TIME.TIME-1,EM/HV-8.4.1,TIME.TIME-1,confirmed,
-EM/HV-8.4.2::,EM/HV-8.4.2,,unknown,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/HV-8.4.2::,EM/HV-8.4.2,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
 EM/HV-8.4.3::ELPD,EM/HV-8.4.3,ELPD,confirmed,
 EM/HV-8.4.3::ELPD.ELPD-1,EM/HV-8.4.3,ELPD.ELPD-1,confirmed,
 EM/HV-8.4.3::TIME,EM/HV-8.4.3,TIME,confirmed,
 EM/HV-8.4.3::TIME.TIME-1,EM/HV-8.4.3,TIME.TIME-1,confirmed,
-EM/HV-8.4.4::,EM/HV-8.4.4,,unknown,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/HV-8.4.4::,EM/HV-8.4.4,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
 EM/HV-8.4.5::ELCU,EM/HV-8.4.5,ELCU,confirmed,
 EM/HV-8.4.5::ELCU.ELCU-1,EM/HV-8.4.5,ELCU.ELCU-1,confirmed,
 EM/HV-8.4.5::TIME,EM/HV-8.4.5,TIME,confirmed,
 EM/HV-8.4.5::TIME.TIME-1,EM/HV-8.4.5,TIME.TIME-1,confirmed,
-EM/HV-8.4.6::,EM/HV-8.4.6,,unknown,[CP-BIPM] SC is deleted from PDF file - version 11 ---
-EM/HV-8.4.7::,EM/HV-8.4.7,,unknown,[CP-BIPM] SC is deleted from PDF file - version 11 ---
-EM/HV-8.4.8::,EM/HV-8.4.8,,unknown,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/HV-8.4.6::,EM/HV-8.4.6,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/HV-8.4.7::,EM/HV-8.4.7,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/HV-8.4.8::,EM/HV-8.4.8,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
 EM/HV-8.4.9::ELPD,EM/HV-8.4.9,ELPD,confirmed,
 EM/HV-8.4.9::ELPD.ELPD-1,EM/HV-8.4.9,ELPD.ELPD-1,confirmed,
 EM/HV-8.4.9::TIME,EM/HV-8.4.9,TIME,confirmed,
 EM/HV-8.4.9::TIME.TIME-1,EM/HV-8.4.9,TIME.TIME-1,confirmed,
 EM/HV-8.5.1::ELCH,EM/HV-8.5.1,ELCH,confirmed,
 EM/HV-8.5.1::ELCH.ELCH-1,EM/HV-8.5.1,ELCH.ELCH-1,confirmed,
-EM/HV-8.5.2::ELRE,EM/HV-8.5.2,ELRE,under discussion,"[IB-NMIA] Add ampere, ampere per ampere --- [CP-BIPM] will do"
+EM/HV-8.5.2::ELRE,EM/HV-8.5.2,ELRE,pending BIPM,"[IB-NMIA] Add ampere, ampere per ampere --- [CP-BIPM] will do"
 EM/HV-8.5.2::TIME,EM/HV-8.5.2,TIME,confirmed,
 EM/HV-8.5.3::TIME,EM/HV-8.5.3,TIME,confirmed,
-EM/HV-8.6.1::,EM/HV-8.6.1,,unknown,[CP-BIPM] SC is deleted from PDF file - version 11 ---
-EM/HV-8.6.2::,EM/HV-8.6.2,,unknown,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/HV-8.6.1::,EM/HV-8.6.1,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/HV-8.6.2::,EM/HV-8.6.2,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
 EM/HV-8.6.3::ELCU.ELCU-1,EM/HV-8.6.3,ELCU.ELCU-1,confirmed,
 EM/HV-8.6.3::PHAS,EM/HV-8.6.3,PHAS,confirmed,
-EM/HV-8.6.4::,EM/HV-8.6.4,,unknown,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/HV-8.6.4::,EM/HV-8.6.4,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
 EM/HV-8.6.5::ELCU,EM/HV-8.6.5,ELCU,confirmed,
 EM/HV-8.6.5::ELCU.ELCU-1,EM/HV-8.6.5,ELCU.ELCU-1,confirmed,
 EM/HV-8.6.6::ELCU,EM/HV-8.6.6,ELCU,confirmed,
 EM/HV-8.6.6::ELCU.TIME-1,EM/HV-8.6.6,ELCU.TIME-1,confirmed,
 EM/HV-8.6.6::ENGY,EM/HV-8.6.6,ENGY,confirmed,
-EM/HV-8.7.1::,EM/HV-8.7.1,,unknown,[CP-BIPM] SC is deleted from PDF file - version 11 ---
-EM/HV-8.7.2::,EM/HV-8.7.2,,unknown,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/HV-8.7.1::,EM/HV-8.7.1,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/HV-8.7.2::,EM/HV-8.7.2,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
 EM/HV-8.7.3::ELCU.ELCU-1,EM/HV-8.7.3,ELCU.ELCU-1,confirmed,
 EM/HV-8.7.4::ELCU,EM/HV-8.7.4,ELCU,confirmed,
 EM/HV-8.7.4::ELCU.ELCU-1,EM/HV-8.7.4,ELCU.ELCU-1,confirmed,
@@ -232,19 +232,19 @@ EM/OtherDC-9.3.1::ELCU,EM/OtherDC-9.3.1,ELCU,confirmed,
 EM/OtherDC-9.3.1::ELCU.ELCU-1,EM/OtherDC-9.3.1,ELCU.ELCU-1,confirmed,
 EM/OtherDC-9.3.1::ELPD,EM/OtherDC-9.3.1,ELPD,confirmed,
 EM/OtherDC-9.3.1::ELPD.ELPD-1,EM/OtherDC-9.3.1,ELPD.ELPD-1,confirmed,
-EM/OtherDC-9.3.2::ELPD,EM/OtherDC-9.3.2,ELPD,under discussion,"[IB-NMIA] Add volt per volt, ampere per ampere --- [CP-BIPM] will do"
-EM/OtherDC-9.3.2::HDIS,EM/OtherDC-9.3.2,HDIS,under discussion,
-EM/OtherDC-9.3.2::RLGB,EM/OtherDC-9.3.2,RLGB,under discussion,[IB-NMIA] Replace b by dB --- [CP-BIPM] Will do
-EM/OtherDC-9.3.3::,EM/OtherDC-9.3.3,,unknown,[CP-BIPM] SC is deleted from PDF file - version 11 ---
-EM/OtherDC-9.3.4::ELCU,EM/OtherDC-9.3.4,ELCU,under discussion,
-EM/OtherDC-9.3.4::ELPD,EM/OtherDC-9.3.4,ELPD,under discussion,[IB-NMIA] Add ampere per ampere --- [CP-BIPM] will do
-EM/OtherDC-9.3.4::ELPD.ELPD-1,EM/OtherDC-9.3.4,ELPD.ELPD-1,under discussion,
+EM/OtherDC-9.3.2::ELPD,EM/OtherDC-9.3.2,ELPD,pending BIPM,"[IB-NMIA] Add volt per volt, ampere per ampere --- [CP-BIPM] will do"
+EM/OtherDC-9.3.2::HDIS,EM/OtherDC-9.3.2,HDIS,pending BIPM,
+EM/OtherDC-9.3.2::RLGB,EM/OtherDC-9.3.2,RLGB,pending BIPM,[IB-NMIA] Replace b by dB --- [CP-BIPM] Will do
+EM/OtherDC-9.3.3::,EM/OtherDC-9.3.3,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/OtherDC-9.3.4::ELCU,EM/OtherDC-9.3.4,ELCU,pending BIPM,
+EM/OtherDC-9.3.4::ELPD,EM/OtherDC-9.3.4,ELPD,pending BIPM,[IB-NMIA] Add ampere per ampere --- [CP-BIPM] will do
+EM/OtherDC-9.3.4::ELPD.ELPD-1,EM/OtherDC-9.3.4,ELPD.ELPD-1,pending BIPM,
 EM/OtherDC-9.3.5::ELCU,EM/OtherDC-9.3.5,ELCU,confirmed,
 EM/OtherDC-9.3.5::ELPD,EM/OtherDC-9.3.5,ELPD,confirmed,
 EM/OtherDC-9.3.5::ELPD.ELPD-1,EM/OtherDC-9.3.5,ELPD.ELPD-1,confirmed,
 EM/OtherDC-9.3.5::FSLT,EM/OtherDC-9.3.5,FSLT,confirmed,
 EM/OtherDC-9.3.5::FSST,EM/OtherDC-9.3.5,FSST,confirmed,
-EM/OtherDC-9.3.6::,EM/OtherDC-9.3.6,,unknown,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/OtherDC-9.3.6::,EM/OtherDC-9.3.6,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
 EM/OtherDC-9.3.7::ELCU,EM/OtherDC-9.3.7,ELCU,confirmed,
 EM/OtherDC-9.3.7::ELCU.ELCU-1,EM/OtherDC-9.3.7,ELCU.ELCU-1,confirmed,
 EM/OtherDC-9.3.7::ELPD,EM/OtherDC-9.3.7,ELPD,confirmed,
@@ -254,22 +254,22 @@ EM/Field-10.1.2::ELPD.LENG-1,EM/Field-10.1.2,ELPD.LENG-1,confirmed,
 EM/Field-10.1.2::RLGB,EM/Field-10.1.2,RLGB,confirmed,
 EM/Field-10.2.1::MGFL,EM/Field-10.2.1,MGFL,confirmed,
 EM/Field-10.2.1::MGFL.MGFL-1,EM/Field-10.2.1,MGFL.MGFL-1,confirmed,
-EM/Field-10.2.2::ELCU.LENG-1,EM/Field-10.2.2,ELCU.LENG-1,under discussion,[IB-NMIA] 10.2.2     Add ampere per meter per ampere per meter --- [CP-BIPM] quantity type https://si-digital-framework.org/quantities/ELCU.LENG-1.ELCU-1.LENG will be added
-EM/Field-10.2.2::MGFD,EM/Field-10.2.2,MGFD,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/Field-10.2.2::MGFD.MGFD-1,EM/Field-10.2.2,MGFD.MGFD-1,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/Field-10.2.3::ELCU.LENG-1,EM/Field-10.2.3,ELCU.LENG-1,under discussion,[IB-NMIA] 10.2.2     Add ampere per meter per ampere per meter --- [CP-BIPM] quantity type https://si-digital-framework.org/quantities/ELCU.LENG-1.ELCU-1.LENG will be added
-EM/Field-10.2.3::MGFD,EM/Field-10.2.3,MGFD,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/Field-10.2.3::MGFD.MGFD-1,EM/Field-10.2.3,MGFD.MGFD-1,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/Field-10.2.3::RLGB,EM/Field-10.2.3,RLGB,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/Field-10.2.4::SHLD,EM/Field-10.2.4,SHLD,under discussion,[IB-NMIA] 10.2.2     Add ampere per meter per ampere per meter --- [CP-BIPM] quantity type https://si-digital-framework.org/quantities/ELCU.LENG-1.ELCU-1.LENG will be added
-EM/Field-10.2.5::SHLD,EM/Field-10.2.5,SHLD,under discussion,[IB-NMIA] 10.2.2     Add ampere per meter per ampere per meter --- [CP-BIPM] quantity type https://si-digital-framework.org/quantities/ELCU.LENG-1.ELCU-1.LENG will be added
+EM/Field-10.2.2::ELCU.LENG-1,EM/Field-10.2.2,ELCU.LENG-1,pending BIPM,[IB-NMIA] 10.2.2     Add ampere per meter per ampere per meter --- [CP-BIPM] quantity type https://si-digital-framework.org/quantities/ELCU.LENG-1.ELCU-1.LENG will be added
+EM/Field-10.2.2::MGFD,EM/Field-10.2.2,MGFD,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/Field-10.2.2::MGFD.MGFD-1,EM/Field-10.2.2,MGFD.MGFD-1,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/Field-10.2.3::ELCU.LENG-1,EM/Field-10.2.3,ELCU.LENG-1,pending BIPM,[IB-NMIA] 10.2.2     Add ampere per meter per ampere per meter --- [CP-BIPM] quantity type https://si-digital-framework.org/quantities/ELCU.LENG-1.ELCU-1.LENG will be added
+EM/Field-10.2.3::MGFD,EM/Field-10.2.3,MGFD,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/Field-10.2.3::MGFD.MGFD-1,EM/Field-10.2.3,MGFD.MGFD-1,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/Field-10.2.3::RLGB,EM/Field-10.2.3,RLGB,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/Field-10.2.4::SHLD,EM/Field-10.2.4,SHLD,pending BIPM,[IB-NMIA] 10.2.2     Add ampere per meter per ampere per meter --- [CP-BIPM] quantity type https://si-digital-framework.org/quantities/ELCU.LENG-1.ELCU-1.LENG will be added
+EM/Field-10.2.5::SHLD,EM/Field-10.2.5,SHLD,pending BIPM,[IB-NMIA] 10.2.2     Add ampere per meter per ampere per meter --- [CP-BIPM] quantity type https://si-digital-framework.org/quantities/ELCU.LENG-1.ELCU-1.LENG will be added
 EM/Field-10.2.6::AREA,EM/Field-10.2.6,AREA,confirmed,
 EM/Field-10.2.6::AREA.AREA-1,EM/Field-10.2.6,AREA.AREA-1,confirmed,
-EM/Field-10.2.7::ELCU.LENG-1,EM/Field-10.2.7,ELCU.LENG-1,under discussion,[IB-NMIA] 10.2.2     Add ampere per meter per ampere per meter --- [CP-BIPM] quantity type https://si-digital-framework.org/quantities/ELCU.LENG-1.ELCU-1.LENG will be added
-EM/Field-10.2.7::MGFD,EM/Field-10.2.7,MGFD,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/Field-10.2.7::MGFD.ELCU-1,EM/Field-10.2.7,MGFD.ELCU-1,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/Field-10.2.7::MGFD.MGFD-1,EM/Field-10.2.7,MGFD.MGFD-1,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/Field-10.2.7::RLGB,EM/Field-10.2.7,RLGB,under discussion,(This SC has at least one comment pending solution from the BIPM)
+EM/Field-10.2.7::ELCU.LENG-1,EM/Field-10.2.7,ELCU.LENG-1,pending BIPM,[IB-NMIA] 10.2.2     Add ampere per meter per ampere per meter --- [CP-BIPM] quantity type https://si-digital-framework.org/quantities/ELCU.LENG-1.ELCU-1.LENG will be added
+EM/Field-10.2.7::MGFD,EM/Field-10.2.7,MGFD,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/Field-10.2.7::MGFD.ELCU-1,EM/Field-10.2.7,MGFD.ELCU-1,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/Field-10.2.7::MGFD.MGFD-1,EM/Field-10.2.7,MGFD.MGFD-1,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/Field-10.2.7::RLGB,EM/Field-10.2.7,RLGB,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
 EM/Field-10.2.8::MGFD.LENG-1,EM/Field-10.2.8,MGFD.LENG-1,confirmed,
 EM/Field-10.3.1::ELPD.LENG-1,EM/Field-10.3.1,ELPD.LENG-1,confirmed,
 EM/Field-10.3.1::RLGB,EM/Field-10.3.1,RLGB,confirmed,
@@ -285,33 +285,33 @@ EM/RF-11.1.1::POWR.POWR-1,EM/RF-11.1.1,POWR.POWR-1,confirmed,
 EM/RF-11.1.1::RLGB,EM/RF-11.1.1,RLGB,confirmed,
 EM/RF-11.1.2::POWR,EM/RF-11.1.2,POWR,confirmed,
 EM/RF-11.1.2::POWR.POWR-1,EM/RF-11.1.2,POWR.POWR-1,confirmed,
-EM/RF-11.1.3::,EM/RF-11.1.3,,under discussion,"[IB-NMIA] 10.2.2     Add watt, dimensionless, watt per watt,  decibel  --- [CP-BIPM] The kinds of quantity power, power per power, Ratio logarithm (dB) will be added"
-EM/RF-11.1.4::,EM/RF-11.1.4,,under discussion,"[IB-NMIA] 10.2.2     Add watt per watt,  decibel  --- [CP-BIPM] The SIRP is being updated to"
+EM/RF-11.1.3::,EM/RF-11.1.3,,pending BIPM,"[IB-NMIA] 10.2.2     Add watt, dimensionless, watt per watt,  decibel  --- [CP-BIPM] The kinds of quantity power, power per power, Ratio logarithm (dB) will be added"
+EM/RF-11.1.4::,EM/RF-11.1.4,,pending BIPM,"[IB-NMIA] 10.2.2     Add watt per watt,  decibel  --- [CP-BIPM] The SIRP is being updated to"
 EM/RF-11.1.5::POWR,EM/RF-11.1.5,POWR,confirmed,
 EM/RF-11.1.5::POWR.POWR-1,EM/RF-11.1.5,POWR.POWR-1,confirmed,
 EM/RF-11.1.6::POWR,EM/RF-11.1.6,POWR,confirmed,
 EM/RF-11.1.6::POWR.POWR-1,EM/RF-11.1.6,POWR.POWR-1,confirmed,
-EM/RF-11.2.1::,EM/RF-11.2.1,,under discussion,"[IB-NMIA] 10.2.2 Add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
-EM/RF-11.2.2::,EM/RF-11.2.2,,under discussion,"[IB-NMIA] 10.2.2 Add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
-EM/RF-11.2.3::RLGB,EM/RF-11.2.3,RLGB,under discussion,"[IB-NMIA] 10.2.2 Add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
-EM/RF-11.2.4::RLGB,EM/RF-11.2.4,RLGB,under discussion,"[IB-NMIA] 10.2.2 Add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
-EM/RF-11.2.5::RLGB,EM/RF-11.2.5,RLGB,under discussion,"[IB-NMIA] 10.2.2 Add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
-EM/RF-11.2.6::,EM/RF-11.2.6,,under discussion,"[IB-NMIA] 10.2.2 Add sqrt(watt) per sqrt(watt), add decibel --- [CP-BIPM] The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added. Radio logarithm will be added"
-EM/RF-11.3.1::PHAS,EM/RF-11.3.1,PHAS,under discussion,"[IB-NMIA] 10.2.2 Add degree and add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] Degree is consistent with radian for phase angle. The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
-EM/RF-11.3.2::PHAS,EM/RF-11.3.2,PHAS,under discussion,"[IB-NMIA] 10.2.2 Add degree and add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] Degree is consistent with radian for phase angle. The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
-EM/RF-11.3.3::PHAS,EM/RF-11.3.3,PHAS,under discussion,"[IB-NMIA] 10.2.2 Add degree and add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] Degree is consistent with radian for phase angle. The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
-EM/RF-11.3.3::RLGB,EM/RF-11.3.3,RLGB,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/RF-11.3.4::PHAS,EM/RF-11.3.4,PHAS,under discussion,"[IB-NMIA] 10.2.2 Add degree and add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] Degree is consistent with radian for phase angle. The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
-EM/RF-11.3.4::RLGB,EM/RF-11.3.4,RLGB,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/RF-11.3.5::PHAS,EM/RF-11.3.5,PHAS,under discussion,"[IB-NMIA] 10.2.2 Add degree and add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] Degree is consistent with radian for phase angle. The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
-EM/RF-11.3.5::RLGB,EM/RF-11.3.5,RLGB,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/RF-11.3.6::ELRE,EM/RF-11.3.6,ELRE,under discussion,"[IB-NMIA] 10.2.2 Add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
-EM/RF-11.3.6::PHAS,EM/RF-11.3.6,PHAS,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/RF-11.3.7::PHAS,EM/RF-11.3.7,PHAS,under discussion,"[IB-NMIA] 10.2.2 Add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
-EM/RF-11.3.7::RLGB,EM/RF-11.3.7,RLGB,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/RF-11.3.8::PHAS,EM/RF-11.3.8,PHAS,under discussion,"[IB-NMIA] 10.2.2 Add degree and add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] Degree is consistent with radian for phase angle. The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
-EM/RF-11.3.9::PHAS,EM/RF-11.3.9,PHAS,under discussion,"[IB-NMIA] 10.2.2 Add degree and add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] Degree is consistent with radian for phase angle. The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
-EM/RF-11.3.9::RLGB,EM/RF-11.3.9,RLGB,under discussion,(This SC has at least one comment pending solution from the BIPM)
+EM/RF-11.2.1::,EM/RF-11.2.1,,pending BIPM,"[IB-NMIA] 10.2.2 Add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
+EM/RF-11.2.2::,EM/RF-11.2.2,,pending BIPM,"[IB-NMIA] 10.2.2 Add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
+EM/RF-11.2.3::RLGB,EM/RF-11.2.3,RLGB,pending BIPM,"[IB-NMIA] 10.2.2 Add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
+EM/RF-11.2.4::RLGB,EM/RF-11.2.4,RLGB,pending BIPM,"[IB-NMIA] 10.2.2 Add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
+EM/RF-11.2.5::RLGB,EM/RF-11.2.5,RLGB,pending BIPM,"[IB-NMIA] 10.2.2 Add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
+EM/RF-11.2.6::,EM/RF-11.2.6,,pending BIPM,"[IB-NMIA] 10.2.2 Add sqrt(watt) per sqrt(watt), add decibel --- [CP-BIPM] The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added. Radio logarithm will be added"
+EM/RF-11.3.1::PHAS,EM/RF-11.3.1,PHAS,pending BIPM,"[IB-NMIA] 10.2.2 Add degree and add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] Degree is consistent with radian for phase angle. The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
+EM/RF-11.3.2::PHAS,EM/RF-11.3.2,PHAS,pending BIPM,"[IB-NMIA] 10.2.2 Add degree and add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] Degree is consistent with radian for phase angle. The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
+EM/RF-11.3.3::PHAS,EM/RF-11.3.3,PHAS,pending BIPM,"[IB-NMIA] 10.2.2 Add degree and add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] Degree is consistent with radian for phase angle. The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
+EM/RF-11.3.3::RLGB,EM/RF-11.3.3,RLGB,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/RF-11.3.4::PHAS,EM/RF-11.3.4,PHAS,pending BIPM,"[IB-NMIA] 10.2.2 Add degree and add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] Degree is consistent with radian for phase angle. The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
+EM/RF-11.3.4::RLGB,EM/RF-11.3.4,RLGB,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/RF-11.3.5::PHAS,EM/RF-11.3.5,PHAS,pending BIPM,"[IB-NMIA] 10.2.2 Add degree and add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] Degree is consistent with radian for phase angle. The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
+EM/RF-11.3.5::RLGB,EM/RF-11.3.5,RLGB,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/RF-11.3.6::ELRE,EM/RF-11.3.6,ELRE,pending BIPM,"[IB-NMIA] 10.2.2 Add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
+EM/RF-11.3.6::PHAS,EM/RF-11.3.6,PHAS,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/RF-11.3.7::PHAS,EM/RF-11.3.7,PHAS,pending BIPM,"[IB-NMIA] 10.2.2 Add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
+EM/RF-11.3.7::RLGB,EM/RF-11.3.7,RLGB,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/RF-11.3.8::PHAS,EM/RF-11.3.8,PHAS,pending BIPM,"[IB-NMIA] 10.2.2 Add degree and add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] Degree is consistent with radian for phase angle. The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
+EM/RF-11.3.9::PHAS,EM/RF-11.3.9,PHAS,pending BIPM,"[IB-NMIA] 10.2.2 Add degree and add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] Degree is consistent with radian for phase angle. The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
+EM/RF-11.3.9::RLGB,EM/RF-11.3.9,RLGB,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
 EM/RF-11.4.1::ITSK,EM/RF-11.4.1,ITSK,confirmed,
 EM/RF-11.4.1::ITSK.ITSK-1,EM/RF-11.4.1,ITSK.ITSK-1,confirmed,
 EM/RF-11.4.1::RLGB,EM/RF-11.4.1,RLGB,confirmed,
@@ -319,9 +319,9 @@ EM/RF-11.4.2::ITSK,EM/RF-11.4.2,ITSK,confirmed,
 EM/RF-11.4.2::ITSK.ITSK-1,EM/RF-11.4.2,ITSK.ITSK-1,confirmed,
 EM/RF-11.4.2::RLGB,EM/RF-11.4.2,RLGB,confirmed,
 EM/RF-11.4.3::RLGB,EM/RF-11.4.3,RLGB,confirmed,
-EM/RF-11.4.4::POWR.POWR-1.TIME-1,EM/RF-11.4.4,POWR.POWR-1.TIME-1,under discussion,"[IB-NMIA] dBc per hertz, watt per watt per hertz --- [CP-BIPM] watt per watt per hertz will be added, for dBc we require more details --- [IB-NMIA] dBc refers to the ratio of the measured signal to the carrier frequency signal of a modulated waveform. Just dB is not sufficient in this case. Nevertheless, if there is a real difficulty in adding dBc, dBm and dBi, CCEM can ask the small number of laboratories that use these quantities to reformat their relevant CMCs using different quantities."
-EM/RF-11.4.4::RLGB,EM/RF-11.4.4,RLGB,under discussion,(This SC has at least one comment pending solution from the BIPM)
-EM/RF-11.4.4::RLGB.FREQ-1,EM/RF-11.4.4,RLGB.FREQ-1,under discussion,(This SC has at least one comment pending solution from the BIPM)
+EM/RF-11.4.4::POWR.POWR-1.TIME-1,EM/RF-11.4.4,POWR.POWR-1.TIME-1,pending BIPM,"[IB-NMIA] dBc per hertz, watt per watt per hertz --- [CP-BIPM] watt per watt per hertz will be added, for dBc we require more details --- [IB-NMIA] dBc refers to the ratio of the measured signal to the carrier frequency signal of a modulated waveform. Just dB is not sufficient in this case. Nevertheless, if there is a real difficulty in adding dBc, dBm and dBi, CCEM can ask the small number of laboratories that use these quantities to reformat their relevant CMCs using different quantities."
+EM/RF-11.4.4::RLGB,EM/RF-11.4.4,RLGB,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
+EM/RF-11.4.4::RLGB.FREQ-1,EM/RF-11.4.4,RLGB.FREQ-1,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
 EM/RF-11.4.5::ITSK,EM/RF-11.4.5,ITSK,confirmed,
 EM/RF-11.4.5::ITSK.ITSK-1,EM/RF-11.4.5,ITSK.ITSK-1,confirmed,
 EM/RF-11.4.5::POWR.LENG-2.ANGS-1.FREQ-1,EM/RF-11.4.5,POWR.LENG-2.ANGS-1.FREQ-1,confirmed,
@@ -333,7 +333,7 @@ EM/RF-11.5.1::RLGB.LENG-1,EM/RF-11.5.1,RLGB.LENG-1,confirmed,
 EM/RF-11.5.1::RLGB.MGFD.ELPD-1,EM/RF-11.5.1,RLGB.MGFD.ELPD-1,confirmed,
 EM/RF-11.5.2::POWR.POWR-1,EM/RF-11.5.2,POWR.POWR-1,confirmed,
 EM/RF-11.5.2::RLGB,EM/RF-11.5.2,RLGB,confirmed,
-EM/RF-11.5.3::RLGB,EM/RF-11.5.3,RLGB,under discussion,[IB-NMIA] add dBi--- [CP-BIPM] for dBi we require more details --- [IB-NMIA] i stands for isotropic. See the comment on 11.4.4
+EM/RF-11.5.3::RLGB,EM/RF-11.5.3,RLGB,pending BIPM,[IB-NMIA] add dBi--- [CP-BIPM] for dBi we require more details --- [IB-NMIA] i stands for isotropic. See the comment on 11.4.4
 EM/RF-11.6.1::ELPD,EM/RF-11.6.1,ELPD,confirmed,
 EM/RF-11.6.1::ELPD.ELPD-1,EM/RF-11.6.1,ELPD.ELPD-1,confirmed,
 EM/RF-11.6.2::ELPD,EM/RF-11.6.2,ELPD,confirmed,
@@ -341,8 +341,8 @@ EM/RF-11.6.2::TIME,EM/RF-11.6.2,TIME,confirmed,
 EM/RF-11.6.3::FREQ,EM/RF-11.6.3,FREQ,confirmed,
 EM/RF-11.6.3::FREQ.FREQ-1,EM/RF-11.6.3,FREQ.FREQ-1,confirmed,
 EM/RF-11.6.3::RLGB,EM/RF-11.6.3,RLGB,confirmed,
-EM/RF-11.6.4::ELPD,EM/RF-11.6.4,ELPD,under discussion,"[IB-NMIA] add dBm, dBc --- [CP-BIPM] for dBm and dBc we require more details --- [IB-NMIA] m stands for milliwatt. See the comment on 11.4.4"
-EM/RF-11.6.4::RLGB,EM/RF-11.6.4,RLGB,under discussion,(This SC has at least one comment pending solution from the BIPM)
+EM/RF-11.6.4::ELPD,EM/RF-11.6.4,ELPD,pending BIPM,"[IB-NMIA] add dBm, dBc --- [CP-BIPM] for dBm and dBc we require more details --- [IB-NMIA] m stands for milliwatt. See the comment on 11.4.4"
+EM/RF-11.6.4::RLGB,EM/RF-11.6.4,RLGB,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
 EM/RF-11.7.1::ELPD,EM/RF-11.7.1,ELPD,confirmed,
 EM/RF-11.7.1::ELPD.ELPD-1,EM/RF-11.7.1,ELPD.ELPD-1,confirmed,
 EM/RF-11.7.2::ELPD,EM/RF-11.7.2,ELPD,confirmed,
@@ -368,14 +368,14 @@ EM/RF-11.8.3::ELCA,EM/RF-11.8.3,ELCA,confirmed,
 EM/RF-11.8.3::ELCA.ELCA-1,EM/RF-11.8.3,ELCA.ELCA-1,confirmed,
 EM/RF-11.8.4::QFAC,EM/RF-11.8.4,QFAC,confirmed,
 EM/RF-11.9.1::LENG,EM/RF-11.9.1,LENG,confirmed,
-EM/RF-11.9.2::ELRE,EM/RF-11.9.2,ELRE,under discussion,"[IB-NMIA] 10.2.2 Add degree and add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] Degree is consistent with radian for phase angle. The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
-EM/RF-11.9.2::PHAS,EM/RF-11.9.2,PHAS,under discussion,(This SC has at least one comment pending solution from the BIPM)
+EM/RF-11.9.2::ELRE,EM/RF-11.9.2,ELRE,pending BIPM,"[IB-NMIA] 10.2.2 Add degree and add sqrt(watt) per sqrt(watt)  --- [CP-BIPM] Degree is consistent with radian for phase angle. The SIRP is being updated to accept fractional exponents. when that happens, kind of quantity root-power per root-power will be added."
+EM/RF-11.9.2::PHAS,EM/RF-11.9.2,PHAS,pending BIPM,(This SC has at least one comment pending solution from the BIPM)
 EM/Mater-12.1.1::ELCO.LENG-1,EM/Mater-12.1.1,ELCO.LENG-1,confirmed,
 EM/Mater-12.1.2::ELCO.LENG-1,EM/Mater-12.1.2,ELCO.LENG-1,confirmed,
 EM/Mater-12.1.3::ELCO.LENG-1,EM/Mater-12.1.3,ELCO.LENG-1,confirmed,
 EM/Mater-12.1.3::ELRE.LENG,EM/Mater-12.1.3,ELRE.LENG,confirmed,
-EM/Mater-12.2.1::RELP,EM/Mater-12.2.1,RELP,under discussion,[IB-NMIA] Add farad per meter / farad per meter --- [CP-BIPM] kind of quantity capacitance per length per  capacitance length will be added
-EM/Mater-12.2.2::TAND,EM/Mater-12.2.2,TAND,under discussion,[IB-NMIA] Add farad per meter / farad per meter --- [CP-BIPM] kind of quantity capacitance per length per  capacitance length will be added
+EM/Mater-12.2.1::RELP,EM/Mater-12.2.1,RELP,pending BIPM,[IB-NMIA] Add farad per meter / farad per meter --- [CP-BIPM] kind of quantity capacitance per length per  capacitance length will be added
+EM/Mater-12.2.2::TAND,EM/Mater-12.2.2,TAND,pending BIPM,[IB-NMIA] Add farad per meter / farad per meter --- [CP-BIPM] kind of quantity capacitance per length per  capacitance length will be added
 EM/Mater-12.3.1::POWR.MASS-1,EM/Mater-12.3.1,POWR.MASS-1,confirmed,
 EM/Mater-12.3.2::MGFD,EM/Mater-12.3.2,MGFD,confirmed,
 EM/Mater-12.3.2::MGFD.MGFD-1,EM/Mater-12.3.2,MGFD.MGFD-1,confirmed,
@@ -384,21 +384,21 @@ EM/Mater-12.3.3::MGFD.MGFD-1,EM/Mater-12.3.3,MGFD.MGFD-1,confirmed,
 EM/Mater-12.3.4::ELCU.LENG-1,EM/Mater-12.3.4,ELCU.LENG-1,confirmed,
 EM/Mater-12.3.5::ELCU.LENG-1,EM/Mater-12.3.5,ELCU.LENG-1,confirmed,
 EM/Mater-12.3.6::ELPD.ELCU.MASS-1,EM/Mater-12.3.6,ELPD.ELCU.MASS-1,confirmed,
-EM/Mater-12.3.7::REPE,EM/Mater-12.3.7,REPE,under discussion,[IB-NMIA] Add henry per meter / henry per meter --- [CP-BIPM] kind of quantity inductance per length per  inductance length will be added
-EM/Mater-12.3.8::REPE,EM/Mater-12.3.8,REPE,under discussion,[IB-NMIA] Add henry per meter / henry per meter --- [CP-BIPM] kind of quantity inductance per length per  inductance length will be added
+EM/Mater-12.3.7::REPE,EM/Mater-12.3.7,REPE,pending BIPM,[IB-NMIA] Add henry per meter / henry per meter --- [CP-BIPM] kind of quantity inductance per length per  inductance length will be added
+EM/Mater-12.3.8::REPE,EM/Mater-12.3.8,REPE,pending BIPM,[IB-NMIA] Add henry per meter / henry per meter --- [CP-BIPM] kind of quantity inductance per length per  inductance length will be added
 EM/Mater-12.3.9::DENS,EM/Mater-12.3.9,DENS,confirmed,
 EM/Mater-12.3.10::ELRE,EM/Mater-12.3.10,ELRE,confirmed,
 EM/Mater-12.3.10::ELRE.LENG,EM/Mater-12.3.10,ELRE.LENG,confirmed,
-EM/Mater-12.4.1::MGPO,EM/Mater-12.4.1,MGPO,under discussion,[IB-NMIA] Add tesla --- [CP-BIPM] will do
+EM/Mater-12.4.1::MGPO,EM/Mater-12.4.1,MGPO,pending BIPM,[IB-NMIA] Add tesla --- [CP-BIPM] will do
 EM/Mater-12.4.2::MAFD,EM/Mater-12.4.2,MAFD,confirmed,
 EM/Mater-12.4.3::MGFD,EM/Mater-12.4.3,MGFD,confirmed,
 EM/Mater-12.4.4::MAFD,EM/Mater-12.4.4,MAFD,confirmed,
-EM/Mater-12.4.5::MGPO,EM/Mater-12.4.5,MGPO,under discussion,[IB-NMIA] Add tesla and tesla per tesla --- [CP-BIPM] will do
-EM/Mater-12.4.6::REPE,EM/Mater-12.4.6,REPE,under discussion,"[IB-NMIA] Add henry per meter / henry per meter and henry per meter --- [CP-BIPM] kinds of quantity inductance per length per  inductance length , and inductance per length will be added"
-EM/Mater-12.5.1::MGSU,EM/Mater-12.5.1,MGSU,under discussion,"[IB-NMIA] Add ampere per meter/ ampere per meter, henry per meter/ henry per meter --- [CP-BIPM] will do"
-EM/Mater-12.5.1::REPE,EM/Mater-12.5.1,REPE,under discussion,
+EM/Mater-12.4.5::MGPO,EM/Mater-12.4.5,MGPO,pending BIPM,[IB-NMIA] Add tesla and tesla per tesla --- [CP-BIPM] will do
+EM/Mater-12.4.6::REPE,EM/Mater-12.4.6,REPE,pending BIPM,"[IB-NMIA] Add henry per meter / henry per meter and henry per meter --- [CP-BIPM] kinds of quantity inductance per length per  inductance length , and inductance per length will be added"
+EM/Mater-12.5.1::MGSU,EM/Mater-12.5.1,MGSU,pending BIPM,"[IB-NMIA] Add ampere per meter/ ampere per meter, henry per meter/ henry per meter --- [CP-BIPM] will do"
+EM/Mater-12.5.1::REPE,EM/Mater-12.5.1,REPE,pending BIPM,
 EM/Mater-12.6.1::MGFD,EM/Mater-12.6.1,MGFD,confirmed,
-EM/Mater-12.6.2::MAFD,EM/Mater-12.6.2,MAFD,under discussion,[IB-NMIA] Add tesla --- [CP-BIPM] will do
+EM/Mater-12.6.2::MAFD,EM/Mater-12.6.2,MAFD,pending BIPM,[IB-NMIA] Add tesla --- [CP-BIPM] will do
 EM/Mater-12.6.3::ENGY.VOLU-1,EM/Mater-12.6.3,ENGY.VOLU-1,confirmed,
 EM/Mater-12.6.4::ELCU.AREA,EM/Mater-12.6.4,ELCU.AREA,confirmed,
 EM/Mater-12.6.5::MGFD,EM/Mater-12.6.5,MGFD,confirmed,
@@ -410,5 +410,5 @@ EM/Mater-12.7.3::MAFD,EM/Mater-12.7.3,MAFD,confirmed,
 EM/Mater-12.7.4::MAFD,EM/Mater-12.7.4,MAFD,confirmed,
 EM/Mater-12.7.5::MAFD,EM/Mater-12.7.5,MAFD,confirmed,
 EM/Mater-12.7.6::LENG,EM/Mater-12.7.6,LENG,confirmed,
-EM/Mater-12.7.7::,EM/Mater-12.7.7,,unknown,"[CP-BIPM] for service category ""Overwrite of diskettes: diskettes"" there is no quantity assigned"
-EM/Mater-12.7.8::,EM/Mater-12.7.8,,unknown,"[CP-BIPM] for service category ""Video and audio tapes"" there is no quantity assigned"
+EM/Mater-12.7.7::,EM/Mater-12.7.7,,pending CC,"[CP-BIPM] for service category ""Overwrite of diskettes: diskettes"" there is no quantity assigned"
+EM/Mater-12.7.8::,EM/Mater-12.7.8,,pending CC,"[CP-BIPM] for service category ""Video and audio tapes"" there is no quantity assigned"

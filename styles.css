@@ -20,10 +20,9 @@
   border-radius: 4px;
   font-weight: 600;
 }
-.status-badge.status-confirmed        { background: #e3f3e6; }
-.status-badge.status-under-discussion { background: #d6e6f7; }
-.status-badge.status-unknown          { background: #f7d4d4; }
-.status-badge.status-delete           { background: #fbe3d0; }
+.status-badge.status-confirmed     { background: #e3f3e6; }
+.status-badge.status-pending-bipm  { background: #d6e6f7; }
+.status-badge.status-pending-cc    { background: #f7d4d4; }
 
 
 .editable-qty-table th:hover { background: #e6e6e6; }
@@ -31,13 +30,11 @@
 .unit-cell { color: #444; font-variant-numeric: tabular-nums; }
 .status-cell { padding: 1px; }
 .editable-qty-table tr.row-confirmed { background: #e3f3e6; }
-.editable-qty-table tr.row-under-discussion { background: #d6e6f7; }
-.editable-qty-table tr.row-unknown { background: #f7d4d4; }
-.editable-qty-table tr.row-delete { background: #fbe3d0; }
+.editable-qty-table tr.row-pending-bipm { background: #d6e6f7; }
+.editable-qty-table tr.row-pending-cc { background: #f7d4d4; }
 .editable-qty-table tr.row-confirmed:hover,
-.editable-qty-table tr.row-under-discussion:hover,
-.editable-qty-table tr.row-unknown:hover,
-.editable-qty-table tr.row-delete:hover { filter: brightness(0.97); }
+.editable-qty-table tr.row-pending-bipm:hover,
+.editable-qty-table tr.row-pending-cc:hover { filter: brightness(0.97); }
 .status-cell select { width: 100%; min-width: 0; box-sizing: border-box; }
 .search-box { padding: 3px 6px; font-size: 0.85em; border: 1px solid #ccc; border-radius: 4px; width: 200px; }
 .dl-btn {
@@ -70,8 +67,7 @@
   display: inline-block; width: 10px; height: 10px; border-radius: 50%;
   margin-right: 4px; margin-left: 22px; vertical-align: middle;
 }
-.dot-confirmed        { background: #a8d5b0; }
-.dot-under-discussion { background: #a9c9e8; }
-.dot-pending          { background: #e2938f; }
-.dot-delete           { background: #f3c79a; }
+.dot-confirmed     { background: #a8d5b0; }
+.dot-pending-bipm  { background: #a9c9e8; }
+.dot-pending-cc    { background: #e2938f; }
 

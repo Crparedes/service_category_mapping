@@ -483,53 +483,44 @@ parse_area <- function(code) {
   category_rollup <- qty %>%
     group_by(notation) %>%
     summarise(
-      all_confirmed        = all(confirmation_status == "confirmed"),
-      any_under_discussion = any(confirmation_status == "under discussion"),
-      any_must_delete       = any(confirmation_status == "must delete"),
+      all_confirmed    = all(confirmation_status == "confirmed"),
+      any_pending_bipm = any(confirmation_status == "pending BIPM"),
       .groups = "drop"
     ) %>%
     mutate(
       category_status = case_when(
-        any_must_delete       ~ "must_delete",
-        all_confirmed         ~ "confirmed",
-        any_under_discussion  ~ "under_discussion",
-        TRUE                    ~ "pending"
+        all_confirmed    ~ "confirmed",
+        any_pending_bipm ~ "pending_BIPM",
+        TRUE             ~ "pending_CC"
       )
     )
 
-  n_categories_mapped      <- length(unique(real_qty$notation))
-  n_total_categories       <- nrow(category_rollup)
-  n_confirmed               <- sum(category_rollup$category_status == "confirmed")
-  n_under_discussion        <- sum(category_rollup$category_status == "under_discussion")
-  n_must_delete_categories  <- sum(category_rollup$category_status == "must_delete")
-  n_pending                 <- n_total_categories - n_confirmed - n_under_discussion - n_must_delete_categories
-  
-  
-  total_for_bar <- n_confirmed + n_under_discussion + n_pending + n_must_delete_categories  # == n_total_categories
+  n_categories_mapped <- length(unique(real_qty$notation))
+  n_total_categories  <- nrow(category_rollup)
+  n_confirmed          <- sum(category_rollup$category_status == "confirmed")
+  n_pending_bipm       <- sum(category_rollup$category_status == "pending_BIPM")
+  n_pending_cc         <- n_total_categories - n_confirmed - n_pending_bipm
+
+  total_for_bar <- n_confirmed + n_pending_bipm + n_pending_cc  # == n_total_categories
   pct <- function(n) if (total_for_bar > 0) round(100 * n / total_for_bar, 1) else 0
 
   progress_bar_html <- sprintf(
     '<div class="progress-bar-wrap">
       <div style="display: flex; width: 100%%; height: 22px; border-radius: 4px; overflow: hidden; border: 1px solid #ccc;">
         <div style="width: %s%%; height: 100%%; background: #a8d5b0;" title="%d confirmed"></div>
-        <div style="width: %s%%; height: 100%%; background: #a9c9e8;" title="%d under discussion"></div>
-        <div style="width: %s%%; height: 100%%; background: #f3c79a;" title="%d flagged for deletion"></div>
-        <div style="width: %s%%; height: 100%%; background: #e2938f;" title="%d pending"></div>
+        <div style="width: %s%%; height: 100%%; background: #a9c9e8;" title="%d pending BIPM"></div>
+        <div style="width: %s%%; height: 100%%; background: #e2938f;" title="%d pending CC"></div>
       </div>
       <ul class="progress-legend">
         <li><span class="dot dot-confirmed"></span>%d individual services have been confirmed for all its quantity mappings.</li>
-        <li><span class="dot dot-under-discussion"></span>%d individual services are under discussion for at least one of the quantity mappings.</li>
-        <li><span class="dot dot-delete"></span>%d individual %s at least one mapping flagged for deletion.</li>
-        <li><span class="dot dot-pending"></span>%d individual services are pending feedback or confirmation from the CC delegate, including those not yet mapped to any quantity.</li>
+        <li><span class="dot dot-pending-bipm"></span>%d individual services are pending action from the BIPM for at least one of the quantity mappings.</li>
+        <li><span class="dot dot-pending-cc"></span>%d individual services are pending feedback or confirmation from the CC delegate, including those not yet mapped to any quantity.</li>
       </ul>
     </div>',
     pct(n_confirmed), n_confirmed,
-    pct(n_under_discussion), n_under_discussion,
-    pct(n_must_delete_categories), n_must_delete_categories,
-    pct(n_pending), n_pending,
-    n_confirmed, n_under_discussion,
-    n_must_delete_categories, if (n_must_delete_categories == 1) "service has" else "services have",
-    n_pending
+    pct(n_pending_bipm), n_pending_bipm,
+    pct(n_pending_cc), n_pending_cc,
+    n_confirmed, n_pending_bipm, n_pending_cc
   )
 
   summary_text <- sprintf(
@@ -565,7 +556,7 @@ results <- map(areas, parse_area)
 # comment) from the current DOM state via a Blob download. To carry edits
 # into the next render, replace annotations/<code>_annotations.csv with the
 # download -- that file is never auto-overwritten by the render itself.
-status_options <- c("unknown", "confirmed", "under discussion", "must delete")
+status_options <- c("confirmed", "pending BIPM", "pending CC")
 
 # Per-column widths (px), the HTML equivalent of a LaTeX P{width} column
 # type: a fixed width with wrapping, rather than a natural/"l"-style column
@@ -633,7 +624,7 @@ editable_combined_table <- function(code, df) {
   # so it's visible at a glance while scanning -- updated live via JS if the
   # dropdown is changed in-browser (see updateRowStatusClass()).
   status_row_class <- c(
-    confirmed = "row-confirmed", `under discussion` = "row-under-discussion", unknown = "row-unknown", `must delete` = "row-delete"
+    confirmed = "row-confirmed", `pending BIPM` = "row-pending-bipm", `pending CC` = "row-pending-cc"
   )
 
   row_html <- function(i) {
@@ -724,9 +715,8 @@ The BIPM is working with the Consultative Committees of the CIPM (CCs) to make t
 The information for each CC's Service Categories is presented in each of the tabs in the panel below, including a short summary, a progress bar, and a table with one row for each mapped category/quantity pair (an individual service category may have several rows). Each pair has a confirmation status value and a field to add optional comments:
 
 - <span class="status-badge status-confirmed">Confirmed:</span> The quantity assignment (name and units) has been <u>confirmed by the CC delegate</u>.
-- <span class="status-badge status-under-discussion">Under discussion:</span> Feedback has been received from the CC delegate and <u>an action is pending from the BIPM</u> (e.g. an update to the [SI Reference Point](https://preprod.si-digital-framework.org/SI) to support new unit expressions).
-- <span class="status-badge status-delete">Must delete:</span> The mapping is incorrect or the service category is obsolete and it should be <u>deleted by the BIPM</u>.
-- <span class="status-badge status-unknown">Unknown:</span> Confirmation or feedback is <u>required from the CC delegate</u>.
+- <span class="status-badge status-pending-bipm">Pending BIPM:</span> An <u>action is pending from the BIPM</u> (e.g. an update to the [SI Reference Point](https://preprod.si-digital-framework.org/SI) to support new unit expressions, or the deletion of an incorrect or obsolete mapping -- see the comment field for the specific action needed).
+- <span class="status-badge status-pending-cc">Pending CC:</span> Confirmation or feedback is <u>required from the CC delegate</u>.
 
 
 

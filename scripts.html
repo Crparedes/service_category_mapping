@@ -9,12 +9,11 @@ function cellValue(td) {
   if (sel) return sel.value;
   return td.textContent.trim();
 }
-var ROW_STATUS_CLASSES = ["row-confirmed", "row-under-discussion", "row-unknown", "row-delete"];
+var ROW_STATUS_CLASSES = ["row-confirmed", "row-pending-bipm", "row-pending-cc"];
 var ROW_STATUS_CLASS_MAP = {
   confirmed: "row-confirmed",
-  "under discussion": "row-under-discussion",
-  unknown: "row-unknown",
-  "must delete": "row-delete"
+  "pending BIPM": "row-pending-bipm",
+  "pending CC": "row-pending-cc"
 };
 function updateRowStatusClass(selectEl) {
   var tr = selectEl.closest("tr");
