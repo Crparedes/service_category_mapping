@@ -710,12 +710,14 @@ editable_combined_table <- function(code, df) {
 
 
 ::: {.column-screen-inset}
-The BIPM is working with the Consultative Committees of the CIPM (CCs) to make the CMCs machine-actionable. Establishing a solid semantic link between the information in the KCDB and the knowledge model of the SI Reference Point requires relating each [KCDB service categories](https://www.bipm.org/en/cipm-mra/cipm-mra-documents/service-categories) to appropiate quantities and quantity expressions of the [SI Digital Framework](https://si-digital-framework.org/). The mappings must be confirmed by experts in each CC. This webpage reports the confirmation status of these mappings, which are currently published as ontology graphs available in the [preproduction server](https://preprod.si-digital-framework.org/kcdb-sc) (only available for whitelisted IP addresses).
+**The BIPM is working with the Consultative Committees of the CIPM (CCs) to make the CMCs machine-actionable.**
+
+Establishing a solid semantic link between the information in the KCDB and the knowledge model of the SI Reference Point requires relating each [KCDB service categories](https://www.bipm.org/en/cipm-mra/cipm-mra-documents/service-categories) to appropiate quantities and quantity expressions of the [SI Digital Framework](https://si-digital-framework.org/). The mappings must be confirmed by experts in each CC. This webpage reports the confirmation status of these mappings, which are currently published as ontology graphs available in the [preproduction server](https://preprod.si-digital-framework.org/kcdb-sc) (only available for whitelisted IP addresses).
 
 The information for each CC's Service Categories is presented in each of the tabs in the panel below, including a short summary, a progress bar, and a table with one row for each mapped category/quantity pair (an individual service category may have several rows). Each pair has a confirmation status value and a field to add optional comments:
 
 - <span class="status-badge status-confirmed">Confirmed:</span> The quantity assignment (name and units) has been <u>confirmed by the CC delegate</u>.
-- <span class="status-badge status-pending-bipm">Pending BIPM:</span> An <u>action is pending from the BIPM</u> (e.g. an update to the [SI Reference Point](https://preprod.si-digital-framework.org/SI) to support new unit expressions, or the deletion of an incorrect or obsolete mapping -- see the comment field for the specific action needed).
+- <span class="status-badge status-pending-bipm">Pending BIPM:</span> An <u>action is pending from the BIPM</u> (e.g. adding/removing a quantity mapping or updating the [SI Reference Point](https://preprod.si-digital-framework.org/SI) to support new units or unit expressions).
 - <span class="status-badge status-pending-cc">Pending CC:</span> Confirmation or feedback is <u>required from the CC delegate</u>.
 
 
