@@ -512,7 +512,7 @@ parse_area <- function(code) {
         <div style="width: %s%%; height: 100%%; background: #e2938f;" title="%d pending CC"></div>
       </div>
       <ul class="progress-legend">
-        <li><span class="dot dot-confirmed"></span>%d individual services have been confirmed for all its quantity mappings.</li>
+        <li><span class="dot dot-confirmed"></span>%d individual services have been confirmed for all their quantity mappings.</li>
         <li><span class="dot dot-pending-bipm"></span>%d individual services are pending action from the BIPM for at least one of the quantity mappings.</li>
         <li><span class="dot dot-pending-cc"></span>%d individual services are pending feedback or confirmation from the CC delegate, including those not yet mapped to any quantity.</li>
       </ul>

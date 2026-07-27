@@ -71,3 +71,11 @@
 .dot-pending-bipm  { background: #a9c9e8; }
 .dot-pending-cc    { background: #e2938f; }
 
+body { background-color: #FCFCFC ; }
+
+.panel-tabset .tab-content {
+  background-color: #ffffff;
+  padding: 16px 20px;
+  border-radius: 6px;
+}
+
