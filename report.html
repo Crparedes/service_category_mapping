@@ -19122,11 +19122,11 @@ vertical-align: -.125em;
 <p><strong>Classification Of Services In Thermometry</strong></p>
 <p>CCT has <strong>49 service categories</strong>, of which 47 have at least one quantity mapped, totalling <strong>90 quantities</strong> from the SI Digital Framework. At the moment of the last update (2026-07-27):</p>
 <div class="progress-bar-wrap">
-      <div style="display: flex; width: 100%; height: 30px; border-radius: 4px; overflow: hidden; border: 1px solid #ccc;"><div style="width: 0%; height: 100%; background: #a8d5b0; display: flex; align-items: center; justify-content: center;" title="0 confirmed"></div><div style="width: 61.2%; height: 100%; background: #a9c9e8; display: flex; align-items: center; justify-content: center;" title="30 pending BIPM"><span style="color:#fff; font-weight:bold;">61 %</span></div><div style="width: 38.8%; height: 100%; background: #e2938f; display: flex; align-items: center; justify-content: center;" title="19 pending CC"><span style="color:#fff; font-weight:bold;">39 %</span></div></div>
+      <div style="display: flex; width: 100%; height: 30px; border-radius: 4px; overflow: hidden; border: 1px solid #ccc;"><div style="width: 4.1%; height: 100%; background: #a8d5b0; display: flex; align-items: center; justify-content: center;" title="2 confirmed"></div><div style="width: 67.3%; height: 100%; background: #a9c9e8; display: flex; align-items: center; justify-content: center;" title="33 pending BIPM"><span style="color:#fff; font-weight:bold;">67 %</span></div><div style="width: 28.6%; height: 100%; background: #e2938f; display: flex; align-items: center; justify-content: center;" title="14 pending CC"><span style="color:#fff; font-weight:bold;">29 %</span></div></div>
       <ul class="progress-legend">
-        <li><span class="dot dot-confirmed"></span>0 individual services have been confirmed for all its quantity mappings.</li>
-        <li><span class="dot dot-pending-bipm"></span>30 individual services are pending action from the BIPM for at least one of the quantity mappings.</li>
-        <li><span class="dot dot-pending-cc"></span>19 individual services are pending feedback or confirmation from the CC delegate, including those not yet mapped to any quantity.</li>
+        <li><span class="dot dot-confirmed"></span>2 individual services have been confirmed for all its quantity mappings.</li>
+        <li><span class="dot dot-pending-bipm"></span>33 individual services are pending action from the BIPM for at least one of the quantity mappings.</li>
+        <li><span class="dot dot-pending-cc"></span>14 individual services are pending feedback or confirmation from the CC delegate, including those not yet mapped to any quantity.</li>
       </ul>
     </div>
 <p><strong>Note:</strong> The unit expression presented in the column <code>si_unit</code> is the default assigned to the quantity. However, other unit expressions that are dimensionally consistent will also be accepted in the CMCs of that service category (e.g. a quantity set to radians per second will also accept degrees per hour. Dimensionless quantities will accept percent values).</p>
@@ -19190,7 +19190,7 @@ vertical-align: -.125em;
 <td>ITS-90 temperature (K)</td>
 <td class="unit-cell">K</td>
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM" selected>pending BIPM</option><option value="pending CC">pending CC</option></select></td>
-<td class="comment-cell" contenteditable="true">[PR-NRC] ITS-90 temperature is a quantity that can be expressed in K or °C. --- [CP-BIPM] The quantities ITSC and ITSK will be merged, and the duplication will be removed from the mapping.</td>
+<td class="comment-cell" contenteditable="true">[PR-NRC] ITS-90 temperature is a quantity that can be expressed in K or °C. --- [CP-BIPM] The quantities ITSC and ITSK will be merged, and the duplication will be removed from the mapping. --- [PR-NRC] Additionally, define a quantity for temperature difference, where i K is approximately equal to 1 degree Celsius</td>
 </tr>
 <tr class="row-pending-bipm odd" data-notation="T/T-1.1.2" data-quantity="ITSC">
 <td>T/T-1.1.2::ITSC</td>
@@ -19932,9 +19932,9 @@ vertical-align: -.125em;
 <td>dew/frost point</td>
 <td class="unit-cell">°C</td>
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM" selected>pending BIPM</option><option value="pending CC">pending CC</option></select></td>
-<td class="comment-cell" contenteditable="true"></td>
+<td class="comment-cell" contenteditable="true">[TS-VTT] Dew point and frost point may represent different quantities. --- [CP-BIPM] Shall we split the kind of quantity into dew point and frost point? --- [TS-VTT] Yes, these quantities should be separated</td>
 </tr>
-<tr class="row-pending-cc even" data-notation="T/H-3.2.1" data-quantity="RHUM">
+<tr class="row-confirmed even" data-notation="T/H-3.2.1" data-quantity="RHUM">
 <td>T/H-3.2.1::RHUM</td>
 <td>T/H-3.2.1</td>
 <td>Humidity</td>
@@ -19945,8 +19945,8 @@ vertical-align: -.125em;
 <td>RHUM</td>
 <td>relative humidity</td>
 <td class="unit-cell">1</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
-<td class="comment-cell" contenteditable="true"></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
+<td class="comment-cell" contenteditable="true">[TS-VTT] The technology listed in the service categories is obsolete --- [CP-BIPM] This correspond to the CC to define or delete the Service Categories --- [TS-VTT] The CCT WG CMC will review and suggest possible updates --- [CP-BIPM] We will wait for the update from the SC. In the meantime, the mapping seems correct.</td>
 </tr>
 <tr class="row-pending-cc odd" data-notation="T/H-3.3.1" data-quantity="RHUM">
 <td>T/H-3.3.1::RHUM</td>
@@ -19960,9 +19960,9 @@ vertical-align: -.125em;
 <td>relative humidity</td>
 <td class="unit-cell">1</td>
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
-<td class="comment-cell" contenteditable="true"></td>
+<td class="comment-cell" contenteditable="true">[TS-VTT] For historical reasons most people still use %rh as the unit. A quick fix is to have a one to one relation between %rh and %. --- [CP-BIPM] Units are never qualified by further information about the nature of the quantity, relative humidity will be left  dimensionless --- [TS-VTT] The discussion around the use of “%rh” between WG-Hu and CCT is still ongoing</td>
 </tr>
-<tr class="row-pending-cc even" data-notation="T/H-3.4.1" data-quantity="AMSU.AMSU-1">
+<tr class="row-confirmed even" data-notation="T/H-3.4.1" data-quantity="AMSU.AMSU-1">
 <td>T/H-3.4.1::AMSU.AMSU-1</td>
 <td>T/H-3.4.1</td>
 <td>Humidity</td>
@@ -19973,10 +19973,10 @@ vertical-align: -.125em;
 <td>AMSU.AMSU-1</td>
 <td>(amount of substance)·(amount of substance⁻¹)</td>
 <td class="unit-cell">mol·mol⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="T/H-3.4.1" data-quantity="MASS.MASS-1">
+<tr class="row-confirmed odd" data-notation="T/H-3.4.1" data-quantity="MASS.MASS-1">
 <td>T/H-3.4.1::MASS.MASS-1</td>
 <td>T/H-3.4.1</td>
 <td>Humidity</td>
@@ -19987,7 +19987,7 @@ vertical-align: -.125em;
 <td>MASS.MASS-1</td>
 <td>(mass)·(mass⁻¹)</td>
 <td class="unit-cell">kg·kg⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-pending-cc even" data-notation="T/H-3.4.1" data-quantity="RHUM">
@@ -20002,9 +20002,9 @@ vertical-align: -.125em;
 <td>relative humidity</td>
 <td class="unit-cell">1</td>
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
-<td class="comment-cell" contenteditable="true"></td>
+<td class="comment-cell" contenteditable="true">(See T/H-3.3.1::RHUM)</td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="T/H-3.4.1" data-quantity="VOLU.VOLU-1">
+<tr class="row-confirmed odd" data-notation="T/H-3.4.1" data-quantity="VOLU.VOLU-1">
 <td>T/H-3.4.1::VOLU.VOLU-1</td>
 <td>T/H-3.4.1</td>
 <td>Humidity</td>
@@ -20015,10 +20015,10 @@ vertical-align: -.125em;
 <td>VOLU.VOLU-1</td>
 <td>(volume)·(volume⁻¹)</td>
 <td class="unit-cell">m³·m⁻³</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc even" data-notation="T/H-4.1.1" data-quantity="DEWP">
+<tr class="row-pending-bipm even" data-notation="T/H-4.1.1" data-quantity="DEWP">
 <td>T/H-4.1.1::DEWP</td>
 <td>T/H-4.1.1</td>
 <td>Humidity</td>
@@ -20029,8 +20029,8 @@ vertical-align: -.125em;
 <td>DEWP</td>
 <td>dew/frost point</td>
 <td class="unit-cell">°C</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
-<td class="comment-cell" contenteditable="true"></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM" selected>pending BIPM</option><option value="pending CC">pending CC</option></select></td>
+<td class="comment-cell" contenteditable="true">(See T/H-3.1.1::DEWP)</td>
 </tr>
 <tr class="row-pending-cc odd" data-notation="T/H-4.2.1" data-quantity="RHUM">
 <td>T/H-4.2.1::RHUM</td>
@@ -20044,9 +20044,9 @@ vertical-align: -.125em;
 <td>relative humidity</td>
 <td class="unit-cell">1</td>
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
-<td class="comment-cell" contenteditable="true"></td>
+<td class="comment-cell" contenteditable="true">(See T/H-3.3.1::RHUM)</td>
 </tr>
-<tr class="row-pending-cc even" data-notation="T/H-4.3.1" data-quantity="AMSU.AMSU-1">
+<tr class="row-confirmed even" data-notation="T/H-4.3.1" data-quantity="AMSU.AMSU-1">
 <td>T/H-4.3.1::AMSU.AMSU-1</td>
 <td>T/H-4.3.1</td>
 <td>Humidity</td>
@@ -20057,10 +20057,10 @@ vertical-align: -.125em;
 <td>AMSU.AMSU-1</td>
 <td>(amount of substance)·(amount of substance⁻¹)</td>
 <td class="unit-cell">mol·mol⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="T/H-4.3.1" data-quantity="DEWP">
+<tr class="row-pending-bipm odd" data-notation="T/H-4.3.1" data-quantity="DEWP">
 <td>T/H-4.3.1::DEWP</td>
 <td>T/H-4.3.1</td>
 <td>Humidity</td>
@@ -20071,10 +20071,10 @@ vertical-align: -.125em;
 <td>DEWP</td>
 <td>dew/frost point</td>
 <td class="unit-cell">°C</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
-<td class="comment-cell" contenteditable="true"></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM" selected>pending BIPM</option><option value="pending CC">pending CC</option></select></td>
+<td class="comment-cell" contenteditable="true">(See T/H-3.1.1::DEWP)</td>
 </tr>
-<tr class="row-pending-cc even" data-notation="T/H-4.3.1" data-quantity="MASS.MASS-1">
+<tr class="row-confirmed even" data-notation="T/H-4.3.1" data-quantity="MASS.MASS-1">
 <td>T/H-4.3.1::MASS.MASS-1</td>
 <td>T/H-4.3.1</td>
 <td>Humidity</td>
@@ -20085,7 +20085,7 @@ vertical-align: -.125em;
 <td>MASS.MASS-1</td>
 <td>(mass)·(mass⁻¹)</td>
 <td class="unit-cell">kg·kg⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-pending-cc odd" data-notation="T/H-4.3.1" data-quantity="RHUM">
@@ -20100,9 +20100,9 @@ vertical-align: -.125em;
 <td>relative humidity</td>
 <td class="unit-cell">1</td>
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
-<td class="comment-cell" contenteditable="true"></td>
+<td class="comment-cell" contenteditable="true">(See T/H-3.3.1::RHUM)</td>
 </tr>
-<tr class="row-pending-cc even" data-notation="T/H-4.4.1" data-quantity="AMSU.AMSU-1">
+<tr class="row-confirmed even" data-notation="T/H-4.4.1" data-quantity="AMSU.AMSU-1">
 <td>T/H-4.4.1::AMSU.AMSU-1</td>
 <td>T/H-4.4.1</td>
 <td>Humidity</td>
@@ -20113,10 +20113,10 @@ vertical-align: -.125em;
 <td>AMSU.AMSU-1</td>
 <td>(amount of substance)·(amount of substance⁻¹)</td>
 <td class="unit-cell">mol·mol⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="T/H-4.4.1" data-quantity="DEWP">
+<tr class="row-pending-bipm odd" data-notation="T/H-4.4.1" data-quantity="DEWP">
 <td>T/H-4.4.1::DEWP</td>
 <td>T/H-4.4.1</td>
 <td>Humidity</td>
@@ -20127,10 +20127,10 @@ vertical-align: -.125em;
 <td>DEWP</td>
 <td>dew/frost point</td>
 <td class="unit-cell">°C</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
-<td class="comment-cell" contenteditable="true"></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM" selected>pending BIPM</option><option value="pending CC">pending CC</option></select></td>
+<td class="comment-cell" contenteditable="true">(See T/H-3.1.1::DEWP)</td>
 </tr>
-<tr class="row-pending-cc even" data-notation="T/H-4.4.1" data-quantity="MASS.MASS-1">
+<tr class="row-confirmed even" data-notation="T/H-4.4.1" data-quantity="MASS.MASS-1">
 <td>T/H-4.4.1::MASS.MASS-1</td>
 <td>T/H-4.4.1</td>
 <td>Humidity</td>
@@ -20141,7 +20141,7 @@ vertical-align: -.125em;
 <td>MASS.MASS-1</td>
 <td>(mass)·(mass⁻¹)</td>
 <td class="unit-cell">kg·kg⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-pending-cc odd" data-notation="T/H-4.4.1" data-quantity="RHUM">
@@ -20156,7 +20156,7 @@ vertical-align: -.125em;
 <td>relative humidity</td>
 <td class="unit-cell">1</td>
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
-<td class="comment-cell" contenteditable="true"></td>
+<td class="comment-cell" contenteditable="true">(See T/H-3.3.1::RHUM)</td>
 </tr>
 <tr class="row-pending-cc even" data-notation="T/H-5.1.1" data-quantity="RHUM">
 <td>T/H-5.1.1::RHUM</td>
@@ -20170,9 +20170,9 @@ vertical-align: -.125em;
 <td>relative humidity</td>
 <td class="unit-cell">1</td>
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
-<td class="comment-cell" contenteditable="true"></td>
+<td class="comment-cell" contenteditable="true">(See T/H-3.3.1::RHUM)</td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="T/H-5.2.1" data-quantity="MASS.MASS-1">
+<tr class="row-confirmed odd" data-notation="T/H-5.2.1" data-quantity="MASS.MASS-1">
 <td>T/H-5.2.1::MASS.MASS-1</td>
 <td>T/H-5.2.1</td>
 <td>Humidity</td>
@@ -20183,7 +20183,7 @@ vertical-align: -.125em;
 <td>MASS.MASS-1</td>
 <td>(mass)·(mass⁻¹)</td>
 <td class="unit-cell">kg·kg⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-pending-cc even" data-notation="T/TQ-6.1.1" data-quantity="TCON">

@@ -1,6 +1,6 @@
 mapping_id,notation,branch,service,subservice,individual_service,status,related_si_quantity,quantity_name,si_unit,confirmation_status,comment
 T/T-1.1.1::ITSC,T/T-1.1.1,Temperature,Items for defining ITS-90,Primary fixed-point cells,Cells for contact thermometry,assigned,ITSC,ITS-90 temperature (°C),°C,pending BIPM,(See comment in T/T-1.1.1::ITSK)
-T/T-1.1.1::ITSK,T/T-1.1.1,Temperature,Items for defining ITS-90,Primary fixed-point cells,Cells for contact thermometry,assigned,ITSK,ITS-90 temperature (K),K,pending BIPM,"[PR-NRC] ITS-90 temperature is a quantity that can be expressed in K or °C. --- [CP-BIPM] The quantities ITSC and ITSK will be merged, and the duplication will be removed from the mapping."
+T/T-1.1.1::ITSK,T/T-1.1.1,Temperature,Items for defining ITS-90,Primary fixed-point cells,Cells for contact thermometry,assigned,ITSK,ITS-90 temperature (K),K,pending BIPM,"[PR-NRC] ITS-90 temperature is a quantity that can be expressed in K or °C. --- [CP-BIPM] The quantities ITSC and ITSK will be merged, and the duplication will be removed from the mapping. --- [PR-NRC] Additionally, define a quantity for temperature difference, where i K is approximately equal to 1 degree Celsius"
 T/T-1.1.2::ITSC,T/T-1.1.2,Temperature,Items for defining ITS-90,Primary fixed-point cells,Cells for radiation thermometry,assigned,ITSC,ITS-90 temperature (°C),°C,pending BIPM,(See comment in T/T-1.1.1::ITSK)
 T/T-1.1.2::ITSK,T/T-1.1.2,Temperature,Items for defining ITS-90,Primary fixed-point cells,Cells for radiation thermometry,assigned,ITSK,ITS-90 temperature (K),K,pending BIPM,(See comment in T/T-1.1.1::ITSK)
 T/T-1.2.1::ITSC,T/T-1.2.1,Temperature,Items for defining ITS-90,Complete apparatus realizing fixed-points,Apparatus for contact thermometry,assigned,ITSC,ITS-90 temperature (°C),°C,pending BIPM,(See comment in T/T-1.1.1::ITSK)
@@ -53,25 +53,25 @@ T/T-2.8.5::ITSC,T/T-2.8.5,Temperature,Items for disseminating ITS-90 and PLTS 20
 T/T-2.8.5::ITSK,T/T-2.8.5,Temperature,Items for disseminating ITS-90 and PLTS 2000,Other measurement services,Phase-transition temperature of reference materials,assigned,ITSK,ITS-90 temperature (K),K,pending BIPM,(See comment in T/T-1.1.1::ITSK)
 T/T-2.8.6::ITSC,T/T-2.8.6,Temperature,Items for disseminating ITS-90 and PLTS 2000,Other measurement services,Dry-well block calibrators,assigned,ITSC,ITS-90 temperature (°C),°C,pending BIPM,(See comment in T/T-1.1.1::ITSK)
 T/T-2.8.6::ITSK,T/T-2.8.6,Temperature,Items for disseminating ITS-90 and PLTS 2000,Other measurement services,Dry-well block calibrators,assigned,ITSK,ITS-90 temperature (K),K,pending BIPM,(See comment in T/T-1.1.1::ITSK)
-T/H-3.1.1::DEWP,T/H-3.1.1,Humidity,Hygrometers,Dew-point hygrometers,Dew-point hygrometers,assigned,DEWP,dew/frost point,°C,pending BIPM,
-T/H-3.2.1::RHUM,T/H-3.2.1,Humidity,Hygrometers,Psychrometers,Psychrometers,assigned,RHUM,relative humidity,1,pending CC,
-T/H-3.3.1::RHUM,T/H-3.3.1,Humidity,Hygrometers,Relative humidity sensors,Relative humidity sensors,assigned,RHUM,relative humidity,1,pending CC,
-T/H-3.4.1::AMSU.AMSU-1,T/H-3.4.1,Humidity,Hygrometers,Other hygrometers,Other hygrometers,assigned,AMSU.AMSU-1,(amount of substance)·(amount of substance⁻¹),mol·mol⁻¹,pending CC,
-T/H-3.4.1::MASS.MASS-1,T/H-3.4.1,Humidity,Hygrometers,Other hygrometers,Other hygrometers,assigned,MASS.MASS-1,(mass)·(mass⁻¹),kg·kg⁻¹,pending CC,
-T/H-3.4.1::RHUM,T/H-3.4.1,Humidity,Hygrometers,Other hygrometers,Other hygrometers,assigned,RHUM,relative humidity,1,pending CC,
-T/H-3.4.1::VOLU.VOLU-1,T/H-3.4.1,Humidity,Hygrometers,Other hygrometers,Other hygrometers,assigned,VOLU.VOLU-1,(volume)·(volume⁻¹),m³·m⁻³,pending CC,
-T/H-4.1.1::DEWP,T/H-4.1.1,Humidity,Dynamic generators,Dew-point generators,Dew-point generators,assigned,DEWP,dew/frost point,°C,pending CC,
-T/H-4.2.1::RHUM,T/H-4.2.1,Humidity,Dynamic generators,Relative humidity generators,Relative humidity generators,assigned,RHUM,relative humidity,1,pending CC,
-T/H-4.3.1::AMSU.AMSU-1,T/H-4.3.1,Humidity,Dynamic generators,Flow mixing,Flow mixing,assigned,AMSU.AMSU-1,(amount of substance)·(amount of substance⁻¹),mol·mol⁻¹,pending CC,
-T/H-4.3.1::DEWP,T/H-4.3.1,Humidity,Dynamic generators,Flow mixing,Flow mixing,assigned,DEWP,dew/frost point,°C,pending CC,
-T/H-4.3.1::MASS.MASS-1,T/H-4.3.1,Humidity,Dynamic generators,Flow mixing,Flow mixing,assigned,MASS.MASS-1,(mass)·(mass⁻¹),kg·kg⁻¹,pending CC,
-T/H-4.3.1::RHUM,T/H-4.3.1,Humidity,Dynamic generators,Flow mixing,Flow mixing,assigned,RHUM,relative humidity,1,pending CC,
-T/H-4.4.1::AMSU.AMSU-1,T/H-4.4.1,Humidity,Dynamic generators,"Permeation tube, diffusion tube","Permeation tube, diffusion tube",assigned,AMSU.AMSU-1,(amount of substance)·(amount of substance⁻¹),mol·mol⁻¹,pending CC,
-T/H-4.4.1::DEWP,T/H-4.4.1,Humidity,Dynamic generators,"Permeation tube, diffusion tube","Permeation tube, diffusion tube",assigned,DEWP,dew/frost point,°C,pending CC,
-T/H-4.4.1::MASS.MASS-1,T/H-4.4.1,Humidity,Dynamic generators,"Permeation tube, diffusion tube","Permeation tube, diffusion tube",assigned,MASS.MASS-1,(mass)·(mass⁻¹),kg·kg⁻¹,pending CC,
-T/H-4.4.1::RHUM,T/H-4.4.1,Humidity,Dynamic generators,"Permeation tube, diffusion tube","Permeation tube, diffusion tube",assigned,RHUM,relative humidity,1,pending CC,
-T/H-5.1.1::RHUM,T/H-5.1.1,Humidity,Static generators,"Salt solutions (saturated, unsaturated)","Salt solutions (saturated, unsaturated)",assigned,RHUM,relative humidity,1,pending CC,
-T/H-5.2.1::MASS.MASS-1,T/H-5.2.1,Humidity,Static generators,Reference gases,Reference gases,assigned,MASS.MASS-1,(mass)·(mass⁻¹),kg·kg⁻¹,pending CC,
+T/H-3.1.1::DEWP,T/H-3.1.1,Humidity,Hygrometers,Dew-point hygrometers,Dew-point hygrometers,assigned,DEWP,dew/frost point,°C,pending BIPM,"[TS-VTT] Dew point and frost point may represent different quantities. --- [CP-BIPM] Shall we split the kind of quantity into dew point and frost point? --- [TS-VTT] Yes, these quantities should be separated"
+T/H-3.2.1::RHUM,T/H-3.2.1,Humidity,Hygrometers,Psychrometers,Psychrometers,assigned,RHUM,relative humidity,1,confirmed,"[TS-VTT] The technology listed in the service categories is obsolete --- [CP-BIPM] This correspond to the CC to define or delete the Service Categories --- [TS-VTT] The CCT WG CMC will review and suggest possible updates --- [CP-BIPM] We will wait for the update from the SC. In the meantime, the mapping seems correct."
+T/H-3.3.1::RHUM,T/H-3.3.1,Humidity,Hygrometers,Relative humidity sensors,Relative humidity sensors,assigned,RHUM,relative humidity,1,pending CC,"[TS-VTT] For historical reasons most people still use %rh as the unit. A quick fix is to have a one to one relation between %rh and %. --- [CP-BIPM] Units are never qualified by further information about the nature of the quantity, relative humidity will be left  dimensionless --- [TS-VTT] The discussion around the use of “%rh” between WG-Hu and CCT is still ongoing"
+T/H-3.4.1::AMSU.AMSU-1,T/H-3.4.1,Humidity,Hygrometers,Other hygrometers,Other hygrometers,assigned,AMSU.AMSU-1,(amount of substance)·(amount of substance⁻¹),mol·mol⁻¹,confirmed,
+T/H-3.4.1::MASS.MASS-1,T/H-3.4.1,Humidity,Hygrometers,Other hygrometers,Other hygrometers,assigned,MASS.MASS-1,(mass)·(mass⁻¹),kg·kg⁻¹,confirmed,
+T/H-3.4.1::RHUM,T/H-3.4.1,Humidity,Hygrometers,Other hygrometers,Other hygrometers,assigned,RHUM,relative humidity,1,pending CC,(See T/H-3.3.1::RHUM)
+T/H-3.4.1::VOLU.VOLU-1,T/H-3.4.1,Humidity,Hygrometers,Other hygrometers,Other hygrometers,assigned,VOLU.VOLU-1,(volume)·(volume⁻¹),m³·m⁻³,confirmed,
+T/H-4.1.1::DEWP,T/H-4.1.1,Humidity,Dynamic generators,Dew-point generators,Dew-point generators,assigned,DEWP,dew/frost point,°C,pending BIPM,(See T/H-3.1.1::DEWP)
+T/H-4.2.1::RHUM,T/H-4.2.1,Humidity,Dynamic generators,Relative humidity generators,Relative humidity generators,assigned,RHUM,relative humidity,1,pending CC,(See T/H-3.3.1::RHUM)
+T/H-4.3.1::AMSU.AMSU-1,T/H-4.3.1,Humidity,Dynamic generators,Flow mixing,Flow mixing,assigned,AMSU.AMSU-1,(amount of substance)·(amount of substance⁻¹),mol·mol⁻¹,confirmed,
+T/H-4.3.1::DEWP,T/H-4.3.1,Humidity,Dynamic generators,Flow mixing,Flow mixing,assigned,DEWP,dew/frost point,°C,pending BIPM,(See T/H-3.1.1::DEWP)
+T/H-4.3.1::MASS.MASS-1,T/H-4.3.1,Humidity,Dynamic generators,Flow mixing,Flow mixing,assigned,MASS.MASS-1,(mass)·(mass⁻¹),kg·kg⁻¹,confirmed,
+T/H-4.3.1::RHUM,T/H-4.3.1,Humidity,Dynamic generators,Flow mixing,Flow mixing,assigned,RHUM,relative humidity,1,pending CC,(See T/H-3.3.1::RHUM)
+T/H-4.4.1::AMSU.AMSU-1,T/H-4.4.1,Humidity,Dynamic generators,"Permeation tube, diffusion tube","Permeation tube, diffusion tube",assigned,AMSU.AMSU-1,(amount of substance)·(amount of substance⁻¹),mol·mol⁻¹,confirmed,
+T/H-4.4.1::DEWP,T/H-4.4.1,Humidity,Dynamic generators,"Permeation tube, diffusion tube","Permeation tube, diffusion tube",assigned,DEWP,dew/frost point,°C,pending BIPM,(See T/H-3.1.1::DEWP)
+T/H-4.4.1::MASS.MASS-1,T/H-4.4.1,Humidity,Dynamic generators,"Permeation tube, diffusion tube","Permeation tube, diffusion tube",assigned,MASS.MASS-1,(mass)·(mass⁻¹),kg·kg⁻¹,confirmed,
+T/H-4.4.1::RHUM,T/H-4.4.1,Humidity,Dynamic generators,"Permeation tube, diffusion tube","Permeation tube, diffusion tube",assigned,RHUM,relative humidity,1,pending CC,(See T/H-3.3.1::RHUM)
+T/H-5.1.1::RHUM,T/H-5.1.1,Humidity,Static generators,"Salt solutions (saturated, unsaturated)","Salt solutions (saturated, unsaturated)",assigned,RHUM,relative humidity,1,pending CC,(See T/H-3.3.1::RHUM)
+T/H-5.2.1::MASS.MASS-1,T/H-5.2.1,Humidity,Static generators,Reference gases,Reference gases,assigned,MASS.MASS-1,(mass)·(mass⁻¹),kg·kg⁻¹,confirmed,
 T/TQ-6.1.1::TCON,T/TQ-6.1.1,Thermophysical quantities,Thermophysical quantities,Thermal transport property,Thermal conductivity,assigned,TCON,thermal conductivity,W·m⁻¹·K⁻¹,pending CC,
 T/TQ-6.1.2::TDIF,T/TQ-6.1.2,Thermophysical quantities,Thermophysical quantities,Thermal transport property,Thermal diffusivity,assigned,TDIF,thermal diffusivity,m²·s⁻¹,pending CC,
 T/TQ-6.2.1::SHEC,T/TQ-6.2.1,Thermophysical quantities,Thermophysical quantities,Caloric property,Specific heat capacity,assigned,SHEC,specific heat capacity,J·K⁻¹·kg⁻¹,pending CC,
