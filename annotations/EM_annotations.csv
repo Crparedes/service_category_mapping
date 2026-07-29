@@ -26,8 +26,8 @@ EM/DC-2.1.5::ELRE.ELRE-1,EM/DC-2.1.5,ELRE.ELRE-1,confirmed,
 EM/DC-2.1.6::ELRE,EM/DC-2.1.6,ELRE,confirmed,(This SC has at least one comment pending solution from the BIPM)
 EM/DC-2.1.6::ELRE.ELCU-1,EM/DC-2.1.6,ELRE.ELCU-1,confirmed,(This SC has at least one comment pending solution from the BIPM)
 EM/DC-2.1.6::ELRE.ELRE-1,EM/DC-2.1.6,ELRE.ELRE-1,confirmed,(This SC has at least one comment pending solution from the BIPM)
-EM/DC-2.1.6::ELRE.ELRE-1.ITSK-1,EM/DC-2.1.6,ELRE.ELRE-1.ITSK-1,confirmed,(This SC has at least one comment pending solution from the BIPM)
-EM/DC-2.1.6::ELRE.ELRE-1.ITSK-2,EM/DC-2.1.6,ELRE.ELRE-1.ITSK-2,confirmed,(This SC has at least one comment pending solution from the BIPM)
+EM/DC-2.1.6::ELRE.ELRE-1.ITSK-1,EM/DC-2.1.6,ELRE.ELRE-1.ITSK-1,pending BIPM,[CP-BIPM] ITS-90 temperature will no longer be subdivided by measured in Kelvin and measured in degree celsius. Does this relates to temperature intervals?
+EM/DC-2.1.6::ELRE.ELRE-1.ITSK-2,EM/DC-2.1.6,ELRE.ELRE-1.ITSK-2,pending BIPM,
 EM/DC-2.1.6::ELRE.ELRE-1.POWR-1,EM/DC-2.1.6,ELRE.ELRE-1.POWR-1,confirmed,(This SC has at least one comment pending solution from the BIPM)
 EM/DC-2.1.6::ELRE.ELRE-1.PRES-1,EM/DC-2.1.6,ELRE.ELRE-1.PRES-1,pending BIPM,[IB-NMIA] Add ohm per ohm per ampere --- [CP-BIPM] Quantity ELRE.ELRE-1.ELCU-1 will be added
 EM/DC-2.1.6::ELRE.ITSK-1,EM/DC-2.1.6,ELRE.ITSK-1,confirmed,(This SC has at least one comment pending solution from the BIPM)
