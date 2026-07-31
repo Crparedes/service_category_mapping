@@ -20773,14 +20773,16 @@ vertical-align: -.125em;
 </div></div>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  var label = "CCEM";
+  var hash = window.location.hash.replace('#', '');
+  var defaultLabel = "CCEM";
+  var target = hash || defaultLabel;
   var links = document.querySelectorAll('.panel-tabset .nav-link');
   links.forEach(function(link) {
-    if (link.textContent.trim() === label) { link.click(); }
+    if (link.textContent.trim() === target) { link.click(); }
   });
 });
 </script>
-<hr>
+<p>``` ___</p>
 </div>
 </div>
 </div>
@@ -21008,25 +21010,15 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
 
 
 
-document.addEventListener('DOMContentLoaded', function() {
 
-  var hash = window.location.hash;
 
-  if (hash) {
-
-    var link = document.querySelector('.panel-tabset a.nav-link[href="' + hash + '"]');
-
-    if (link) { link.click(); }
-
-  }
-
-});
-
-document.querySelectorAll('.panel-tabset a.nav-link').forEach(function(link) {
+document.querySelectorAll('.panel-tabset .nav-link').forEach(function(link) {
 
   link.addEventListener('shown.bs.tab', function(e) {
 
-    history.replaceState(null, '', e.target.getAttribute('href'));
+    var label = e.target.textContent.trim();
+
+    history.replaceState(null, '', '#' + label);
 
   });
 

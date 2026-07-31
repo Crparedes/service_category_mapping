@@ -107,16 +107,11 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
   URL.revokeObjectURL(url);
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-  var hash = window.location.hash;
-  if (hash) {
-    var link = document.querySelector('.panel-tabset a.nav-link[href="' + hash + '"]');
-    if (link) { link.click(); }
-  }
-});
-document.querySelectorAll('.panel-tabset a.nav-link').forEach(function(link) {
+
+document.querySelectorAll('.panel-tabset .nav-link').forEach(function(link) {
   link.addEventListener('shown.bs.tab', function(e) {
-    history.replaceState(null, '', e.target.getAttribute('href'));
+    var label = e.target.textContent.trim();
+    history.replaceState(null, '', '#' + label);
   });
 });
 
