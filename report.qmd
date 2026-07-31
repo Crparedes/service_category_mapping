@@ -741,7 +741,7 @@ ___
 walk(areas, function(code) {
   res <- results[[code]]
   cc <- area_cc_label[[code]]
-  cat("\n\n## ", cc, "\n\n", sep = "")
+  cat("\n\n## ", cc, " {#", cc, "}\n\n", sep = "")
   cat("\n\n**", res$title, "**\n\n", sep = "")
   cat("\n\n", res$summary_text, "\n\n", sep = "")
   cat("\n\n```{=html}\n", res$progress_bar_html, "\n```\n\n", sep = "")
