@@ -12,19 +12,12 @@ L/DimMet-2.1.4::LENG,L/DimMet-2.1.4,LENG,confirmed,
 L/DimMet-2.1.5::LENG,L/DimMet-2.1.5,LENG,confirmed,
 L/DimMet-2.1.6::LENG,L/DimMet-2.1.6,LENG,confirmed,
 L/DimMet-2.1.7::LENG,L/DimMet-2.1.7,LENG,confirmed,
-L/DimMet-2.2.1::ITSC-1,L/DimMet-2.2.1,ITSC-1,pending CC,[CP-BIPM] Does this relate to ITS-90 scale temperature or to temperature differences? See comment in CCT Serv. Cat. (T/T-1.1.1::ITSK). ---
-L/DimMet-2.2.1::ITSK-1,L/DimMet-2.2.1,ITSK-1,pending CC,(See L/DimMet-2.2.1::ITSC-1).
 L/DimMet-2.2.1::LENG,L/DimMet-2.2.1,LENG,confirmed,
 L/DimMet-2.2.1::TEXL,L/DimMet-2.2.1,TEXL,confirmed,
-L/DimMet-2.2.2::ITSC-1,L/DimMet-2.2.2,ITSC-1,pending CC,(See L/DimMet-2.2.1::ITSC-1)
-L/DimMet-2.2.2::ITSK-1,L/DimMet-2.2.2,ITSK-1,pending CC,(See L/DimMet-2.2.1::ITSC-1)
 L/DimMet-2.2.2::LENG,L/DimMet-2.2.2,LENG,confirmed,
 L/DimMet-2.2.2::TEXL,L/DimMet-2.2.2,TEXL,confirmed,
 L/DimMet-2.2.3::LENG,L/DimMet-2.2.3,LENG,confirmed,
-L/DimMet-2.2.4::ITSC-1,L/DimMet-2.2.4,ITSC-1,pending BIPM,[AW-NPL] Delete quantity 'per temperature'
-L/DimMet-2.2.4::ITSK-1,L/DimMet-2.2.4,ITSK-1,pending BIPM,[AW-NPL] Delete quantity 'per temperature'
 L/DimMet-2.2.4::LENG,L/DimMet-2.2.4,LENG,confirmed,
-L/DimMet-2.2.4::TEXL,L/DimMet-2.2.4,TEXL,pending BIPM,[AW-NPL] Delete Coefficient thermal expansion
 L/DimMet-2.2.5::LENG,L/DimMet-2.2.5,LENG,confirmed,
 L/DimMet-2.2.6::LENG,L/DimMet-2.2.6,LENG,confirmed,
 L/DimMet-2.3.1::LENG,L/DimMet-2.3.1,LENG,confirmed,
@@ -50,11 +43,9 @@ L/DimMet-3.3.1::ANGP,L/DimMet-3.3.1,ANGP,confirmed,
 L/DimMet-3.3.2::ANGP,L/DimMet-3.3.2,ANGP,confirmed,
 L/DimMet-3.3.3::ANGP,L/DimMet-3.3.3,ANGP,confirmed,
 L/DimMet-3.3.4::ANGP,L/DimMet-3.3.4,ANGP,confirmed,
-L/DimMet-3.3.4::LENG,L/DimMet-3.3.4,LENG,pending BIPM,[AW-NPL] Delete quantity 'length'
 L/DimMet-3.3.4::LENG.LENG-1,L/DimMet-3.3.4,LENG.LENG-1,confirmed,
 L/DimMet-3.3.5::ANGP,L/DimMet-3.3.5,ANGP,confirmed,
 L/DimMet-3.3.6::ANGP,L/DimMet-3.3.6,ANGP,confirmed,
-L/DimMet-3.3.7::ANGP,L/DimMet-3.3.7,ANGP,pending BIPM,"[AW-NPL] Individual service L/DimMet-3.3.7 is missing, it should have quantities plane angle/rad and length/m"
 L/DimMet-3.4.1::ANGP,L/DimMet-3.4.1,ANGP,confirmed,
 L/DimMet-3.4.2::ANGP,L/DimMet-3.4.2,ANGP,confirmed,
 L/DimMet-3.4.2::LENG,L/DimMet-3.4.2,LENG,confirmed,
@@ -77,9 +68,7 @@ L/DimMet-4.3.2::LENG,L/DimMet-4.3.2,LENG,confirmed,
 L/DimMet-4.3.3::LENG,L/DimMet-4.3.3,LENG,confirmed,
 L/DimMet-4.4.1::LENG,L/DimMet-4.4.1,LENG,confirmed,
 L/DimMet-4.4.2::LENG,L/DimMet-4.4.2,LENG,confirmed,
-L/DimMet-4.5.1::LENG-1,L/DimMet-4.5.1,LENG-1,pending BIPM,[AW-NPL] Need to add length/m as a quantity
 L/DimMet-5.1.1::LENG,L/DimMet-5.1.1,LENG,confirmed,
-L/DimMet-5.1.2::LENG,L/DimMet-5.1.2,LENG,pending BIPM,[AW-NPL] Need to add plane angle/rad as a quantity
 L/DimMet-5.1.3::LENG,L/DimMet-5.1.3,LENG,confirmed,
 L/DimMet-5.1.4::LENG,L/DimMet-5.1.4,LENG,confirmed,
 L/DimMet-5.1.5::ANGP,L/DimMet-5.1.5,ANGP,confirmed,
@@ -137,12 +126,23 @@ L/DimMet-6.1.7::LENG,L/DimMet-6.1.7,LENG,confirmed,
 L/DimMet-6.1.8::LENG,L/DimMet-6.1.8,LENG,confirmed,
 L/DimMet-6.1.9::LENG,L/DimMet-6.1.9,LENG,confirmed,
 L/DimMet-6.2.1::LENG,L/DimMet-6.2.1,LENG,confirmed,
-L/DimMet-6.3.1::ITSC-1,L/DimMet-6.3.1,ITSC-1,pending CC,(See L/DimMet-2.2.1::ITSC-1)
-L/DimMet-6.3.1::ITSK-1,L/DimMet-6.3.1,ITSK-1,pending CC,(See L/DimMet-2.2.1::ITSC-1)
 L/DimMet-6.3.1::TEXL,L/DimMet-6.3.1,TEXL,confirmed,
 L/DimMet-6.4.1::LENG,L/DimMet-6.4.1,LENG,confirmed,
 L/DimMet-6.5.1::LENG,L/DimMet-6.5.1,LENG,confirmed,
 L/DimMet-6.5.2::LENG,L/DimMet-6.5.2,LENG,confirmed,
 L/DimMet-6.6.1::LENG,L/DimMet-6.6.1,LENG,confirmed,
+L/DimMet-2.2.4::ITSC-1,L/DimMet-2.2.4,ITSC-1,pending BIPM,[AW-NPL] Delete quantity 'per temperature'
+L/DimMet-2.2.4::ITSK-1,L/DimMet-2.2.4,ITSK-1,pending BIPM,[AW-NPL] Delete quantity 'per temperature'
+L/DimMet-2.2.4::TEXL,L/DimMet-2.2.4,TEXL,pending BIPM,[AW-NPL] Delete Coefficient thermal expansion
+L/DimMet-3.3.4::LENG,L/DimMet-3.3.4,LENG,pending BIPM,[AW-NPL] Delete quantity 'length'
+L/DimMet-3.3.7::ANGP,L/DimMet-3.3.7,ANGP,pending BIPM,"[AW-NPL] Individual service L/DimMet-3.3.7 is missing, it should have quantities plane angle/rad and length/m"
+L/DimMet-4.5.1::LENG-1,L/DimMet-4.5.1,LENG-1,pending BIPM,[AW-NPL] Need to add length/m as a quantity
+L/DimMet-5.1.2::LENG,L/DimMet-5.1.2,LENG,pending BIPM,[AW-NPL] Need to add plane angle/rad as a quantity
 L/DimMet-6.7.1::,L/DimMet-6.7.1,,pending BIPM,[CP-BIPM] This service was deleted in Version 13 of DimVIM. Should be deleted ---
 L/DimMet-6.7.2::,L/DimMet-6.7.2,,pending BIPM,[CP-BIPM] This service was deleted in Version 13 of DimVIM. Should be deleted ---
+L/DimMet-2.2.1::ITSC-1,L/DimMet-2.2.1,ITSC-1,pending BIPM,"[CP-BIPM] Does this relate to ITS-90 scale temperature or to temperature differences? See comment in CCT Serv. Cat. (T/T-1.1.1::ITSK). --- [AW-NPL] service categories require quantities of ‘inverse temperature differences’, and not ‘inverse temperature scales’. They all concern measurement of thermal expansion.As CCT is planning to merge ITSC and ITSK and define a new quantity which is ‘temperature difference’ we can use that here. --- [CP-BIPM] We wil implement the changes"
+L/DimMet-2.2.1::ITSK-1,L/DimMet-2.2.1,ITSK-1,pending BIPM,(See L/DimMet-2.2.1::ITSC-1).
+L/DimMet-2.2.2::ITSC-1,L/DimMet-2.2.2,ITSC-1,pending BIPM,(See L/DimMet-2.2.1::ITSC-1)
+L/DimMet-2.2.2::ITSK-1,L/DimMet-2.2.2,ITSK-1,pending BIPM,(See L/DimMet-2.2.1::ITSC-1)
+L/DimMet-6.3.1::ITSC-1,L/DimMet-6.3.1,ITSC-1,pending BIPM,(See L/DimMet-2.2.1::ITSC-1)
+L/DimMet-6.3.1::ITSK-1,L/DimMet-6.3.1,ITSK-1,pending BIPM,(See L/DimMet-2.2.1::ITSC-1)

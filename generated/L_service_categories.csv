@@ -12,12 +12,12 @@ L/DimMet-2.1.4::LENG,L/DimMet-2.1.4,Dimensional metrology,Linear dimensions,Leng
 L/DimMet-2.1.5::LENG,L/DimMet-2.1.5,Dimensional metrology,Linear dimensions,Length instruments,"One-dimension displacement transducer or actuator (LVDT, PZT, etc.)",assigned,LENG,length,m,confirmed,
 L/DimMet-2.1.6::LENG,L/DimMet-2.1.6,Dimensional metrology,Linear dimensions,Length instruments,Gauge block comparators,assigned,LENG,length,m,confirmed,
 L/DimMet-2.1.7::LENG,L/DimMet-2.1.7,Dimensional metrology,Linear dimensions,Length instruments,Dial-indicator tester,assigned,LENG,length,m,confirmed,
-L/DimMet-2.2.1::ITSC-1,L/DimMet-2.2.1,Dimensional metrology,Linear dimensions,End standards,Gauge block,assigned,ITSC-1,ITS-90 temperature (°C)⁻¹,°C⁻¹,pending CC,[CP-BIPM] Does this relate to ITS-90 scale temperature or to temperature differences? See comment in CCT Serv. Cat. (T/T-1.1.1::ITSK). ---
-L/DimMet-2.2.1::ITSK-1,L/DimMet-2.2.1,Dimensional metrology,Linear dimensions,End standards,Gauge block,assigned,ITSK-1,ITS-90 temperature (K)⁻¹,K⁻¹,pending CC,(See L/DimMet-2.2.1::ITSC-1).
+L/DimMet-2.2.1::ITSC-1,L/DimMet-2.2.1,Dimensional metrology,Linear dimensions,End standards,Gauge block,assigned,ITSC-1,ITS-90 temperature (°C)⁻¹,°C⁻¹,pending BIPM,"[CP-BIPM] Does this relate to ITS-90 scale temperature or to temperature differences? See comment in CCT Serv. Cat. (T/T-1.1.1::ITSK). --- [AW-NPL] service categories require quantities of ‘inverse temperature differences’, and not ‘inverse temperature scales’. They all concern measurement of thermal expansion.As CCT is planning to merge ITSC and ITSK and define a new quantity which is ‘temperature difference’ we can use that here. --- [CP-BIPM] We wil implement the changes"
+L/DimMet-2.2.1::ITSK-1,L/DimMet-2.2.1,Dimensional metrology,Linear dimensions,End standards,Gauge block,assigned,ITSK-1,ITS-90 temperature (K)⁻¹,K⁻¹,pending BIPM,(See L/DimMet-2.2.1::ITSC-1).
 L/DimMet-2.2.1::LENG,L/DimMet-2.2.1,Dimensional metrology,Linear dimensions,End standards,Gauge block,assigned,LENG,length,m,confirmed,
 L/DimMet-2.2.1::TEXL,L/DimMet-2.2.1,Dimensional metrology,Linear dimensions,End standards,Gauge block,assigned,TEXL,thermal expansion coefficient (linear),m·m⁻¹·K⁻¹,confirmed,
-L/DimMet-2.2.2::ITSC-1,L/DimMet-2.2.2,Dimensional metrology,Linear dimensions,End standards,Length bar (long gauge block),assigned,ITSC-1,ITS-90 temperature (°C)⁻¹,°C⁻¹,pending CC,(See L/DimMet-2.2.1::ITSC-1)
-L/DimMet-2.2.2::ITSK-1,L/DimMet-2.2.2,Dimensional metrology,Linear dimensions,End standards,Length bar (long gauge block),assigned,ITSK-1,ITS-90 temperature (K)⁻¹,K⁻¹,pending CC,(See L/DimMet-2.2.1::ITSC-1)
+L/DimMet-2.2.2::ITSC-1,L/DimMet-2.2.2,Dimensional metrology,Linear dimensions,End standards,Length bar (long gauge block),assigned,ITSC-1,ITS-90 temperature (°C)⁻¹,°C⁻¹,pending BIPM,(See L/DimMet-2.2.1::ITSC-1)
+L/DimMet-2.2.2::ITSK-1,L/DimMet-2.2.2,Dimensional metrology,Linear dimensions,End standards,Length bar (long gauge block),assigned,ITSK-1,ITS-90 temperature (K)⁻¹,K⁻¹,pending BIPM,(See L/DimMet-2.2.1::ITSC-1)
 L/DimMet-2.2.2::LENG,L/DimMet-2.2.2,Dimensional metrology,Linear dimensions,End standards,Length bar (long gauge block),assigned,LENG,length,m,confirmed,
 L/DimMet-2.2.2::TEXL,L/DimMet-2.2.2,Dimensional metrology,Linear dimensions,End standards,Length bar (long gauge block),assigned,TEXL,thermal expansion coefficient (linear),m·m⁻¹·K⁻¹,confirmed,
 L/DimMet-2.2.3::LENG,L/DimMet-2.2.3,Dimensional metrology,Linear dimensions,End standards,Plane or thread micrometer setting rod,assigned,LENG,length,m,confirmed,
@@ -137,8 +137,8 @@ L/DimMet-6.1.7::LENG,L/DimMet-6.1.7,Dimensional metrology,Various dimensional,Ha
 L/DimMet-6.1.8::LENG,L/DimMet-6.1.8,Dimensional metrology,Various dimensional,Hand instruments,Dial gauge,assigned,LENG,length,m,confirmed,
 L/DimMet-6.1.9::LENG,L/DimMet-6.1.9,Dimensional metrology,Various dimensional,Hand instruments,"Snap gauge (internal, external)",assigned,LENG,length,m,confirmed,
 L/DimMet-6.2.1::LENG,L/DimMet-6.2.1,Dimensional metrology,Various dimensional,Pressure artefacts,Piston - cylinder assembly,assigned,LENG,length,m,confirmed,
-L/DimMet-6.3.1::ITSC-1,L/DimMet-6.3.1,Dimensional metrology,Various dimensional,Thermal expansivity,Thermal expansion artefact,assigned,ITSC-1,ITS-90 temperature (°C)⁻¹,°C⁻¹,pending CC,(See L/DimMet-2.2.1::ITSC-1)
-L/DimMet-6.3.1::ITSK-1,L/DimMet-6.3.1,Dimensional metrology,Various dimensional,Thermal expansivity,Thermal expansion artefact,assigned,ITSK-1,ITS-90 temperature (K)⁻¹,K⁻¹,pending CC,(See L/DimMet-2.2.1::ITSC-1)
+L/DimMet-6.3.1::ITSC-1,L/DimMet-6.3.1,Dimensional metrology,Various dimensional,Thermal expansivity,Thermal expansion artefact,assigned,ITSC-1,ITS-90 temperature (°C)⁻¹,°C⁻¹,pending BIPM,(See L/DimMet-2.2.1::ITSC-1)
+L/DimMet-6.3.1::ITSK-1,L/DimMet-6.3.1,Dimensional metrology,Various dimensional,Thermal expansivity,Thermal expansion artefact,assigned,ITSK-1,ITS-90 temperature (K)⁻¹,K⁻¹,pending BIPM,(See L/DimMet-2.2.1::ITSC-1)
 L/DimMet-6.3.1::TEXL,L/DimMet-6.3.1,Dimensional metrology,Various dimensional,Thermal expansivity,Thermal expansion artefact,assigned,TEXL,thermal expansion coefficient (linear),m·m⁻¹·K⁻¹,confirmed,
 L/DimMet-6.4.1::LENG,L/DimMet-6.4.1,Dimensional metrology,Various dimensional,Long distance,Geodesic baseline,assigned,LENG,length,m,confirmed,
 L/DimMet-6.5.1::LENG,L/DimMet-6.5.1,Dimensional metrology,Various dimensional,Reference materials,Standard particle,assigned,LENG,length,m,confirmed,

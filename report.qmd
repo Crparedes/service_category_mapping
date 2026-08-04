@@ -718,15 +718,21 @@ editable_combined_table <- function(code, df) {
 ::: {.column-screen-inset}
 **The BIPM is working with the Consultative Committees of the CIPM (CCs) to make the CMCs machine-actionable.**
 
-The machine-actionability of the CMCs requires establishing a solid semantic link between the information in the [KCDB Appendix C](https://www.bipm.org/kcdb/cmc/advanced-search) and the knowledge model of the SI Reference Point. The first step is to relate each [KCDB service categories](https://www.bipm.org/en/cipm-mra/cipm-mra-documents/service-categories) to appropriate quantities and quantity expressions of the [SI Digital Framework](https://si-digital-framework.org/quantities). The mappings must be confirmed by experts in each CC. This webpage reports the confirmation status of these service category-to-quantity expression mappings, which are currently published as ontology graphs available in the [preproduction server](https://preprod.si-digital-framework.org/kcdb-sc) (only available for whitelisted IP addresses).
+The machine-actionability of the CMCs requires establishing a solid semantic link between the information in the [KCDB Appendix C](https://www.bipm.org/kcdb/cmc/advanced-search) and the knowledge model of the SI Reference Point. The first step is to relate each [KCDB service categories](https://www.bipm.org/en/cipm-mra/cipm-mra-documents/service-categories) to appropriate quantities and quantity expressions of the [SI Digital Framework](https://si-digital-framework.org/quantities). The mappings must be confirmed by experts in each CC. This webpage reports the confirmation status of these service category-to-quantity expression mappings, which are currently published as knowledge graphs in the [preproduction server](https://preprod.si-digital-framework.org/kcdb-sc) (only available for whitelisted IP addresses).
 
-The information for each CC's Service Categories is presented in each of the tabs in the panel below. It inccludes a short summary, a progress bar, and a table with one row for each mapping pair (an individual service category may have several rows, one per quantity expression). Each pair has a confirmation status value and a field to add optional comments:
+The information for each CC's Service Categories is presented in each of the tabs in the panel below. It inccludes a short summary, a progress bar, and a table with one row for each mapping pair (an individual service category may have several rows, one per quantity expression). Each pair has a confirmation status value:
 
 - <span class="status-badge status-confirmed">Confirmed:</span> The quantity assignment (name and units) has been <u>confirmed by the CC delegate</u>.
 - <span class="status-badge status-pending-bipm">Pending BIPM:</span> An <u>action is pending from the BIPM</u> (e.g. adding/removing a quantity mapping or updating the [SI Reference Point](https://preprod.si-digital-framework.org/SI) to support new units or unit expressions).
 - <span class="status-badge status-pending-cc">Pending CC:</span> Confirmation or feedback is <u>required from the CC delegate</u>.
 
-The CC delegate is entitled to modify the confirmation status and to add comments for his/her CC. If this is the case, <u>please download the updated csv file and share it with [Cristhian Paredes](mailto:cristhian.paredes@bipm.org) for updating of this report</u>. We kindly ask you to indicate your name and organization initials in square brackets before your comment, and to separate each comment by three dashes (e.g. `[FL-NMI] comment 1. --- [CP-BIPM] reply. --- [FL-NMI] comment 2.`)
+and the option to add details or comments.
+
+---
+
+For updating of this report, send your feedback to [Cristhian Paredes](mailto:cristhian.paredes@bipm.org). Please reference the **mapping_id** (e.g. `L/Laser-1.1.1::FREQ`) or the service category **notation** (e.g. `L/Laser-1.1.1`) for each topic addressed.
+
+Alternatively, to provide feedback for several entries, you can do it directly in the table of your CC by modifying the **confirmation_status** or adding a **comment** in the respective column. In that case, <u>please download the updated csv file and share it via email</u> (the webpage will not save changes on refreshing). We kindly ask you to indicate your name and organization initials in square brackets before your comment, and to separate each comment by three dashes (e.g. `[FL-NMI] comment 1. --- [CP-BIPM] reply. --- [FL-NMI] comment 2.`).
 
 ___
 
@@ -775,6 +781,6 @@ ___
 
 ::: {.column-screen-inset}
 
-<i>This [Quarto](https://quarto.org/) report was written in R with assistance from a Large Language Model (Anthropic's Claude, Sonnet 5, medium reasoning effort).</i>
+<i>This [Quarto](https://quarto.org/) report was written in [R Studio](https://docs.posit.co/ide/user/). A Large Language Model was used in part of the coding (querying the graphs with [SPARQL](https://www.w3.org/TR/sparql11-query/), reconstructing unit expressions from binary trees, visualizing tables, and generating progress bars and updated CSV files).</i>
 :::
 
