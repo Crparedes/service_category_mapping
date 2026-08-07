@@ -79,3 +79,26 @@ body { background-color: #FCFCFC ; }
   border-radius: 6px;
 }
 
+
+.unsaved-banner {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #fff3cd;
+  color: #664d03;
+  border-bottom: 1px solid #ffda6a;
+  padding: 16px 20px;
+  font-size: 1.1em;
+  line-height: 1.5;
+  display: none;
+}
+.unsaved-banner button {
+  margin-left: 16px;
+  background: transparent;
+  border: 1px solid #664d03;
+  border-radius: 4px;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-size: 0.9em;
+  color: #664d03;
+}

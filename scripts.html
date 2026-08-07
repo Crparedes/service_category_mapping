@@ -104,6 +104,13 @@ function downloadAnnotationsCsv(tableId, code, columns, exportCols) {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
+  
+  dirtyTables.delete(tableId);
+  if (dirtyTables.size === 0) {
+    var banner = document.getElementById('unsaved-changes-banner');
+    if (banner) banner.style.display = 'none';
+  }
+  
   URL.revokeObjectURL(url);
 }
 
@@ -113,6 +120,44 @@ document.querySelectorAll('.panel-tabset .nav-link').forEach(function(link) {
     var label = e.target.textContent.trim();
     history.replaceState(null, '', '#' + label);
   });
+});
+
+
+var dirtyTables = new Set();
+
+function showUnsavedBanner() {
+  var banner = document.getElementById('unsaved-changes-banner');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'unsaved-changes-banner';
+    banner.className = 'unsaved-banner';
+    banner.innerHTML = 'Changes in the tables are <strong>not saved automatically</strong>. ' +
+      'Please download the updated CSV file for each area you edited and share it with ' +
+      '<a href="mailto:cristhian.paredes@bipm.org" target="_blank">Cristhian Paredes</a> so the update can be applied.' +
+      ' <button type="button" onclick="document.getElementById(\'unsaved-changes-banner\').style.display=\'none\'">Dismiss</button>';
+    document.body.prepend(banner);
+  }
+  banner.style.display = 'block';
+}
+
+document.addEventListener('input', function(e) {
+  if (e.target.classList.contains('comment-cell')) {
+    var table = e.target.closest('table');
+    if (table) { dirtyTables.add(table.id); showUnsavedBanner(); }
+  }
+});
+document.addEventListener('change', function(e) {
+  if (e.target.classList.contains('status-cell')) {
+    var table = e.target.closest('table');
+    if (table) { dirtyTables.add(table.id); showUnsavedBanner(); }
+  }
+});
+
+window.addEventListener('beforeunload', function(e) {
+  if (dirtyTables.size > 0) {
+    e.preventDefault();
+    e.returnValue = '';
+  }
 });
 
 </script>
