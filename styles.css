@@ -102,3 +102,16 @@ body { background-color: #FCFCFC ; }
   font-size: 0.9em;
   color: #664d03;
 }
+
+
+/* "See latest conclusions" collapsible, above the download button */
+details.cc-comments { margin: 0 0 10px 0; font-size: 0.9em; }
+details.cc-comments > summary {
+  cursor: pointer; color: #2b4d7a; font-weight: 600; width: fit-content;
+}
+details.cc-comments > summary:hover { color: #1d3557; }
+details.cc-comments .cc-comments-body {
+  background: #f4f4f4; border-radius: 6px; padding: 6px 14px; margin-top: 6px;
+}
+details.cc-comments .cc-comments-body p { margin: 6px 0; }
+details.cc-comments .cc-comments-body ul { margin: 6px 0; padding-left: 1.2em; }

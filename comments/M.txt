@@ -1,0 +1,18 @@
+# M -- latest interactions and conclusions (shown under "See latest conclusions").
+# Lines starting with '#' are ignored. Blank line = new paragraph; "- " = list item.
+# Suggested structure:
+#   Last interaction: YYYY-MM-DD, with [name, organization]
+#   Status:            - ...
+#   Conclusions:       - ...
+#   Next steps:        - ...
+
+Last interaction: 2026-08-07
+Status:
+  - Waiting for a more formal review process by the CC delegates, including confirmation from the relevant WG Chairs.
+Conclusions:
+  - 
+  - 
+Next steps:
+  - CC Delegate: Submit the findings of the review process to BIPM
+  - BIPM:
+

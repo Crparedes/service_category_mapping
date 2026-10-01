@@ -31,6 +31,7 @@ library(htmltools)
 
 data_dir        <- "data"
 annotations_dir <- "annotations"
+comments_dir <- "comments"
 output_dir      <- "generated"
 dir_create(output_dir)
 dir_create(annotations_dir)
@@ -588,6 +589,30 @@ opt_html <- function(selected) {
   )
 }
 
+comments_details_html <- function(code) {
+  f <- path(comments_dir, paste0(code, ".txt"))
+  lines <- if (file_exists(f)) readLines(f, warn = FALSE, encoding = "UTF-8") else character(0)
+  lines <- sub("\\s+$", "", lines)
+  lines <- lines[!grepl("^#", lines)]
+  body <- if (!any(nzchar(lines))) {
+    "<p><em>No interactions recorded yet.</em></p>"
+  } else {
+    blocks <- split(lines, cumsum(!nzchar(lines)))
+    paste0(map_chr(blocks, function(b) {
+      b <- b[nzchar(b)]
+      if (length(b) == 0) return("")
+      esc <- htmltools::htmlEscape(b)
+      if (all(grepl("^- ", b))) {
+        paste0("<ul>", paste0("<li>", sub("^- ", "", esc), "</li>", collapse = ""), "</ul>")
+      } else {
+        paste0("<p>", paste(esc, collapse = "<br>"), "</p>")
+      }
+    }), collapse = "")
+  }
+  paste0("<details class=\"cc-comments\"><summary>See latest conclusions</summary>",
+         "<div class=\"cc-comments-body\">", body, "</div></details>")
+}
+
 editable_combined_table <- function(code, df) {
   cols <- names(df)
   table_id <- paste0("tbl-", code)
@@ -693,14 +718,17 @@ editable_combined_table <- function(code, df) {
 
   html <- paste0(
     "<div class=\"editable-qty-wrap\">",
+    comments_details_html(code),
     "<div class=\"table-toolbar\">",
     "<button type=\"button\" class=\"dl-btn\" onclick=\"downloadAnnotationsCsv('", table_id, "', '", code, "', ",
     cols_json, ", ", annotation_cols_json, ")\">",
     "Download updated CSV file for ", cc_label, "</button>",
     "<input type=\"text\" class=\"search-box\" placeholder=\"Filter rows...\" oninput=\"applyAllFilters('", table_id, "')\">",
     "</div>",
-    " <span class=\"dl-hint\">The table can be reorganized by clicking on any column header (default order by column <i>notation</i>). There is a general filter (above) and filters per each column that can be applied simultaneously. Use ",
-    "<code>=empty</code> to filter the rows with a missing field.</span>",
+#    " <span class=\"dl-hint\">The table can be reorganized by clicking on any column header (default order by column <i>notation</i>). There is a general filter (above) and filters per each column that can be applied simultaneously. Use ",
+#    "<code>=empty</code> to filter the rows with a missing field.</span>",
+#    "<br>",
+    " <span class=\"dl-hint\"><b>Note:</b> The unit expressions in column <code>si_unit</code> are the default for the quantity in <code>quantity_name</code>. However, other expressions dimensionally consistent will be accepted in the CMCs of that SC (e.g. a quantity set to radians per second will also accept degrees per hour. Dimensionless quantities will accept percent values.)</span>",
     "<div class=\"table-scroll\">",
     "<table id=\"", table_id, "\" class=\"editable-qty-table\">",
     colgroup_html,
@@ -718,7 +746,7 @@ editable_combined_table <- function(code, df) {
 ::: {.column-screen-inset}
 **The BIPM is working with the Consultative Committees of the CIPM (CCs) to make the CMCs machine-actionable.**
 
-The machine-actionability of the CMCs requires establishing a solid semantic link between the information in the [KCDB Appendix C](https://www.bipm.org/kcdb/cmc/advanced-search) and the knowledge model of the SI Reference Point. The first step is to relate each [KCDB service categories](https://www.bipm.org/en/cipm-mra/cipm-mra-documents/service-categories) to appropriate quantities and quantity expressions of the [SI Digital Framework](https://si-digital-framework.org/quantities). The mappings must be confirmed by experts in each CC. This webpage reports the confirmation status of these service category-to-quantity expression mappings, which are currently published as knowledge graphs in the [preproduction server](https://preprod.si-digital-framework.org/kcdb-sc) (only available for whitelisted IP addresses).
+The machine-actionability of the CMCs requires establishing a solid semantic link between the information in the [KCDB Appendix C](https://www.bipm.org/kcdb/cmc/advanced-search) and the knowledge models of the SI Digital Framework. The first step is to relate each [KCDB service categories](https://www.bipm.org/en/cipm-mra/cipm-mra-documents/service-categories) to appropriate quantities and quantity expressions of the [SI Digital Framework](https://si-digital-framework.org/quantities). The mappings must be confirmed by experts in each CC. This webpage reports the confirmation status of these service category-to-quantity expression mappings, which are currently published as knowledge graphs in the [preproduction server](https://preprod.si-digital-framework.org/kcdb-sc) (only available for whitelisted IP addresses).
 
 The information for each CC's Service Categories is presented in each of the tabs in the panel below. It inccludes a short summary, a progress bar, and a table with one row for each mapping pair (an individual service category may have several rows, one per quantity expression). Each pair has a confirmation status value:
 
@@ -752,8 +780,6 @@ walk(areas, function(code) {
   cat("\n\n", res$summary_text, "\n\n", sep = "")
   cat("\n\n```{=html}\n", res$progress_bar_html, "\n```\n\n", sep = "")
   # cat("\n\n **Note:** If you modify a confirmation status or add a comment, please download the updated csv file and share it with [Cristhian Paredes](mailto:cristhian.paredes@bipm.org) for updating. We kindly ask you to indicate your name and organization initials in square brackets before your comment, and to separate each comment by three dashes (e.g. `[FL-NMI] comment 1. --- [CP-BIPM] reply or request. --- [FL-NMI] comment 2.`).\n\n ")
-  cat("**Note:** The unit expression presented in the column `si_unit` is the default assigned to the quantity. However, other unit expressions that are dimensionally consistent will also be accepted in the CMCs of that service category (e.g. a quantity set to radians per second will also accept degrees per hour. Dimensionless quantities will accept percent values).\n\n ___ ")
-  
   cat("\n\n```{=html}\n", editable_combined_table(code, res$combined), "\n```\n\n", sep = "")
 })
 ```
@@ -781,6 +807,6 @@ ___
 
 ::: {.column-screen-inset}
 
-<i>This [Quarto](https://quarto.org/) report was written in [R Studio](https://docs.posit.co/ide/user/). A Large Language Model was used in part of the coding (querying the graphs with [SPARQL](https://www.w3.org/TR/sparql11-query/), reconstructing unit expressions from binary trees, visualizing tables, and generating progress bars and updated CSV files).</i>
+<i>This [Quarto](https://quarto.org/) report was written in [R Studio](https://docs.posit.co/ide/user/). A Large Language Model was used in part of the coding (querying the graphs with [SPARQL](https://www.w3.org/TR/sparql11-query/), reconstructing unit expressions from binary trees, visualizing tables, generating progress bars and generating updated CSV files).</i>
 :::
 
