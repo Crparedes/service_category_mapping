@@ -1,135 +1,135 @@
 mapping_id,notation,related_si_quantity,confirmation_status,comment
-AUV/A-1.1.1::PSNL,AUV/A-1.1.1,PSNL,pending CC,
-AUV/A-1.1.2::PHSS,AUV/A-1.1.2,PHSS,pending CC,
-AUV/A-1.2.1::PSNL,AUV/A-1.2.1,PSNL,pending CC,
-AUV/A-1.2.2::PHSS,AUV/A-1.2.2,PHSS,pending CC,
-AUV/A-1.2.3::DIRE,AUV/A-1.2.3,DIRE,pending CC,
-AUV/A-1.3.1::PSNL,AUV/A-1.3.1,PSNL,pending CC,
-AUV/A-1.3.2::PHSS,AUV/A-1.3.2,PHSS,pending CC,
-AUV/A-1.4.1::NORM,AUV/A-1.4.1,NORM,pending CC,
-AUV/A-2.1.1::SOPL,AUV/A-2.1.1,SOPL,pending CC,
-AUV/A-2.2.1::SOPL,AUV/A-2.2.1,SOPL,pending CC,
-AUV/A-3.1.1::SOPL,AUV/A-3.1.1,SOPL,pending CC,
-AUV/A-3.1.2::SOPL,AUV/A-3.1.2,SOPL,pending CC,
-AUV/A-3.1.3::SOPL,AUV/A-3.1.3,SOPL,pending CC,
-AUV/A-3.1.4::SOIL,AUV/A-3.1.4,SOIL,pending CC,
-AUV/A-4.1.1::SOPL,AUV/A-4.1.1,SOPL,pending CC,
-AUV/A-4.1.1::SYRL,AUV/A-4.1.1,SYRL,pending CC,
-AUV/A-4.1.2::ACIM,AUV/A-4.1.2,ACIM,pending CC,
-AUV/A-4.2.1::FORL,AUV/A-4.2.1,FORL,pending CC,
-AUV/A-4.2.2::MEIL,AUV/A-4.2.2,MEIL,pending CC,
-AUV/A-4.3.1::ELCH.FORC-1,AUV/A-4.3.1,ELCH.FORC-1,pending CC,
-AUV/A-4.3.2::PHSS,AUV/A-4.3.2,PHSS,pending CC,
-AUV/A-4.4.1::ELPD.FORC-1,AUV/A-4.4.1,ELPD.FORC-1,pending CC,
-AUV/A-4.4.2::PHSS,AUV/A-4.4.2,PHSS,pending CC,
-AUV/A-5.1.1::SOPL,AUV/A-5.1.1,SOPL,pending CC,
-AUV/A-5.1.2::DIRE,AUV/A-5.1.2,DIRE,pending CC,
-AUV/A-6.1.1::SOPL,AUV/A-6.1.1,SOPL,pending CC,
-AUV/A-6.1.2::SOPL,AUV/A-6.1.2,SOPL,pending CC,
-AUV/W-11.1.1::ELPD.PRES-1,AUV/W-11.1.1,ELPD.PRES-1,pending CC,
-AUV/W-11.1.2::PHSS,AUV/W-11.1.2,PHSS,pending CC,
-AUV/W-11.2.1::ELPD.PRES-1,AUV/W-11.2.1,ELPD.PRES-1,pending CC,
-AUV/W-11.2.1::PSNW,AUV/W-11.2.1,PSNW,pending CC,
-AUV/W-11.2.2::PHSS,AUV/W-11.2.2,PHSS,pending CC,
-AUV/W-12.1.1::ELPD.PRES-1,AUV/W-12.1.1,ELPD.PRES-1,pending CC,
-AUV/W-12.1.1::PSNW,AUV/W-12.1.1,PSNW,pending CC,
-AUV/W-12.1.2::PHSS,AUV/W-12.1.2,PHSS,pending CC,
-AUV/W-12.2.1::ELPD.PRES-1,AUV/W-12.2.1,ELPD.PRES-1,pending CC,
-AUV/W-12.2.1::PSNW,AUV/W-12.2.1,PSNW,pending CC,
-AUV/W-12.2.2::PHSS,AUV/W-12.2.2,PHSS,pending CC,
-AUV/W-13.1.1::POWR,AUV/W-13.1.1,POWR,pending CC,
-AUV/W-13.1.2::DIRE,AUV/W-13.1.2,DIRE,pending CC,
-AUV/W-13.1.3::PRES,AUV/W-13.1.3,PRES,pending CC,
-AUV/W-14.1.1::ELCO,AUV/W-14.1.1,ELCO,pending CC,
-AUV/W-14.1.2::DIRE,AUV/W-14.1.2,DIRE,pending CC,
-AUV/W-14.1.3::POWR,AUV/W-14.1.3,POWR,pending CC,
-AUV/V-21.1.1::ACCE,AUV/V-21.1.1,ACCE,pending CC,
-AUV/V-21.1.1::PHSS,AUV/V-21.1.1,PHSS,pending CC,
-AUV/V-21.1.2::ACCE,AUV/V-21.1.2,ACCE,pending CC,
-AUV/V-21.2.1::ACCE,AUV/V-21.2.1,ACCE,pending CC,
-AUV/V-21.2.2::ACCE,AUV/V-21.2.2,ACCE,pending CC,
-AUV/V-21.3.1::ELCH.ACCE-1,AUV/V-21.3.1,ELCH.ACCE-1,pending CC,
-AUV/V-21.3.1::PHSS,AUV/V-21.3.1,PHSS,pending CC,
-AUV/V-21.3.2::ELCH.ACCE-1,AUV/V-21.3.2,ELCH.ACCE-1,pending CC,
-AUV/V-21.3.3::ELPD.ACCE-1,AUV/V-21.3.3,ELPD.ACCE-1,pending CC,
-AUV/V-21.3.3::PHSS,AUV/V-21.3.3,PHSS,pending CC,
-AUV/V-21.3.4::ELPD.ACCE-1,AUV/V-21.3.4,ELPD.ACCE-1,pending CC,
-AUV/V-21.3.4::PHSS,AUV/V-21.3.4,PHSS,pending CC,
-AUV/V-21.3.5::ELCU.ACCE-1,AUV/V-21.3.5,ELCU.ACCE-1,pending CC,
-AUV/V-21.3.5::PHSS,AUV/V-21.3.5,PHSS,pending CC,
-AUV/V-21.4.1::ELPD.ACCE-1,AUV/V-21.4.1,ELPD.ACCE-1,pending CC,
-AUV/V-21.4.1::PHSS,AUV/V-21.4.1,PHSS,pending CC,
-AUV/V-21.4.2::ELPD.ACCE-1,AUV/V-21.4.2,ELPD.ACCE-1,pending CC,
-AUV/V-22.1.1::ACCA,AUV/V-22.1.1,ACCA,pending CC,
-AUV/V-22.1.2::ACCA,AUV/V-22.1.2,ACCA,pending CC,
-AUV/V-22.2.1::ACCA,AUV/V-22.2.1,ACCA,pending CC,
-AUV/V-22.3.1::ELCH.ACCA-1,AUV/V-22.3.1,ELCH.ACCA-1,pending CC,
-AUV/V-22.3.1::PHSS,AUV/V-22.3.1,PHSS,pending CC,
-AUV/V-22.3.3::ELPD.ACCA-1,AUV/V-22.3.3,ELPD.ACCA-1,pending CC,
-AUV/V-22.3.3::PHSS,AUV/V-22.3.3,PHSS,pending CC,
-AUV/V-22.3.5::ELCU.ACCE-1,AUV/V-22.3.5,ELCU.ACCE-1,pending CC,
-AUV/V-22.3.5::PHSS,AUV/V-22.3.5,PHSS,pending CC,
-AUV/V-22.4.1::ELPD.ACCA-1,AUV/V-22.4.1,ELPD.ACCA-1,pending CC,
-AUV/V-22.4.1::PHSS,AUV/V-22.4.1,PHSS,pending CC,
-AUV/V-23.1.1::FORC,AUV/V-23.1.1,FORC,pending CC,
-AUV/V-23.1.1::PHSS,AUV/V-23.1.1,PHSS,pending CC,
-AUV/V-23.1.2::FORC,AUV/V-23.1.2,FORC,pending CC,
-AUV/V-23.2.1::ELCH.FORC-1,AUV/V-23.2.1,ELCH.FORC-1,pending CC,
-AUV/V-23.2.1::PHSS,AUV/V-23.2.1,PHSS,pending CC,
-AUV/V-23.2.2::ELCH.FORC-1,AUV/V-23.2.2,ELCH.FORC-1,pending CC,
-AUV/V-23.2.2::PHSS,AUV/V-23.2.2,PHSS,pending CC,
-AUV/V-23.2.3::ELPD.FORC-1,AUV/V-23.2.3,ELPD.FORC-1,pending CC,
-AUV/V-23.2.3::PHSS,AUV/V-23.2.3,PHSS,pending CC,
-AUV/V-23.2.4::ELPD.FORC-1,AUV/V-23.2.4,ELPD.FORC-1,pending CC,
-AUV/V-23.2.4::PHSS,AUV/V-23.2.4,PHSS,pending CC,
-AUV/V-30.1.1::ELPD.ELCH-1,AUV/V-30.1.1,ELPD.ELCH-1,pending CC,
-AUV/V-30.1.1::PHSS,AUV/V-30.1.1,PHSS,pending CC,
-AUV/V-30.1.2::ELPD.ELPD-1,AUV/V-30.1.2,ELPD.ELPD-1,pending CC,
-AUV/V-30.1.2::PHSS,AUV/V-30.1.2,PHSS,pending CC,
-AUV/V-30.1.3::ELPD.ELCU-1,AUV/V-30.1.3,ELPD.ELCU-1,pending CC,
-AUV/V-30.1.3::PHSS,AUV/V-30.1.3,PHSS,pending CC,
-AUV/V-31.1.1::ACCE,AUV/V-31.1.1,ACCE,pending CC,
-AUV/V-31.1.2::PHSS,AUV/V-31.1.2,PHSS,pending CC,
-AUV/V-31.2.1::ACCE,AUV/V-31.2.1,ACCE,pending CC,
-AUV/V-32.1.1::ACCE,AUV/V-32.1.1,ACCE,pending CC,
-AUV/V-32.2.1::ACCE,AUV/V-32.2.1,ACCE,pending CC,
-AUV/V-33.1.1::ELCH.ACCE-1,AUV/V-33.1.1,ELCH.ACCE-1,pending CC,
-AUV/V-33.1.2::PHSS,AUV/V-33.1.2,PHSS,pending CC,
-AUV/V-33.2.1::ELCH.ACCE-1,AUV/V-33.2.1,ELCH.ACCE-1,pending CC,
-AUV/V-33.3.1::ELPD.ACCE-1,AUV/V-33.3.1,ELPD.ACCE-1,pending CC,
-AUV/V-33.3.2::PHSS,AUV/V-33.3.2,PHSS,pending CC,
-AUV/V-33.4.1::ELPD.ACCE-1,AUV/V-33.4.1,ELPD.ACCE-1,pending CC,
-AUV/V-33.5.1::ELCU.ACCE-1,AUV/V-33.5.1,ELCU.ACCE-1,pending CC,
-AUV/V-33.5.2::PHSS,AUV/V-33.5.2,PHSS,pending CC,
-AUV/V-33.6.1::ELCU.ACCE-1,AUV/V-33.6.1,ELCU.ACCE-1,pending CC,
-AUV/V-34.1.1::ACCA,AUV/V-34.1.1,ACCA,pending CC,
-AUV/V-34.2.1::ACCA,AUV/V-34.2.1,ACCA,pending CC,
-AUV/V-35.1.1::ACCA,AUV/V-35.1.1,ACCA,pending CC,
-AUV/V-35.2.1::ACCA,AUV/V-35.2.1,ACCA,pending CC,
-AUV/V-36.1.1::ELCH.ACCA-1,AUV/V-36.1.1,ELCH.ACCA-1,pending CC,
-AUV/V-36.1.2::PHSS,AUV/V-36.1.2,PHSS,pending CC,
-AUV/V-36.2.1::ELCH.ACCA-1,AUV/V-36.2.1,ELCH.ACCA-1,pending CC,
-AUV/V-36.3.1::ELPD.ACCA-1,AUV/V-36.3.1,ELPD.ACCA-1,pending CC,
-AUV/V-36.3.2::PHSS,AUV/V-36.3.2,PHSS,pending CC,
-AUV/V-36.4.1::ELPD.ACCA-1,AUV/V-36.4.1,ELPD.ACCA-1,pending CC,
-AUV/V-36.5.1::ELCU.ACCA-1,AUV/V-36.5.1,ELCU.ACCA-1,pending CC,
-AUV/V-36.5.2::PHSS,AUV/V-36.5.2,PHSS,pending CC,
-AUV/V-36.6.1::ELCU.ACCA-1,AUV/V-36.6.1,ELCU.ACCA-1,pending CC,
-AUV/V-37.1.1::FORC,AUV/V-37.1.1,FORC,pending CC,
-AUV/V-37.1.2::PHSS,AUV/V-37.1.2,PHSS,pending CC,
-AUV/V-37.2.1::FORC,AUV/V-37.2.1,FORC,pending CC,
-AUV/V-38.1.1::ELCH.FORC-1,AUV/V-38.1.1,ELCH.FORC-1,pending CC,
-AUV/V-38.1.2::PHSS,AUV/V-38.1.2,PHSS,pending CC,
-AUV/V-38.2.1::ELCH.FORC-1,AUV/V-38.2.1,ELCH.FORC-1,pending CC,
-AUV/V-38.3.1::ELPD.FORC-1,AUV/V-38.3.1,ELPD.FORC-1,pending CC,
-AUV/V-38.3.2::PHSS,AUV/V-38.3.2,PHSS,pending CC,
-AUV/V-38.4.1::ELPD.FORC-1,AUV/V-38.4.1,ELPD.FORC-1,pending CC,
-AUV/V-38.5.1::ELCU.FORC-1,AUV/V-38.5.1,ELCU.FORC-1,pending CC,
-AUV/V-38.5.2::PHSS,AUV/V-38.5.2,PHSS,pending CC,
-AUV/V-38.6.1::ELCU.FORC-1,AUV/V-38.6.1,ELCU.FORC-1,pending CC,
-AUV/V-45.1.1::ELPD.ELCH-1,AUV/V-45.1.1,ELPD.ELCH-1,pending CC,
-AUV/V-45.1.2::PHSS,AUV/V-45.1.2,PHSS,pending CC,
-AUV/V-45.2.1::ELPD.ELPD-1,AUV/V-45.2.1,ELPD.ELPD-1,pending CC,
-AUV/V-45.2.2::PHSS,AUV/V-45.2.2,PHSS,pending CC,
-AUV/V-45.3.1::ELPD.ELCU-1,AUV/V-45.3.1,ELPD.ELCU-1,pending CC,
-AUV/V-45.3.2::PHSS,AUV/V-45.3.2,PHSS,pending CC,
+AUV/A-1.1.1::PSNL,AUV/A-1.1.1,PSNL,confirmed,
+AUV/A-1.1.2::PHSS,AUV/A-1.1.2,PHSS,confirmed,
+AUV/A-1.2.1::PSNL,AUV/A-1.2.1,PSNL,confirmed,
+AUV/A-1.2.2::PHSS,AUV/A-1.2.2,PHSS,confirmed,
+AUV/A-1.2.3::DIRE,AUV/A-1.2.3,DIRE,confirmed,
+AUV/A-1.3.1::PSNL,AUV/A-1.3.1,PSNL,confirmed,
+AUV/A-1.3.2::PHSS,AUV/A-1.3.2,PHSS,confirmed,
+AUV/A-1.4.1::NORM,AUV/A-1.4.1,NORM,pending BIPM,"[TB-PTB] SC inactive, it is not (yet) needed and may or may never be created. [CP-BIPM] will be removed"
+AUV/A-2.1.1::SOPL,AUV/A-2.1.1,SOPL,confirmed,
+AUV/A-2.2.1::SOPL,AUV/A-2.2.1,SOPL,confirmed,
+AUV/A-3.1.1::SOPL,AUV/A-3.1.1,SOPL,confirmed,
+AUV/A-3.1.2::SOPL,AUV/A-3.1.2,SOPL,confirmed,
+AUV/A-3.1.3::SOPL,AUV/A-3.1.3,SOPL,confirmed,
+AUV/A-3.1.4::SOIL,AUV/A-3.1.4,SOIL,confirmed,
+AUV/A-4.1.1::SOPL,AUV/A-4.1.1,SOPL,confirmed,
+AUV/A-4.1.1::SYRL,AUV/A-4.1.1,SYRL,confirmed,
+AUV/A-4.1.2::ACIM,AUV/A-4.1.2,ACIM,confirmed,
+AUV/A-4.2.1::FORL,AUV/A-4.2.1,FORL,confirmed,
+AUV/A-4.2.2::MEIL,AUV/A-4.2.2,MEIL,confirmed,
+AUV/A-4.3.1::ELCH.FORC-1,AUV/A-4.3.1,ELCH.FORC-1,confirmed,
+AUV/A-4.3.2::PHSS,AUV/A-4.3.2,PHSS,confirmed,
+AUV/A-4.4.1::ELPD.FORC-1,AUV/A-4.4.1,ELPD.FORC-1,confirmed,
+AUV/A-4.4.2::PHSS,AUV/A-4.4.2,PHSS,confirmed,
+AUV/A-5.1.1::SOPL,AUV/A-5.1.1,SOPL,confirmed,
+AUV/A-5.1.2::DIRE,AUV/A-5.1.2,DIRE,confirmed,
+AUV/A-6.1.1::SOPL,AUV/A-6.1.1,SOPL,confirmed,
+AUV/A-6.1.2::SOPL,AUV/A-6.1.2,SOPL,confirmed,
+AUV/W-11.1.1::ELPD.PRES-1,AUV/W-11.1.1,ELPD.PRES-1,confirmed,
+AUV/W-11.1.2::PHSS,AUV/W-11.1.2,PHSS,confirmed,
+AUV/W-11.2.1::ELPD.PRES-1,AUV/W-11.2.1,ELPD.PRES-1,confirmed,[TB-PTB] If the database and the ontology are capable to deal with the two representations I would propose to keep both.
+AUV/W-11.2.1::PSNW,AUV/W-11.2.1,PSNW,confirmed,[TB-PTB] If the database and the ontology are capable to deal with the two representations I would propose to keep both.
+AUV/W-11.2.2::PHSS,AUV/W-11.2.2,PHSS,confirmed,
+AUV/W-12.1.1::ELPD.PRES-1,AUV/W-12.1.1,ELPD.PRES-1,confirmed,[TB-PTB] If the database and the ontology are capable to deal with the two representations I would propose to keep both.
+AUV/W-12.1.1::PSNW,AUV/W-12.1.1,PSNW,confirmed,[TB-PTB] If the database and the ontology are capable to deal with the two representations I would propose to keep both.
+AUV/W-12.1.2::PHSS,AUV/W-12.1.2,PHSS,confirmed,
+AUV/W-12.2.1::ELPD.PRES-1,AUV/W-12.2.1,ELPD.PRES-1,confirmed,[TB-PTB] If the database and the ontology are capable to deal with the two representations I would propose to keep both.
+AUV/W-12.2.1::PSNW,AUV/W-12.2.1,PSNW,confirmed,[TB-PTB] If the database and the ontology are capable to deal with the two representations I would propose to keep both.
+AUV/W-12.2.2::PHSS,AUV/W-12.2.2,PHSS,confirmed,
+AUV/W-13.1.1::POWR,AUV/W-13.1.1,POWR,confirmed,
+AUV/W-13.1.2::DIRE,AUV/W-13.1.2,DIRE,confirmed,
+AUV/W-13.1.3::PRES,AUV/W-13.1.3,PRES,confirmed,
+AUV/W-14.1.1::ELCO,AUV/W-14.1.1,ELCO,confirmed,
+AUV/W-14.1.2::DIRE,AUV/W-14.1.2,DIRE,confirmed,
+AUV/W-14.1.3::POWR,AUV/W-14.1.3,POWR,confirmed,
+AUV/V-21.1.1::ACCE,AUV/V-21.1.1,ACCE,pending CC,"[TB-PTB] discontinued (and) should be removed --- [CP-BIPM] There are 15 CMCs in this category, from VNIIM (Russia) and NMIM (Malaysia) ----"
+AUV/V-21.1.1::PHSS,AUV/V-21.1.1,PHSS,pending CC,"[TB-PTB] discontinued (and) should be removed --- [CP-BIPM] There are 15 CMCs in this category, from VNIIM (Russia) and NMIM (Malaysia) ----"
+AUV/V-21.1.2::ACCE,AUV/V-21.1.2,ACCE,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-21.2.1::ACCE,AUV/V-21.2.1,ACCE,pending CC,"[TB-PTB] discontinued (and) should be removed --- [CP-BIPM] There are 8 CMCs in this category, from INTI (Argentina), BEV (Austria), CEM (Spain), RISE (Sweden) and NIMT (Thailand) ---"
+AUV/V-21.2.2::ACCE,AUV/V-21.2.2,ACCE,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-21.3.1::ELCH.ACCE-1,AUV/V-21.3.1,ELCH.ACCE-1,pending CC,"[TB-PTB] discontinued (and) should be removed --- [CP-BIPM] There are 36 CMCs in this category, from INTI (Argentina), CMS (Chinese Taipei), NMIM (Malaysia), VNIIM (Russia), CEM (Spain), RISE (Sweden) and NIMT (Thailand) ---"
+AUV/V-21.3.1::PHSS,AUV/V-21.3.1,PHSS,pending CC,"[TB-PTB] discontinued (and) should be removed --- [CP-BIPM] There are 36 CMCs in this category, from INTI (Argentina), CMS (Chinese Taipei), NMIM (Malaysia), VNIIM (Russia), CEM (Spain), RISE (Sweden) and NIMT (Thailand) ---"
+AUV/V-21.3.2::ELCH.ACCE-1,AUV/V-21.3.2,ELCH.ACCE-1,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-21.3.3::ELPD.ACCE-1,AUV/V-21.3.3,ELPD.ACCE-1,pending CC,"[TB-PTB] discontinued (and) should be removed --- [CP-BIPM] There are 6 CMCs in this category, from BET (Austria), and NIMT (Thailand) ---"
+AUV/V-21.3.3::PHSS,AUV/V-21.3.3,PHSS,pending CC,"[TB-PTB] discontinued (and) should be removed --- [CP-BIPM] There are 6 CMCs in this category, from BET (Austria), and NIMT (Thailand) ---"
+AUV/V-21.3.4::ELPD.ACCE-1,AUV/V-21.3.4,ELPD.ACCE-1,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-21.3.4::PHSS,AUV/V-21.3.4,PHSS,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-21.3.5::ELCU.ACCE-1,AUV/V-21.3.5,ELCU.ACCE-1,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-21.3.5::PHSS,AUV/V-21.3.5,PHSS,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-21.4.1::ELPD.ACCE-1,AUV/V-21.4.1,ELPD.ACCE-1,pending CC,"[TB-PTB] discontinued (and) should be removed --- [CP-BIPM] There are 46 CMCs in this category, from CMS (Chinese Taipei), NMIM (Malaysia), VNIIM (Russia), CEM (Spain), and NIST (United States) ---"
+AUV/V-21.4.1::PHSS,AUV/V-21.4.1,PHSS,pending CC,"[TB-PTB] discontinued (and) should be removed --- [CP-BIPM] There are 46 CMCs in this category, from CMS (Chinese Taipei), NMIM (Malaysia), VNIIM (Russia), CEM (Spain), and NIST (United States) ---"
+AUV/V-21.4.2::ELPD.ACCE-1,AUV/V-21.4.2,ELPD.ACCE-1,pending CC,[TB-PTB] discontinued (and) should be removed --- [CP-BIPM] There is 1 CMC in this category from CMS (Chinese Taipei) ---
+AUV/V-22.1.1::ACCA,AUV/V-22.1.1,ACCA,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-22.1.2::ACCA,AUV/V-22.1.2,ACCA,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-22.2.1::ACCA,AUV/V-22.2.1,ACCA,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-22.3.1::ELCH.ACCA-1,AUV/V-22.3.1,ELCH.ACCA-1,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-22.3.1::PHSS,AUV/V-22.3.1,PHSS,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-22.3.3::ELPD.ACCA-1,AUV/V-22.3.3,ELPD.ACCA-1,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-22.3.3::PHSS,AUV/V-22.3.3,PHSS,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-22.3.5::ELCU.ACCE-1,AUV/V-22.3.5,ELCU.ACCE-1,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-22.3.5::PHSS,AUV/V-22.3.5,PHSS,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-22.4.1::ELPD.ACCA-1,AUV/V-22.4.1,ELPD.ACCA-1,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-22.4.1::PHSS,AUV/V-22.4.1,PHSS,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-23.1.1::FORC,AUV/V-23.1.1,FORC,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-23.1.1::PHSS,AUV/V-23.1.1,PHSS,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-23.1.2::FORC,AUV/V-23.1.2,FORC,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-23.2.1::ELCH.FORC-1,AUV/V-23.2.1,ELCH.FORC-1,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-23.2.1::PHSS,AUV/V-23.2.1,PHSS,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-23.2.2::ELCH.FORC-1,AUV/V-23.2.2,ELCH.FORC-1,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-23.2.2::PHSS,AUV/V-23.2.2,PHSS,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-23.2.3::ELPD.FORC-1,AUV/V-23.2.3,ELPD.FORC-1,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-23.2.3::PHSS,AUV/V-23.2.3,PHSS,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-23.2.4::ELPD.FORC-1,AUV/V-23.2.4,ELPD.FORC-1,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-23.2.4::PHSS,AUV/V-23.2.4,PHSS,pending BIPM,[TB-PTB] discontinued (and) should be removed
+AUV/V-30.1.1::ELPD.ELCH-1,AUV/V-30.1.1,ELPD.ELCH-1,pending CC,[TB-PTB] discontinued (and) should be removed --- [CP-BIPM] There is 1 CMC in this category from INTI (Argentina) ---
+AUV/V-30.1.1::PHSS,AUV/V-30.1.1,PHSS,pending CC,[TB-PTB] discontinued (and) should be removed --- [CP-BIPM] There is 1 CMC in this category from INTI (Argentina) ---
+AUV/V-30.1.2::ELPD.ELPD-1,AUV/V-30.1.2,ELPD.ELPD-1,pending CC,[TB-PTB] discontinued (and) should be removed --- [CP-BIPM] There is 1 CMC in this category from INTI (Argentina) ---
+AUV/V-30.1.2::PHSS,AUV/V-30.1.2,PHSS,pending CC,[TB-PTB] discontinued (and) should be removed --- [CP-BIPM] There is 1 CMC in this category from INTI (Argentina) ---
+AUV/V-30.1.3::ELPD.ELCU-1,AUV/V-30.1.3,ELPD.ELCU-1,pending CC,[TB-PTB] discontinued (and) should be removed --- [CP-BIPM]
+AUV/V-30.1.3::PHSS,AUV/V-30.1.3,PHSS,pending CC,[TB-PTB] discontinued (and) should be removed --- [CP-BIPM]
+AUV/V-31.1.1::ACCE,AUV/V-31.1.1,ACCE,confirmed,
+AUV/V-31.1.2::PHSS,AUV/V-31.1.2,PHSS,confirmed,
+AUV/V-31.2.1::ACCE,AUV/V-31.2.1,ACCE,confirmed,
+AUV/V-32.1.1::ACCE,AUV/V-32.1.1,ACCE,confirmed,
+AUV/V-32.2.1::ACCE,AUV/V-32.2.1,ACCE,confirmed,
+AUV/V-33.1.1::ELCH.ACCE-1,AUV/V-33.1.1,ELCH.ACCE-1,confirmed,
+AUV/V-33.1.2::PHSS,AUV/V-33.1.2,PHSS,confirmed,
+AUV/V-33.2.1::ELCH.ACCE-1,AUV/V-33.2.1,ELCH.ACCE-1,confirmed,
+AUV/V-33.3.1::ELPD.ACCE-1,AUV/V-33.3.1,ELPD.ACCE-1,confirmed,
+AUV/V-33.3.2::PHSS,AUV/V-33.3.2,PHSS,confirmed,
+AUV/V-33.4.1::ELPD.ACCE-1,AUV/V-33.4.1,ELPD.ACCE-1,confirmed,
+AUV/V-33.5.1::ELCU.ACCE-1,AUV/V-33.5.1,ELCU.ACCE-1,confirmed,
+AUV/V-33.5.2::PHSS,AUV/V-33.5.2,PHSS,confirmed,
+AUV/V-33.6.1::ELCU.ACCE-1,AUV/V-33.6.1,ELCU.ACCE-1,pending BIPM,"[TB-PTB] SC inactive, it is not (yet) needed and may or may never be created. [CP-BIPM] will be removed"
+AUV/V-34.1.1::ACCA,AUV/V-34.1.1,ACCA,confirmed,
+AUV/V-34.2.1::ACCA,AUV/V-34.2.1,ACCA,pending BIPM,"[TB-PTB] SC inactive, it is not (yet) needed and may or may never be created. [CP-BIPM] will be removed"
+AUV/V-35.1.1::ACCA,AUV/V-35.1.1,ACCA,confirmed,
+AUV/V-35.2.1::ACCA,AUV/V-35.2.1,ACCA,pending BIPM,"[TB-PTB] SC inactive, it is not (yet) needed and may or may never be created. [CP-BIPM] will be removed"
+AUV/V-36.1.1::ELCH.ACCA-1,AUV/V-36.1.1,ELCH.ACCA-1,confirmed,
+AUV/V-36.1.2::PHSS,AUV/V-36.1.2,PHSS,confirmed,
+AUV/V-36.2.1::ELCH.ACCA-1,AUV/V-36.2.1,ELCH.ACCA-1,pending BIPM,"[TB-PTB] SC inactive, it is not (yet) needed and may or may never be created. [CP-BIPM] will be removed"
+AUV/V-36.3.1::ELPD.ACCA-1,AUV/V-36.3.1,ELPD.ACCA-1,confirmed,
+AUV/V-36.3.2::PHSS,AUV/V-36.3.2,PHSS,confirmed,
+AUV/V-36.4.1::ELPD.ACCA-1,AUV/V-36.4.1,ELPD.ACCA-1,pending BIPM,"[TB-PTB] SC inactive, it is not (yet) needed and may or may never be created. [CP-BIPM] will be removed"
+AUV/V-36.5.1::ELCU.ACCA-1,AUV/V-36.5.1,ELCU.ACCA-1,confirmed,
+AUV/V-36.5.2::PHSS,AUV/V-36.5.2,PHSS,confirmed,
+AUV/V-36.6.1::ELCU.ACCA-1,AUV/V-36.6.1,ELCU.ACCA-1,pending BIPM,"[TB-PTB] SC inactive, it is not (yet) needed and may or may never be created. [CP-BIPM] will be removed"
+AUV/V-37.1.1::FORC,AUV/V-37.1.1,FORC,confirmed,
+AUV/V-37.1.2::PHSS,AUV/V-37.1.2,PHSS,confirmed,
+AUV/V-37.2.1::FORC,AUV/V-37.2.1,FORC,confirmed,
+AUV/V-38.1.1::ELCH.FORC-1,AUV/V-38.1.1,ELCH.FORC-1,confirmed,
+AUV/V-38.1.2::PHSS,AUV/V-38.1.2,PHSS,confirmed,
+AUV/V-38.2.1::ELCH.FORC-1,AUV/V-38.2.1,ELCH.FORC-1,confirmed,
+AUV/V-38.3.1::ELPD.FORC-1,AUV/V-38.3.1,ELPD.FORC-1,confirmed,
+AUV/V-38.3.2::PHSS,AUV/V-38.3.2,PHSS,confirmed,
+AUV/V-38.4.1::ELPD.FORC-1,AUV/V-38.4.1,ELPD.FORC-1,confirmed,
+AUV/V-38.5.1::ELCU.FORC-1,AUV/V-38.5.1,ELCU.FORC-1,pending BIPM,"[TB-PTB] SC inactive, it is not (yet) needed and may or may never be created. [CP-BIPM] will be removed"
+AUV/V-38.5.2::PHSS,AUV/V-38.5.2,PHSS,pending BIPM,"[TB-PTB] SC inactive, it is not (yet) needed and may or may never be created. [CP-BIPM] will be removed"
+AUV/V-38.6.1::ELCU.FORC-1,AUV/V-38.6.1,ELCU.FORC-1,pending BIPM,"[TB-PTB] SC inactive, it is not (yet) needed and may or may never be created. [CP-BIPM] will be removed"
+AUV/V-45.1.1::ELPD.ELCH-1,AUV/V-45.1.1,ELPD.ELCH-1,confirmed,
+AUV/V-45.1.2::PHSS,AUV/V-45.1.2,PHSS,confirmed,
+AUV/V-45.2.1::ELPD.ELPD-1,AUV/V-45.2.1,ELPD.ELPD-1,confirmed,
+AUV/V-45.2.2::PHSS,AUV/V-45.2.2,PHSS,confirmed,
+AUV/V-45.3.1::ELPD.ELCU-1,AUV/V-45.3.1,ELPD.ELCU-1,confirmed,
+AUV/V-45.3.2::PHSS,AUV/V-45.3.2,PHSS,confirmed,
