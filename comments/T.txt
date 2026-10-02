@@ -1,18 +1,17 @@
-# T -- latest interactions and conclusions (shown under "See latest conclusions").
-# Lines starting with '#' are ignored. Blank line = new paragraph; "- " = list item.
-# Suggested structure:
-#   Last interaction: YYYY-MM-DD, with [name, organization]
-#   Status:            - ...
-#   Conclusions:       - ...
-#   Next steps:        - ...
+# Status:
+  - Several quantity mappings were confirmed.
+  - Many changes are pending on the BIPM side, relating to defining new quantities.
+  - Quantities for temperature difference should be defined for all temperature scale.
 
-Last interaction: 202X-XX-XX
-Status:
-  - 
-  -
-Conclusions:
-  - 
-  -
-Next steps:
-  - CC Delegate:
-  - BIPM:
+# Challenges:
+  - **Celsius temperature** and **ITS-90 temperature (°C)** should not be quantities independent from **Thermodynamic temperature** and **ITS-90 temperature (K)**. Those are the same quantity expressed in different scales.
+    - Both redundant quantities are mentioned in the SI Brochure, the ISO 80000 series, and the *mise en pratique* of the Kelvin.
+  - Units for relative humidity:
+    - Request: use **%rh** as an unit. Discussion is ongoing.
+    - CP-BIPM: Recommendation to keep the unit one, where percentage will be accepted as a coherent symbol in the future (not yet implemented in the )
+  - Some SC are for obsolete technologies: Psychrometers (T/H-3.2.1). This should be defined by the CC in the SCs document.
+
+# Next steps:
+  - **CC delegates**: Review/confirm thermophysical quantities.
+  - **TG-SIDF**: Update the SIRP to support percentages.
+  - **BIPM**: Incorporate the requested quantities.

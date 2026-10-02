@@ -1,18 +1,15 @@
-# EM -- latest interactions and conclusions (shown under "See latest conclusions").
-# Lines starting with '#' are ignored. Blank line = new paragraph; "- " = list item.
-# Suggested structure:
-#   Last interaction: YYYY-MM-DD, with [name, organization]
-#   Status:            - ...
-#   Conclusions:       - ...
-#   Next steps:        - ...
+# Status:
+  - Several quantity mappings were confirmed. Work is pending with the BIPM to add additional requested quantities.
+  - Most service categories allow absolute quantities (e.g. voltage in V) and relative quantities (e.g. using V/V).  The system can accept more than one quantity per SC.
+  - Many service categories have more than one type of quantity. This is also accepted by the system.
 
-Last interaction: 202X-XX-XX
-Status:
-  - 
-  -
-Conclusions:
-  - 
-  -
-Next steps:
-  - CC Delegate:
-  - BIPM:
+# Challenges:
+  - Some SCs were deleted from the PDF file, but there are still CMCs in the KCDB.
+  - Most ratio logarithms mapped in CCEM are expressed in general terms, without declaring the reference condition. Is this something that should be considered? See, for example, ratio logarithms in CCAUV.
+
+# Next steps:
+  - **CC Delegate**: Ask laboratories using **dBc, dBm and dBi**, to reformat their CMCs.
+  - **CC Delegate**: Some service categories still have no quantity: EM/AC-7.2.1, EM/Mater-12.7.7, and EM/Mater-12.7.8
+  - **CC, NMIs, TC-Chairs, KCDB**: Edit CMCs classified under deleted service categories.
+  - **TG-SIDF**: Update the SIRP to support reactive power units (var) - Ongoing. Update the SIRP to support fractional exponent quantities - Ongoing.
+  - **BIPM**: Implement the pending quantities. Delete deprecated service categories that do not have CMCs in the KCDB

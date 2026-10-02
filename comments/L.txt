@@ -1,18 +1,5 @@
-# L -- latest interactions and conclusions (shown under "See latest conclusions").
-# Lines starting with '#' are ignored. Blank line = new paragraph; "- " = list item.
-# Suggested structure:
-#   Last interaction: YYYY-MM-DD, with [name, organization]
-#   Status:            - ...
-#   Conclusions:       - ...
-#   Next steps:        - ...
+# Status:
+  - All quantity mappings are either confirmed or waiting changes on the BIPM side
 
-Last interaction: 202X-XX-XX
-Status:
-  - 
-  -
-Conclusions:
-  - 
-  -
-Next steps:
-  - CC Delegate:
-  - BIPM:
+# Next steps:
+  - **BIPM**: Adjust the quantity mapping as requested.

@@ -1,18 +1,6 @@
-# RI -- latest interactions and conclusions (shown under "See latest conclusions").
-# Lines starting with '#' are ignored. Blank line = new paragraph; "- " = list item.
-# Suggested structure:
-#   Last interaction: YYYY-MM-DD, with [name, organization]
-#   Status:            - ...
-#   Conclusions:       - ...
-#   Next steps:        - ...
+# Status:
+  - Meeting scheduled for January 2027 to discuss the special service categories schema at the [CCRI-WG-Dig](https://www.bipm.org/en/committees/cc/ccri/wg/ccri-dt-wg).
 
-Last interaction: 202X-XX-XX
-Status:
-  - 
-  -
-Conclusions:
-  - 
-  -
-Next steps:
-  - CC Delegate:
-  - BIPM:
+# Next steps:
+  - **CC Delegate**: Communicate confirmation/requests of mappings to BIPM
+    - **BIPM**: Implement requests

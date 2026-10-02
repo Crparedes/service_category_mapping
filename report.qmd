@@ -591,23 +591,14 @@ opt_html <- function(selected) {
 
 comments_details_html <- function(code) {
   f <- path(comments_dir, paste0(code, ".txt"))
-  lines <- if (file_exists(f)) readLines(f, warn = FALSE, encoding = "UTF-8") else character(0)
-  lines <- sub("\\s+$", "", lines)
-  lines <- lines[!grepl("^#", lines)]
-  body <- if (!any(nzchar(lines))) {
+  txt <- if (file_exists(f)) paste(readLines(f, warn = FALSE, encoding = "UTF-8"), collapse = "\n") else ""
+  txt <- gsub("<!--.*?-->", "", txt)   # authoring notes (HTML comments), also multi-line
+  body <- if (!nzchar(trimws(txt))) {
     "<p><em>No interactions recorded yet.</em></p>"
   } else {
-    blocks <- split(lines, cumsum(!nzchar(lines)))
-    paste0(map_chr(blocks, function(b) {
-      b <- b[nzchar(b)]
-      if (length(b) == 0) return("")
-      esc <- htmltools::htmlEscape(b)
-      if (all(grepl("^- ", b))) {
-        paste0("<ul>", paste0("<li>", sub("^- ", "", esc), "</li>", collapse = ""), "</ul>")
-      } else {
-        paste0("<p>", paste(esc, collapse = "<br>"), "</p>")
-      }
-    }), collapse = "")
+    html <- commonmark::markdown_html(txt, extensions = TRUE)   # tables, strikethrough, autolinks
+    # open links in a new tab, as in the rest of the report
+    gsub("<a href=", "<a target=\"_blank\" rel=\"noopener\" href=", html, fixed = TRUE)
   }
   paste0("<details class=\"cc-comments\"><summary>See latest conclusions</summary>",
          "<div class=\"cc-comments-body\">", body, "</div></details>")
@@ -725,10 +716,10 @@ editable_combined_table <- function(code, df) {
     "Download updated CSV file for ", cc_label, "</button>",
     "<input type=\"text\" class=\"search-box\" placeholder=\"Filter rows...\" oninput=\"applyAllFilters('", table_id, "')\">",
     "</div>",
-#    " <span class=\"dl-hint\">The table can be reorganized by clicking on any column header (default order by column <i>notation</i>). There is a general filter (above) and filters per each column that can be applied simultaneously. Use ",
-#    "<code>=empty</code> to filter the rows with a missing field.</span>",
-#    "<br>",
     " <span class=\"dl-hint\"><b>Note:</b> The unit expressions in column <code>si_unit</code> are the default for the quantity in <code>quantity_name</code>. However, other expressions dimensionally consistent will be accepted in the CMCs of that SC (e.g. a quantity set to radians per second will also accept degrees per hour. Dimensionless quantities will accept percent values.)</span>",
+    "<br>",
+    " <span class=\"dl-hint\"><b>Note:</b> The table can be reorganized by clicking on column headers (default order by numbers in column <code>notation</code>). There is a general filter (above) and filters per each column that can be applied simultaneously. Use ",
+   "<code>=empty</code> to filter the rows with a missing field.</span>",
     "<div class=\"table-scroll\">",
     "<table id=\"", table_id, "\" class=\"editable-qty-table\">",
     colgroup_html,

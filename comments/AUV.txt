@@ -1,20 +1,32 @@
-# AUV -- latest interactions and conclusions (shown under "See latest conclusions").
-# Lines starting with '#' are ignored. Blank line = new paragraph; "- " = list item.
-# Suggested structure:
-#   Last interaction: YYYY-MM-DD, with [name, organization]
-#   Status:            - ...
-#   Conclusions:       - ...
-#   Next steps:        - ...
+# Status:
+  - Several quantity mappings were confirmed.
+  - Most SCs have a single quantity, but some others accept either relative values (in dB, specifying reference conditions) and absolute values (e.g. in V/Pa). The system can accept more than one quantity per SC.
+  - Several SCs that are 'obsolete' or 'not yet in use' must be deleted by the BIPM.
+  - However, some of the obsolete SC still have CMCs registered in the KCDB. Work is ongoing with the TC-Chairs to update these entries.
 
-Last interaction: 202X-XX-XX
-Status:
-  - 
-  -
-Conclusions:
-  - 
-  -
-Next steps:
-  - CC Delegate:
-  - BIPM:
+# Challenges:
+  - Gustavo Ripper and Thomas Bruns:
+
+    The services related to CCAUV include the following areas
+
+      - **V**- **V**ibration
+      - **A**- **A**coustics (Sound in air)
+      - **U**- **U**ltrasound
+      - **W**- Under**w**ater acoustics
+
+    A, U, V and W are used to identify the KCs carried out in these four areas.
+    Some time ago, for some unknown reason the U services in the KCDB started to be identified as W, where W included both Ultrasound and Underwater acoustics.
+    This is a little strange, because the CCAUV services are now referring to W services instead of U.
+    If we need to keep only 3 identifiers, then I find U better because it refers both to the first letter of Ultrasound and of Underwater, but if it is possible to the KCDB include 4 identifiers, then would it be possible to reinstate the A, U, V and W?
+      - "A"= (infra) sound in **a**ir,
+      - "U"= **u**ltrasound (air and water)
+      - "W"= "hydroacoustics under **w**ater"
+      - "V"= "mechanical **v**ibration and shock"
+
+# Next steps:
+  - **CC, NMIs, TC-Chairs, KCDB**: Fix CMCs that are allocated in old codes. Ongoing
+  - **Discussion** Do we need to create a new branch to better match the IDs used in KC?
+    - Considering U and W as subbranches of the branch Ultrasound and Sound in water is not feasible (new layer of classification).
+    - Can the migration be made automatically by the KCDB office?
 
 

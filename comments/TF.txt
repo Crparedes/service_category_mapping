@@ -1,18 +1,9 @@
-# TF -- latest interactions and conclusions (shown under "See latest conclusions").
-# Lines starting with '#' are ignored. Blank line = new paragraph; "- " = list item.
-# Suggested structure:
-#   Last interaction: YYYY-MM-DD, with [name, organization]
-#   Status:            - ...
-#   Conclusions:       - ...
-#   Next steps:        - ...
+# Status:
+  - Quantity mappings were revised in the past. No records are available, hence a new confirmation is pending.
 
-Last interaction: 202X-XX-XX
-Status:
-  - 
-  -
-Conclusions:
-  - 
-  -
-Next steps:
-  - CC Delegate:
-  - BIPM:
+# Challenges:
+  - By Carsten Rieck: _There are certain measurements that are difficult to place in the current scheme, such as calibrations of network stacks such has PTP paths or SFP delays. There is no guidance to those modernities._
+
+# Next steps:
+  - **CC Delegate**: Communicate confirmation/requests of mappings to BIPM
+    - **BIPM**: Implement requests

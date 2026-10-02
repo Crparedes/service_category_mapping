@@ -115,3 +115,10 @@ details.cc-comments .cc-comments-body {
 }
 details.cc-comments .cc-comments-body p { margin: 6px 0; }
 details.cc-comments .cc-comments-body ul { margin: 6px 0; padding-left: 1.2em; }
+
+details.cc-comments .cc-comments-body h1,
+details.cc-comments .cc-comments-body h2,
+details.cc-comments .cc-comments-body h3,
+details.cc-comments .cc-comments-body h4 { font-size: 1em; margin: 8px 0 4px 0; border: none; }
+details.cc-comments .cc-comments-body > :first-child { margin-top: 4px; }
+details.cc-comments .cc-comments-body > :last-child { margin-bottom: 4px; }

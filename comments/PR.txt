@@ -1,18 +1,10 @@
-# PR -- latest interactions and conclusions (shown under "See latest conclusions").
-# Lines starting with '#' are ignored. Blank line = new paragraph; "- " = list item.
-# Suggested structure:
-#   Last interaction: YYYY-MM-DD, with [name, organization]
-#   Status:            - ...
-#   Conclusions:       - ...
-#   Next steps:        - ...
+# Status:
+  - The discussion is ongoing regarding the confirmation of the mappings.
 
-Last interaction: 202X-XX-XX
-Status:
-  - 
-  -
-Conclusions:
-  - 
-  -
-Next steps:
-  - CC Delegate:
-  - BIPM:
+# Challenges:
+  - Spectral responsivity CMCs (e.g. service category PR/Detector-2.1.1) to be capable of being specified in terms of any of A/W, V/W, reading/W, W, dB, dBm (or combinations thereof)
+    - In a CMC specification ([CIPM MRA-G-13]()): "...CMC declarations have three unambiguous characteristics: 2.1 Measurand: Only one measurand is allowed per CMC
+
+# Next steps:
+  - **CC Delegate**: Communicate confirmation/requests of mappings to BIPM
+    - **BIPM**: Implement requests

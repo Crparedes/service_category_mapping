@@ -139,10 +139,10 @@ EM/AC-7.1.2::POWR.ELPD-1.ELCU-1,EM/AC-7.1.2,POWR.ELPD-1.ELCU-1,confirmed,(This S
 EM/AC-7.1.3::POWR,EM/AC-7.1.3,POWR,pending BIPM,"[IB-NMIA] Add var, var-second, joule, watt-hour, var-hour, volt-ampere, var per volt-ampere, watt-second per volt-ampere-second, watt-hour per watt-hour, var-hour per var-hour, joule per volt-ampere-second, var-second per volt-ampere-second --- [CP-BIPM] var-second will be added, but var-hour will not. Similar case for watt-hour per watt-hour, where hour will be replaced by second"
 EM/AC-7.1.3::POWR.ELPD-1.ELCU-1,EM/AC-7.1.3,POWR.ELPD-1.ELCU-1,confirmed,(This SC has at least one comment pending solution from the BIPM)
 EM/AC-7.2.1::,EM/AC-7.2.1,,pending CC,"[CP-BIPM] for service category ""DC power meters and sources: power meter, energy meter, power calibrator, energy calibrator"" there is no quantity assigned"
-EM/HV-8.1.1::ELPD,EM/HV-8.1.1,ELPD,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
-EM/HV-8.1.1::ELPD.ELPD-1,EM/HV-8.1.1,ELPD.ELPD-1,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
-EM/HV-8.1.2::ELPD,EM/HV-8.1.2,ELPD,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
-EM/HV-8.1.2::ELPD.ELPD-1,EM/HV-8.1.2,ELPD.ELPD-1,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/HV-8.1.1::ELPD,EM/HV-8.1.1,ELPD,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11. There are 8 CMCs in this SC in the KCDB ---
+EM/HV-8.1.1::ELPD.ELPD-1,EM/HV-8.1.1,ELPD.ELPD-1,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11. There are 8 CMCs in this SC in the KCDB ---
+EM/HV-8.1.2::ELPD,EM/HV-8.1.2,ELPD,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11. There are 13 CMCs in this SC in the KCDB ---
+EM/HV-8.1.2::ELPD.ELPD-1,EM/HV-8.1.2,ELPD.ELPD-1,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11. There are 13 CMCs in this SC in the KCDB ---
 EM/HV-8.1.3::ELPD,EM/HV-8.1.3,ELPD,confirmed,
 EM/HV-8.1.3::ELPD.ELPD-1,EM/HV-8.1.3,ELPD.ELPD-1,confirmed,
 EM/HV-8.1.4::ELPD,EM/HV-8.1.4,ELPD,confirmed,
@@ -163,10 +163,10 @@ EM/HV-8.2.3::ELRE.ELRE-1,EM/HV-8.2.3,ELRE.ELRE-1,confirmed,(This SC has at least
 EM/HV-8.2.3::PHAS,EM/HV-8.2.3,PHAS,confirmed,(This SC has at least one comment pending solution from the BIPM)
 EM/HV-8.2.4::ELRE,EM/HV-8.2.4,ELRE,confirmed,
 EM/HV-8.2.4::ELRE.ELRE-1,EM/HV-8.2.4,ELRE.ELRE-1,confirmed,
-EM/HV-8.3.1::ELPD,EM/HV-8.3.1,ELPD,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
-EM/HV-8.3.1::ELPD.ELPD-1,EM/HV-8.3.1,ELPD.ELPD-1,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
-EM/HV-8.3.2::ELPD,EM/HV-8.3.2,ELPD,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
-EM/HV-8.3.2::ELPD.ELPD-1,EM/HV-8.3.2,ELPD.ELPD-1,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/HV-8.3.1::ELPD,EM/HV-8.3.1,ELPD,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11. There are 6 CMCs in this SC in the KCDB ---
+EM/HV-8.3.1::ELPD.ELPD-1,EM/HV-8.3.1,ELPD.ELPD-1,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11. There are 6 CMCs in this SC in the KCDB ---
+EM/HV-8.3.2::ELPD,EM/HV-8.3.2,ELPD,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11. There are 9 CMCs in this SC in the KCDB ---
+EM/HV-8.3.2::ELPD.ELPD-1,EM/HV-8.3.2,ELPD.ELPD-1,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11. There are 13 CMCs in this SC in the KCDB ---
 EM/HV-8.3.3::ELPD,EM/HV-8.3.3,ELPD,confirmed,
 EM/HV-8.3.3::ELPD.ELPD-1,EM/HV-8.3.3,ELPD.ELPD-1,confirmed,
 EM/HV-8.3.4::ELPD.ELPD-1,EM/HV-8.3.4,ELPD.ELPD-1,pending BIPM,"[IB-NMIA] add arcminute --- [CP-BIPM] Phase angle, units rad, will be added with arcminute as equivalent"
@@ -179,19 +179,19 @@ EM/HV-8.4.1::ELPD,EM/HV-8.4.1,ELPD,confirmed,
 EM/HV-8.4.1::ELPD.ELPD-1,EM/HV-8.4.1,ELPD.ELPD-1,confirmed,
 EM/HV-8.4.1::TIME,EM/HV-8.4.1,TIME,confirmed,
 EM/HV-8.4.1::TIME.TIME-1,EM/HV-8.4.1,TIME.TIME-1,confirmed,
-EM/HV-8.4.2::,EM/HV-8.4.2,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/HV-8.4.2::,EM/HV-8.4.2,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11. There are 5 CMCs in this SC in the KCDB ---
 EM/HV-8.4.3::ELPD,EM/HV-8.4.3,ELPD,confirmed,
 EM/HV-8.4.3::ELPD.ELPD-1,EM/HV-8.4.3,ELPD.ELPD-1,confirmed,
 EM/HV-8.4.3::TIME,EM/HV-8.4.3,TIME,confirmed,
 EM/HV-8.4.3::TIME.TIME-1,EM/HV-8.4.3,TIME.TIME-1,confirmed,
-EM/HV-8.4.4::,EM/HV-8.4.4,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/HV-8.4.4::,EM/HV-8.4.4,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11. There are 3 CMCs in this SC in the KCDB ---
 EM/HV-8.4.5::ELCU,EM/HV-8.4.5,ELCU,confirmed,
 EM/HV-8.4.5::ELCU.ELCU-1,EM/HV-8.4.5,ELCU.ELCU-1,confirmed,
 EM/HV-8.4.5::TIME,EM/HV-8.4.5,TIME,confirmed,
 EM/HV-8.4.5::TIME.TIME-1,EM/HV-8.4.5,TIME.TIME-1,confirmed,
-EM/HV-8.4.6::,EM/HV-8.4.6,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
-EM/HV-8.4.7::,EM/HV-8.4.7,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
-EM/HV-8.4.8::,EM/HV-8.4.8,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/HV-8.4.6::,EM/HV-8.4.6,,pending BIPM,[CP-BIPM] SC is deleted from PDF file - Delete ---
+EM/HV-8.4.7::,EM/HV-8.4.7,,pending BIPM,[CP-BIPM] SC is deleted from PDF file - version 11 - delete ---
+EM/HV-8.4.8::,EM/HV-8.4.8,,pending BIPM,[CP-BIPM] SC is deleted from PDF file - version 11 - delete ---
 EM/HV-8.4.9::ELPD,EM/HV-8.4.9,ELPD,confirmed,
 EM/HV-8.4.9::ELPD.ELPD-1,EM/HV-8.4.9,ELPD.ELPD-1,confirmed,
 EM/HV-8.4.9::TIME,EM/HV-8.4.9,TIME,confirmed,
@@ -201,18 +201,18 @@ EM/HV-8.5.1::ELCH.ELCH-1,EM/HV-8.5.1,ELCH.ELCH-1,confirmed,
 EM/HV-8.5.2::ELRE,EM/HV-8.5.2,ELRE,pending BIPM,"[IB-NMIA] Add ampere, ampere per ampere --- [CP-BIPM] will do"
 EM/HV-8.5.2::TIME,EM/HV-8.5.2,TIME,confirmed,
 EM/HV-8.5.3::TIME,EM/HV-8.5.3,TIME,confirmed,
-EM/HV-8.6.1::,EM/HV-8.6.1,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
-EM/HV-8.6.2::,EM/HV-8.6.2,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/HV-8.6.1::,EM/HV-8.6.1,,pending BIPM,[CP-BIPM] SC is deleted from PDF file - version 11 - delete ---
+EM/HV-8.6.2::,EM/HV-8.6.2,,pending BIPM,[CP-BIPM] SC is deleted from PDF file - version 11 - delete ---
 EM/HV-8.6.3::ELCU.ELCU-1,EM/HV-8.6.3,ELCU.ELCU-1,confirmed,
 EM/HV-8.6.3::PHAS,EM/HV-8.6.3,PHAS,confirmed,
-EM/HV-8.6.4::,EM/HV-8.6.4,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/HV-8.6.4::,EM/HV-8.6.4,,pending BIPM,[CP-BIPM] SC is deleted from PDF file - version 11 - delete ---
 EM/HV-8.6.5::ELCU,EM/HV-8.6.5,ELCU,confirmed,
 EM/HV-8.6.5::ELCU.ELCU-1,EM/HV-8.6.5,ELCU.ELCU-1,confirmed,
 EM/HV-8.6.6::ELCU,EM/HV-8.6.6,ELCU,confirmed,
 EM/HV-8.6.6::ELCU.TIME-1,EM/HV-8.6.6,ELCU.TIME-1,confirmed,
 EM/HV-8.6.6::ENGY,EM/HV-8.6.6,ENGY,confirmed,
-EM/HV-8.7.1::,EM/HV-8.7.1,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
-EM/HV-8.7.2::,EM/HV-8.7.2,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/HV-8.7.1::,EM/HV-8.7.1,,pending BIPM,[CP-BIPM] SC is deleted from PDF file - version 11 - delete ---
+EM/HV-8.7.2::,EM/HV-8.7.2,,pending BIPM,[CP-BIPM] SC is deleted from PDF file - version 11 - delete ---
 EM/HV-8.7.3::ELCU.ELCU-1,EM/HV-8.7.3,ELCU.ELCU-1,confirmed,
 EM/HV-8.7.4::ELCU,EM/HV-8.7.4,ELCU,confirmed,
 EM/HV-8.7.4::ELCU.ELCU-1,EM/HV-8.7.4,ELCU.ELCU-1,confirmed,
@@ -235,7 +235,7 @@ EM/OtherDC-9.3.1::ELPD.ELPD-1,EM/OtherDC-9.3.1,ELPD.ELPD-1,confirmed,
 EM/OtherDC-9.3.2::ELPD,EM/OtherDC-9.3.2,ELPD,pending BIPM,"[IB-NMIA] Add volt per volt, ampere per ampere --- [CP-BIPM] will do"
 EM/OtherDC-9.3.2::HDIS,EM/OtherDC-9.3.2,HDIS,confirmed,
 EM/OtherDC-9.3.2::RLGB,EM/OtherDC-9.3.2,RLGB,pending BIPM,[IB-NMIA] Replace b by dB --- [CP-BIPM] Will do
-EM/OtherDC-9.3.3::,EM/OtherDC-9.3.3,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/OtherDC-9.3.3::,EM/OtherDC-9.3.3,,pending BIPM,[CP-BIPM] SC is deleted from PDF file - version 11 - delete ---
 EM/OtherDC-9.3.4::ELCU,EM/OtherDC-9.3.4,ELCU,confirmed,
 EM/OtherDC-9.3.4::ELPD,EM/OtherDC-9.3.4,ELPD,pending BIPM,[IB-NMIA] Add ampere per ampere --- [CP-BIPM] will do
 EM/OtherDC-9.3.4::ELPD.ELPD-1,EM/OtherDC-9.3.4,ELPD.ELPD-1,confirmed,
@@ -244,7 +244,7 @@ EM/OtherDC-9.3.5::ELPD,EM/OtherDC-9.3.5,ELPD,confirmed,
 EM/OtherDC-9.3.5::ELPD.ELPD-1,EM/OtherDC-9.3.5,ELPD.ELPD-1,confirmed,
 EM/OtherDC-9.3.5::FSLT,EM/OtherDC-9.3.5,FSLT,confirmed,
 EM/OtherDC-9.3.5::FSST,EM/OtherDC-9.3.5,FSST,confirmed,
-EM/OtherDC-9.3.6::,EM/OtherDC-9.3.6,,pending CC,[CP-BIPM] SC is deleted from PDF file - version 11 ---
+EM/OtherDC-9.3.6::,EM/OtherDC-9.3.6,,pending BIPM,[CP-BIPM] SC is deleted from PDF file - version 11 - delete ---
 EM/OtherDC-9.3.7::ELCU,EM/OtherDC-9.3.7,ELCU,confirmed,
 EM/OtherDC-9.3.7::ELCU.ELCU-1,EM/OtherDC-9.3.7,ELCU.ELCU-1,confirmed,
 EM/OtherDC-9.3.7::ELPD,EM/OtherDC-9.3.7,ELPD,confirmed,
