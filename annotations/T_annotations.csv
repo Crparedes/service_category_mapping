@@ -43,10 +43,10 @@ T/T-2.6.2::ITSC,T/T-2.6.2,ITSC,pending BIPM,(See comment in T/T-1.1.1::ITSK)
 T/T-2.6.2::ITSK,T/T-2.6.2,ITSK,pending BIPM,(See comment in T/T-1.1.1::ITSK)
 T/T-2.7.1::ITSC,T/T-2.7.1,ITSC,pending BIPM,(See comment in T/T-1.1.1::ITSK)
 T/T-2.7.1::ITSK,T/T-2.7.1,ITSK,pending BIPM,(See comment in T/T-1.1.1::ITSK)
-T/T-2.8.1::,T/T-2.8.1,,pending CC,
+T/T-2.8.1::,T/T-2.8.1,,pending BIPM,[PR-NRC] Define new quantity 'Bridge linearity' with unit one ---
 T/T-2.8.2::ITSC,T/T-2.8.2,ITSC,pending BIPM,(See comment in T/T-1.1.1::ITSK)
 T/T-2.8.2::ITSK,T/T-2.8.2,ITSK,pending BIPM,(See comment in T/T-1.1.1::ITSK)
-T/T-2.8.3::,T/T-2.8.3,,pending CC,
+T/T-2.8.3::,T/T-2.8.3,,pending BIPM,[PR-NRC] Assign quantity ITS-90 temperature ---
 T/T-2.8.4::ITSC,T/T-2.8.4,ITSC,pending BIPM,(See comment in T/T-1.1.1::ITSK)
 T/T-2.8.4::ITSK,T/T-2.8.4,ITSK,pending BIPM,(See comment in T/T-1.1.1::ITSK)
 T/T-2.8.5::ITSC,T/T-2.8.5,ITSC,pending BIPM,(See comment in T/T-1.1.1::ITSK)
