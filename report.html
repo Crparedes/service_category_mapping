@@ -12846,11 +12846,11 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <p><strong>Classification Of Services In Photometry And Radiometry</strong></p>
 <p>CCPR has <strong>106 service categories</strong>, of which 92 have at least one quantity mapped, totalling <strong>97 quantities</strong> from the SI Digital Framework. At the moment of the last update (2026-10-09):</p>
 <div class="progress-bar-wrap">
-      <div style="display: flex; width: 100%; height: 30px; border-radius: 4px; overflow: hidden; border: 1px solid #ccc;"><div style="width: 0%; height: 100%; background: #a8d5b0; display: flex; align-items: center; justify-content: center;" title="0 confirmed"></div><div style="width: 0%; height: 100%; background: #a9c9e8; display: flex; align-items: center; justify-content: center;" title="0 pending BIPM"></div><div style="width: 100%; height: 100%; background: #e2938f; display: flex; align-items: center; justify-content: center;" title="106 pending CC"><span style="color:#fff; font-weight:bold;">100 %</span></div></div>
+      <div style="display: flex; width: 100%; height: 30px; border-radius: 4px; overflow: hidden; border: 1px solid #ccc;"><div style="width: 40.6%; height: 100%; background: #a8d5b0; display: flex; align-items: center; justify-content: center;" title="43 confirmed"><span style="color:#fff; font-weight:bold;">41 %</span></div><div style="width: 2.8%; height: 100%; background: #a9c9e8; display: flex; align-items: center; justify-content: center;" title="3 pending BIPM"><span style="color:#fff; font-weight:bold;">3 %</span></div><div style="width: 56.6%; height: 100%; background: #e2938f; display: flex; align-items: center; justify-content: center;" title="60 pending CC"><span style="color:#fff; font-weight:bold;">57 %</span></div></div>
       <ul class="progress-legend">
-        <li><span class="dot dot-confirmed"></span>0 individual services have been confirmed for all its quantity mappings.</li>
-        <li><span class="dot dot-pending-bipm"></span>0 individual services are pending action from the BIPM for at least one of the quantity mappings.</li>
-        <li><span class="dot dot-pending-cc"></span>106 individual services are pending feedback or confirmation from the CC delegate, including those not yet mapped to any quantity.</li>
+        <li><span class="dot dot-confirmed"></span>43 individual services have been confirmed for all its quantity mappings.</li>
+        <li><span class="dot dot-pending-bipm"></span>3 individual services are pending action from the BIPM for at least one of the quantity mappings.</li>
+        <li><span class="dot dot-pending-cc"></span>60 individual services are pending feedback or confirmation from the CC delegate, including those not yet mapped to any quantity.</li>
       </ul>
     </div>
 <div class="editable-qty-wrap"><details class="cc-comments"><summary>See latest conclusions</summary><div class="cc-comments-body"><h1>Status:</h1>
@@ -12864,6 +12864,8 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <li>In a CMC specification (<a target="_blank" rel="noopener" href>CIPM MRA-G-13</a>): &quot;...CMC declarations have three unambiguous characteristics: 2.1 Measurand: Only one measurand is allowed per CMC</li>
 </ul>
 </li>
+<li><strong>TM-INMETRO</strong>: The note above the tables states that dimensionless quantities will accept percent values. However, not every quantity of dimension one is suited to this representation. Refractive index is an example: writing n = 1.5 as 150 % is numerically correct but meaningless in practice. Is there, or will there be, a way to restrict the percent representation to the kinds of quantity where it makes sense, such as ratios like transmittance or reflectance?</li>
+<li><strong>TM-INMETRO</strong>: For spectral quantities such as PR/Detector-3.1.1::IRRA.LENG-1, when I discussed this with CC colleagues at the time, it was suggested that the unit should be W·m⁻²·nm⁻¹. This is a matter of conversion involving a preferred prefix. However, I am not sure whether the SI Digital Framework is intended to reflect preferred representations at that level.</li>
 </ul>
 <h1>Next steps:</h1>
 <ul>
@@ -12906,7 +12908,7 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 </tr>
 </thead>
 <tbody>
-<tr class="row-pending-cc odd" data-notation="PR/Photo-1.1.1" data-quantity="LUIN">
+<tr class="row-confirmed odd" data-notation="PR/Photo-1.1.1" data-quantity="LUIN">
 <td>PR/Photo-1.1.1::LUIN</td>
 <td>PR/Photo-1.1.1</td>
 <td>Photometry</td>
@@ -12917,7 +12919,7 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>LUIN</td>
 <td>luminous intensity</td>
 <td class="unit-cell">cd</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-pending-cc even" data-notation="PR/Photo-1.2.1" data-quantity="ILLU-1">
@@ -12934,7 +12936,7 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="PR/Photo-1.3.1" data-quantity="LUFL">
+<tr class="row-confirmed odd" data-notation="PR/Photo-1.3.1" data-quantity="LUFL">
 <td>PR/Photo-1.3.1::LUFL</td>
 <td>PR/Photo-1.3.1</td>
 <td>Photometry</td>
@@ -12945,10 +12947,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>LUFL</td>
 <td>luminous flux</td>
 <td class="unit-cell">lm</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc even" data-notation="PR/Photo-1.3.2" data-quantity="LUFL">
+<tr class="row-confirmed even" data-notation="PR/Photo-1.3.2" data-quantity="LUFL">
 <td>PR/Photo-1.3.2::LUFL</td>
 <td>PR/Photo-1.3.2</td>
 <td>Photometry</td>
@@ -12959,10 +12961,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>LUFL</td>
 <td>luminous flux</td>
 <td class="unit-cell">lm</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="PR/Photo-1.4.1" data-quantity="ILLU">
+<tr class="row-confirmed odd" data-notation="PR/Photo-1.4.1" data-quantity="ILLU">
 <td>PR/Photo-1.4.1::ILLU</td>
 <td>PR/Photo-1.4.1</td>
 <td>Photometry</td>
@@ -12973,10 +12975,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>ILLU</td>
 <td>illuminance</td>
 <td class="unit-cell">lx</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc even" data-notation="PR/Photo-1.5.1" data-quantity="LUMA">
+<tr class="row-confirmed even" data-notation="PR/Photo-1.5.1" data-quantity="LUMA">
 <td>PR/Photo-1.5.1::LUMA</td>
 <td>PR/Photo-1.5.1</td>
 <td>Photometry</td>
@@ -12987,7 +12989,7 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>LUMA</td>
 <td>luminance</td>
 <td class="unit-cell">cd·m⁻²</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-pending-cc odd" data-notation="PR/Photo-1.6.0" data-quantity="LUMA-1">
@@ -13004,7 +13006,7 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc even" data-notation="PR/Photo-1.7.1" data-quantity="LUIN">
+<tr class="row-confirmed even" data-notation="PR/Photo-1.7.1" data-quantity="LUIN">
 <td>PR/Photo-1.7.1::LUIN</td>
 <td>PR/Photo-1.7.1</td>
 <td>Photometry</td>
@@ -13015,10 +13017,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>LUIN</td>
 <td>luminous intensity</td>
 <td class="unit-cell">cd</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="PR/Photo-1.8.0" data-quantity="LUXP">
+<tr class="row-confirmed odd" data-notation="PR/Photo-1.8.0" data-quantity="LUXP">
 <td>PR/Photo-1.8.0::LUXP</td>
 <td>PR/Photo-1.8.0</td>
 <td>Photometry</td>
@@ -13029,7 +13031,7 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>LUXP</td>
 <td>luminous exposure</td>
 <td class="unit-cell">lx·s</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-pending-cc even" data-notation="PR/Photo-1.8.1" data-quantity="LUXP-1">
@@ -13312,7 +13314,7 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc even" data-notation="PR/Detector-3.3.1" data-quantity="RAFL">
+<tr class="row-confirmed even" data-notation="PR/Detector-3.3.1" data-quantity="RAFL">
 <td>PR/Detector-3.3.1::RAFL</td>
 <td>PR/Detector-3.3.1</td>
 <td>Properties of detectors and sources</td>
@@ -13323,7 +13325,7 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>RAFL</td>
 <td>radiant flux</td>
 <td class="unit-cell">W</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-pending-cc odd" data-notation="PR/Detector-3.4.1" data-quantity="RAIN.LENG-1">
@@ -13382,7 +13384,7 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="PR/Mater-4.1.1" data-quantity="OPTR">
+<tr class="row-confirmed odd" data-notation="PR/Mater-4.1.1" data-quantity="OPTR">
 <td>PR/Mater-4.1.1::OPTR</td>
 <td>PR/Mater-4.1.1</td>
 <td>Properties of materials</td>
@@ -13393,10 +13395,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>OPTR</td>
 <td>transmittance</td>
 <td class="unit-cell">1</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc even" data-notation="PR/Mater-4.2.1" data-quantity="OPTR">
+<tr class="row-confirmed even" data-notation="PR/Mater-4.2.1" data-quantity="OPTR">
 <td>PR/Mater-4.2.1::OPTR</td>
 <td>PR/Mater-4.2.1</td>
 <td>Properties of materials</td>
@@ -13407,10 +13409,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>OPTR</td>
 <td>transmittance</td>
 <td class="unit-cell">1</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="PR/Mater-4.3.1" data-quantity="OPAB">
+<tr class="row-confirmed odd" data-notation="PR/Mater-4.3.1" data-quantity="OPAB">
 <td>PR/Mater-4.3.1::OPAB</td>
 <td>PR/Mater-4.3.1</td>
 <td>Properties of materials</td>
@@ -13421,10 +13423,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>OPAB</td>
 <td>absorbance</td>
 <td class="unit-cell">1</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc even" data-notation="PR/Mater-4.4.1" data-quantity="OPAB">
+<tr class="row-confirmed even" data-notation="PR/Mater-4.4.1" data-quantity="OPAB">
 <td>PR/Mater-4.4.1::OPAB</td>
 <td>PR/Mater-4.4.1</td>
 <td>Properties of materials</td>
@@ -13435,10 +13437,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>OPAB</td>
 <td>absorbance</td>
 <td class="unit-cell">1</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="PR/Mater-4.5.1" data-quantity="OPRE">
+<tr class="row-confirmed odd" data-notation="PR/Mater-4.5.1" data-quantity="OPRE">
 <td>PR/Mater-4.5.1::OPRE</td>
 <td>PR/Mater-4.5.1</td>
 <td>Properties of materials</td>
@@ -13449,10 +13451,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>OPRE</td>
 <td>reflectance</td>
 <td class="unit-cell">1</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc even" data-notation="PR/Mater-4.6.1" data-quantity="OPRE">
+<tr class="row-confirmed even" data-notation="PR/Mater-4.6.1" data-quantity="OPRE">
 <td>PR/Mater-4.6.1::OPRE</td>
 <td>PR/Mater-4.6.1</td>
 <td>Properties of materials</td>
@@ -13463,10 +13465,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>OPRE</td>
 <td>reflectance</td>
 <td class="unit-cell">1</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="PR/Mater-4.7.1" data-quantity="OPRE">
+<tr class="row-confirmed odd" data-notation="PR/Mater-4.7.1" data-quantity="OPRE">
 <td>PR/Mater-4.7.1::OPRE</td>
 <td>PR/Mater-4.7.1</td>
 <td>Properties of materials</td>
@@ -13477,7 +13479,7 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>OPRE</td>
 <td>reflectance</td>
 <td class="unit-cell">1</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-pending-cc even" data-notation="PR/Mater-4.9.0" data-quantity="REXI">
@@ -13606,7 +13608,7 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="PR/Mater-4.16.0" data-quantity="REFI">
+<tr class="row-confirmed odd" data-notation="PR/Mater-4.16.0" data-quantity="REFI">
 <td>PR/Mater-4.16.0::REFI</td>
 <td>PR/Mater-4.16.0</td>
 <td>Properties of materials</td>
@@ -13617,10 +13619,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>REFI</td>
 <td>refractive index</td>
 <td class="unit-cell">1</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc even" data-notation="PR/Mater-4.17.0" data-quantity="ANGP">
+<tr class="row-confirmed even" data-notation="PR/Mater-4.17.0" data-quantity="ANGP">
 <td>PR/Mater-4.17.0::ANGP</td>
 <td>PR/Mater-4.17.0</td>
 <td>Properties of materials</td>
@@ -13631,10 +13633,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>ANGP</td>
 <td>plane angle</td>
 <td class="unit-cell">rad</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="PR/Mater-4.17.1" data-quantity="ANGP">
+<tr class="row-confirmed odd" data-notation="PR/Mater-4.17.1" data-quantity="ANGP">
 <td>PR/Mater-4.17.1::ANGP</td>
 <td>PR/Mater-4.17.1</td>
 <td>Properties of materials</td>
@@ -13645,10 +13647,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>ANGP</td>
 <td>plane angle</td>
 <td class="unit-cell">rad</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc even" data-notation="PR/Mater-4.18.0" data-quantity="ANGP">
+<tr class="row-confirmed even" data-notation="PR/Mater-4.18.0" data-quantity="ANGP">
 <td>PR/Mater-4.18.0::ANGP</td>
 <td>PR/Mater-4.18.0</td>
 <td>Properties of materials</td>
@@ -13659,10 +13661,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>ANGP</td>
 <td>plane angle</td>
 <td class="unit-cell">rad</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="PR/Detector-5.1.0" data-quantity="MTTE">
+<tr class="row-confirmed odd" data-notation="PR/Detector-5.1.0" data-quantity="MTTE">
 <td>PR/Detector-5.1.0::MTTE</td>
 <td>PR/Detector-5.1.0</td>
 <td>Properties of detectors and sources</td>
@@ -13673,10 +13675,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>MTTE</td>
 <td>distribution temperature</td>
 <td class="unit-cell">K</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc even" data-notation="PR/Detector-5.2.1" data-quantity="CCTE">
+<tr class="row-confirmed even" data-notation="PR/Detector-5.2.1" data-quantity="CCTE">
 <td>PR/Detector-5.2.1::CCTE</td>
 <td>PR/Detector-5.2.1</td>
 <td>Properties of detectors and sources</td>
@@ -13687,7 +13689,7 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>CCTE</td>
 <td>correlated colour temperature</td>
 <td class="unit-cell">K</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-pending-cc odd" data-notation="PR/Detector-5.3.0" data-quantity="CCTE-1">
@@ -13802,7 +13804,7 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="PR/Detector-5.8.0" data-quantity="RAFL">
+<tr class="row-confirmed odd" data-notation="PR/Detector-5.8.0" data-quantity="RAFL">
 <td>PR/Detector-5.8.0::RAFL</td>
 <td>PR/Detector-5.8.0</td>
 <td>Properties of detectors and sources</td>
@@ -13813,10 +13815,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>RAFL</td>
 <td>radiant flux</td>
 <td class="unit-cell">W</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc even" data-notation="PR/Detector-5.8.1" data-quantity="RAFL">
+<tr class="row-confirmed even" data-notation="PR/Detector-5.8.1" data-quantity="RAFL">
 <td>PR/Detector-5.8.1::RAFL</td>
 <td>PR/Detector-5.8.1</td>
 <td>Properties of detectors and sources</td>
@@ -13827,7 +13829,7 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>RAFL</td>
 <td>radiant flux</td>
 <td class="unit-cell">W</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-pending-cc odd" data-notation="PR/Mater-6.1.0" data-quantity="NA">
@@ -14054,7 +14056,7 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="PR/Fibre-7.2.0" data-quantity="LENG">
+<tr class="row-confirmed odd" data-notation="PR/Fibre-7.2.0" data-quantity="LENG">
 <td>PR/Fibre-7.2.0::LENG</td>
 <td>PR/Fibre-7.2.0</td>
 <td>Fibre optics</td>
@@ -14065,10 +14067,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>LENG</td>
 <td>length</td>
 <td class="unit-cell">m</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc even" data-notation="PR/Fibre-7.2.1" data-quantity="LENG">
+<tr class="row-confirmed even" data-notation="PR/Fibre-7.2.1" data-quantity="LENG">
 <td>PR/Fibre-7.2.1::LENG</td>
 <td>PR/Fibre-7.2.1</td>
 <td>Fibre optics</td>
@@ -14079,10 +14081,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>LENG</td>
 <td>length</td>
 <td class="unit-cell">m</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="PR/Fibre-7.2.2" data-quantity="LENG">
+<tr class="row-confirmed odd" data-notation="PR/Fibre-7.2.2" data-quantity="LENG">
 <td>PR/Fibre-7.2.2::LENG</td>
 <td>PR/Fibre-7.2.2</td>
 <td>Fibre optics</td>
@@ -14093,10 +14095,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>LENG</td>
 <td>length</td>
 <td class="unit-cell">m</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc even" data-notation="PR/Fibre-7.2.3" data-quantity="LENG">
+<tr class="row-confirmed even" data-notation="PR/Fibre-7.2.3" data-quantity="LENG">
 <td>PR/Fibre-7.2.3::LENG</td>
 <td>PR/Fibre-7.2.3</td>
 <td>Fibre optics</td>
@@ -14107,10 +14109,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>LENG</td>
 <td>length</td>
 <td class="unit-cell">m</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="PR/Fibre-7.3.0" data-quantity="ENCL">
+<tr class="row-confirmed odd" data-notation="PR/Fibre-7.3.0" data-quantity="ENCL">
 <td>PR/Fibre-7.3.0::ENCL</td>
 <td>PR/Fibre-7.3.0</td>
 <td>Fibre optics</td>
@@ -14121,10 +14123,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>ENCL</td>
 <td>encircled flux</td>
 <td class="unit-cell">1</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc even" data-notation="PR/Fibre-7.3.1" data-quantity="ENCL">
+<tr class="row-confirmed even" data-notation="PR/Fibre-7.3.1" data-quantity="ENCL">
 <td>PR/Fibre-7.3.1::ENCL</td>
 <td>PR/Fibre-7.3.1</td>
 <td>Fibre optics</td>
@@ -14135,10 +14137,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>ENCL</td>
 <td>encircled flux</td>
 <td class="unit-cell">1</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="PR/Fibre-7.3.2" data-quantity="LENG">
+<tr class="row-confirmed odd" data-notation="PR/Fibre-7.3.2" data-quantity="LENG">
 <td>PR/Fibre-7.3.2::LENG</td>
 <td>PR/Fibre-7.3.2</td>
 <td>Fibre optics</td>
@@ -14149,10 +14151,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>LENG</td>
 <td>length</td>
 <td class="unit-cell">m</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc even" data-notation="PR/Fibre-7.3.3" data-quantity="NUMA">
+<tr class="row-confirmed even" data-notation="PR/Fibre-7.3.3" data-quantity="NUMA">
 <td>PR/Fibre-7.3.3::NUMA</td>
 <td>PR/Fibre-7.3.3</td>
 <td>Fibre optics</td>
@@ -14163,10 +14165,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>NUMA</td>
 <td>numerical aperture</td>
 <td class="unit-cell">1</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="PR/Fibre-7.5.0" data-quantity="LOSS">
+<tr class="row-confirmed odd" data-notation="PR/Fibre-7.5.0" data-quantity="LOSS">
 <td>PR/Fibre-7.5.0::LOSS</td>
 <td>PR/Fibre-7.5.0</td>
 <td>Fibre optics</td>
@@ -14177,10 +14179,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>LOSS</td>
 <td>loss (attenuation)</td>
 <td class="unit-cell">B</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc even" data-notation="PR/Fibre-7.5.0" data-quantity="LOSS.LENG-1">
+<tr class="row-confirmed even" data-notation="PR/Fibre-7.5.0" data-quantity="LOSS.LENG-1">
 <td>PR/Fibre-7.5.0::LOSS.LENG-1</td>
 <td>PR/Fibre-7.5.0</td>
 <td>Fibre optics</td>
@@ -14191,10 +14193,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>LOSS.LENG-1</td>
 <td>(loss (attenuation))·(length⁻¹)</td>
 <td class="unit-cell">B·m⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="PR/Fibre-7.5.0" data-quantity="OPAB">
+<tr class="row-confirmed odd" data-notation="PR/Fibre-7.5.0" data-quantity="OPAB">
 <td>PR/Fibre-7.5.0::OPAB</td>
 <td>PR/Fibre-7.5.0</td>
 <td>Fibre optics</td>
@@ -14205,10 +14207,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>OPAB</td>
 <td>absorbance</td>
 <td class="unit-cell">1</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc even" data-notation="PR/Fibre-7.5.1" data-quantity="LOSS">
+<tr class="row-confirmed even" data-notation="PR/Fibre-7.5.1" data-quantity="LOSS">
 <td>PR/Fibre-7.5.1::LOSS</td>
 <td>PR/Fibre-7.5.1</td>
 <td>Fibre optics</td>
@@ -14219,10 +14221,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>LOSS</td>
 <td>loss (attenuation)</td>
 <td class="unit-cell">B</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="PR/Fibre-7.5.2" data-quantity="LOSS">
+<tr class="row-confirmed odd" data-notation="PR/Fibre-7.5.2" data-quantity="LOSS">
 <td>PR/Fibre-7.5.2::LOSS</td>
 <td>PR/Fibre-7.5.2</td>
 <td>Fibre optics</td>
@@ -14233,10 +14235,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>LOSS</td>
 <td>loss (attenuation)</td>
 <td class="unit-cell">B</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc even" data-notation="PR/Fibre-7.7.0" data-quantity="DISP">
+<tr class="row-confirmed even" data-notation="PR/Fibre-7.7.0" data-quantity="DISP">
 <td>PR/Fibre-7.7.0::DISP</td>
 <td>PR/Fibre-7.7.0</td>
 <td>Fibre optics</td>
@@ -14247,10 +14249,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>DISP</td>
 <td>chromatic dispersion</td>
 <td class="unit-cell">s·m⁻¹·m⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="PR/Fibre-7.7.0" data-quantity="TDIS">
+<tr class="row-confirmed odd" data-notation="PR/Fibre-7.7.0" data-quantity="TDIS">
 <td>PR/Fibre-7.7.0::TDIS</td>
 <td>PR/Fibre-7.7.0</td>
 <td>Fibre optics</td>
@@ -14261,10 +14263,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>TDIS</td>
 <td>total chromatic dispersion</td>
 <td class="unit-cell">s·m⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc even" data-notation="PR/Fibre-7.7.1" data-quantity="LENG">
+<tr class="row-confirmed even" data-notation="PR/Fibre-7.7.1" data-quantity="LENG">
 <td>PR/Fibre-7.7.1::LENG</td>
 <td>PR/Fibre-7.7.1</td>
 <td>Fibre optics</td>
@@ -14275,10 +14277,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>LENG</td>
 <td>length</td>
 <td class="unit-cell">m</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="PR/Fibre-7.7.2" data-quantity="DISL">
+<tr class="row-confirmed odd" data-notation="PR/Fibre-7.7.2" data-quantity="DISL">
 <td>PR/Fibre-7.7.2::DISL</td>
 <td>PR/Fibre-7.7.2</td>
 <td>Fibre optics</td>
@@ -14289,10 +14291,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>DISL</td>
 <td>chromatic dispersion slope</td>
 <td class="unit-cell">s·m⁻¹·m⁻¹·m⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc even" data-notation="PR/Fibre-7.7.2" data-quantity="TDDS">
+<tr class="row-confirmed even" data-notation="PR/Fibre-7.7.2" data-quantity="TDDS">
 <td>PR/Fibre-7.7.2::TDDS</td>
 <td>PR/Fibre-7.7.2</td>
 <td>Fibre optics</td>
@@ -14303,10 +14305,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>TDDS</td>
 <td>total chromatic dispersion slope</td>
 <td class="unit-cell">s·m⁻¹·m⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="PR/Fibre-7.7.3" data-quantity="DISP">
+<tr class="row-confirmed odd" data-notation="PR/Fibre-7.7.3" data-quantity="DISP">
 <td>PR/Fibre-7.7.3::DISP</td>
 <td>PR/Fibre-7.7.3</td>
 <td>Fibre optics</td>
@@ -14317,10 +14319,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>DISP</td>
 <td>chromatic dispersion</td>
 <td class="unit-cell">s·m⁻¹·m⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc even" data-notation="PR/Fibre-7.7.4" data-quantity="LENG">
+<tr class="row-confirmed even" data-notation="PR/Fibre-7.7.4" data-quantity="LENG">
 <td>PR/Fibre-7.7.4::LENG</td>
 <td>PR/Fibre-7.7.4</td>
 <td>Fibre optics</td>
@@ -14331,10 +14333,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>LENG</td>
 <td>length</td>
 <td class="unit-cell">m</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="PR/Fibre-7.7.5" data-quantity="DISL">
+<tr class="row-confirmed odd" data-notation="PR/Fibre-7.7.5" data-quantity="DISL">
 <td>PR/Fibre-7.7.5::DISL</td>
 <td>PR/Fibre-7.7.5</td>
 <td>Fibre optics</td>
@@ -14345,10 +14347,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>DISL</td>
 <td>chromatic dispersion slope</td>
 <td class="unit-cell">s·m⁻¹·m⁻¹·m⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc even" data-notation="PR/Fibre-7.8.0" data-quantity="DGDE">
+<tr class="row-pending-bipm even" data-notation="PR/Fibre-7.8.0" data-quantity="DGDE">
 <td>PR/Fibre-7.8.0::DGDE</td>
 <td>PR/Fibre-7.8.0</td>
 <td>Fibre optics</td>
@@ -14359,10 +14361,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>DGDE</td>
 <td>differential group delay</td>
 <td class="unit-cell">s</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
-<td class="comment-cell" contenteditable="true"></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM" selected>pending BIPM</option><option value="pending CC">pending CC</option></select></td>
+<td class="comment-cell" contenteditable="true">[JM - Metas] A supplementary entry: should also be added: &quot;polarization mode dispersion coefficient&quot;, with SI units: ps m-1/2</td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="PR/Fibre-7.8.1" data-quantity="DGDE">
+<tr class="row-pending-bipm odd" data-notation="PR/Fibre-7.8.1" data-quantity="DGDE">
 <td>PR/Fibre-7.8.1::DGDE</td>
 <td>PR/Fibre-7.8.1</td>
 <td>Fibre optics</td>
@@ -14373,10 +14375,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>DGDE</td>
 <td>differential group delay</td>
 <td class="unit-cell">s</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
-<td class="comment-cell" contenteditable="true"></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM" selected>pending BIPM</option><option value="pending CC">pending CC</option></select></td>
+<td class="comment-cell" contenteditable="true">[JM - Metas] A supplementary entry: should also be added: &quot;polarization mode dispersion coefficient&quot;, with SI units: ps m-1/2</td>
 </tr>
-<tr class="row-pending-cc even" data-notation="PR/Fibre-7.8.2" data-quantity="DGDE">
+<tr class="row-pending-bipm even" data-notation="PR/Fibre-7.8.2" data-quantity="DGDE">
 <td>PR/Fibre-7.8.2::DGDE</td>
 <td>PR/Fibre-7.8.2</td>
 <td>Fibre optics</td>
@@ -14387,10 +14389,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>DGDE</td>
 <td>differential group delay</td>
 <td class="unit-cell">s</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
-<td class="comment-cell" contenteditable="true"></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM" selected>pending BIPM</option><option value="pending CC">pending CC</option></select></td>
+<td class="comment-cell" contenteditable="true">[JM - Metas] A supplementary entry: should also be added: &quot;polarization mode dispersion coefficient&quot;, with SI units: ps m-1/2</td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="PR/Fibre-7.10.0" data-quantity="LENG">
+<tr class="row-confirmed odd" data-notation="PR/Fibre-7.10.0" data-quantity="LENG">
 <td>PR/Fibre-7.10.0::LENG</td>
 <td>PR/Fibre-7.10.0</td>
 <td>Fibre optics</td>
@@ -14401,10 +14403,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>LENG</td>
 <td>length</td>
 <td class="unit-cell">m</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc even" data-notation="PR/Fibre-7.10.1" data-quantity="LENG">
+<tr class="row-confirmed even" data-notation="PR/Fibre-7.10.1" data-quantity="LENG">
 <td>PR/Fibre-7.10.1::LENG</td>
 <td>PR/Fibre-7.10.1</td>
 <td>Fibre optics</td>
@@ -14415,10 +14417,10 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>LENG</td>
 <td>length</td>
 <td class="unit-cell">m</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
-<tr class="row-pending-cc odd" data-notation="PR/Fibre-7.10.2" data-quantity="LENG.LENG-1">
+<tr class="row-confirmed odd" data-notation="PR/Fibre-7.10.2" data-quantity="LENG.LENG-1">
 <td>PR/Fibre-7.10.2::LENG.LENG-1</td>
 <td>PR/Fibre-7.10.2</td>
 <td>Fibre optics</td>
@@ -14429,7 +14431,7 @@ If we need to keep only 3 identifiers, then I find U better because it refers bo
 <td>LENG.LENG-1</td>
 <td>(length)·(length⁻¹)</td>
 <td class="unit-cell">m·m⁻¹</td>
-<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed">confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC" selected>pending CC</option></select></td>
+<td><select class="status-cell" onchange="updateRowStatusClass(this)"><option value="confirmed" selected>confirmed</option><option value="pending BIPM">pending BIPM</option><option value="pending CC">pending CC</option></select></td>
 <td class="comment-cell" contenteditable="true"></td>
 </tr>
 <tr class="row-pending-cc even" data-notation="PR/Fibre-7.11.0" data-quantity="PMDP">

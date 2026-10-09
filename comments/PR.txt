@@ -4,6 +4,8 @@
 # Challenges:
   - Spectral responsivity CMCs (e.g. service category PR/Detector-2.1.1) to be capable of being specified in terms of any of A/W, V/W, reading/W, W, dB, dBm (or combinations thereof)
     - In a CMC specification ([CIPM MRA-G-13]()): "...CMC declarations have three unambiguous characteristics: 2.1 Measurand: Only one measurand is allowed per CMC
+  - **TM-INMETRO**: The note above the tables states that dimensionless quantities will accept percent values. However, not every quantity of dimension one is suited to this representation. Refractive index is an example: writing n = 1.5 as 150 % is numerically correct but meaningless in practice. Is there, or will there be, a way to restrict the percent representation to the kinds of quantity where it makes sense, such as ratios like transmittance or reflectance?
+  - **TM-INMETRO**: For spectral quantities such as PR/Detector-3.1.1::IRRA.LENG-1, when I discussed this with CC colleagues at the time, it was suggested that the unit should be W·m⁻²·nm⁻¹. This is a matter of conversion involving a preferred prefix. However, I am not sure whether the SI Digital Framework is intended to reflect preferred representations at that level.
 
 # Next steps:
   - **CC Delegate**: Communicate confirmation/requests of mappings to BIPM
