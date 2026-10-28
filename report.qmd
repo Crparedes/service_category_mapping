@@ -51,13 +51,25 @@ area_cc_label <- c(
   PR = "CCPR", RI = "CCRI", T = "CCT", TF = "CCTF"
 )
 
-notation_sort_key <- function(x) {
-  vapply(x, function(s) {
+notation_sort_key <- function(x, text = FALSE) {
+  if (!text) {
+    # Numeric parts only (current behaviour): EM/DC-1.1 sorts before EM/AC-5.1
+    return(vapply(x, function(s) {
+      if (is.na(s)) return("")
+      nums <- regmatches(s, gregexpr("[0-9]+", s))[[1]]
+      if (length(nums) == 0) return("")
+      paste(sprintf("%08d", as.integer(nums)), collapse = ".")
+    }, character(1)))
+  }
+  # Natural order on the whole notation (text and numbers), used for CCRI:
+  # RI/DOS-8.2.4 < RI/DOS-10.0.1 < RI/NEU-1.0.1.
+  keys <- vapply(x, function(s) {
     if (is.na(s)) return("")
-    nums <- regmatches(s, gregexpr("[0-9]+", s))[[1]]
-    if (length(nums) == 0) return("")
-    paste(sprintf("%08d", as.integer(nums)), collapse = ".")
-  }, character(1))
+    chunks <- regmatches(tolower(s), gregexpr("[0-9]+|[^0-9]+", tolower(s)))[[1]]
+    paste(ifelse(grepl("^[0-9]+$", chunks), sprintf("%08.0f", suppressWarnings(as.numeric(chunks))), chunks),
+          collapse = "")
+  }, character(1), USE.NAMES = FALSE)
+  sprintf("%08d", match(keys, sort(unique(keys), method = "radix")))
 }
 ```
 
@@ -101,15 +113,11 @@ sparql_qty <- qp("SELECT ?sc ?quantity WHERE { ?sc sc:relatedSIQuantity ?quantit
 ```{r quantities-units}
 #| include: false
 
-# Parses reference/quantities.ttl once and builds a resolver that turns a
-# relatedSIQuantity code (e.g. "DENS", or a composite like "MASS.TIME-1") into
-# a formatted unit string (e.g. "kg\u00b7m\u207b\u00b3"), "1" for a genuinely
-# dimensionless quantity, or NA if the code isn't in the graph at all.
+# Parses reference/quantities.ttl once and builds a resolver that turns a relatedSIQuantity code (e.g. "DENS", or a composite like "MASS.TIME-1") into
+# a formatted unit string (e.g. "kg\u00b7m\u207b\u00b3"), "1" for a genuinely dimensionless quantity, or NA if the code isn't in the graph at all.
 #
-# si:hasUnit is either a direct units:<name> resource, or a blank-node tree of
-# si:UnitProduct (left * right) / si:UnitPower (base ^ exponent) nodes. This is
-# resolved recursively into a flat list of (symbol, exponent) pairs so exponents
-# compose correctly even when a composite code raises an already-compound unit
+# si:hasUnit is either a direct units:<name> resource, or a blank-node tree of si:UnitProduct (left * right) / si:UnitPower (base ^ exponent) nodes. This is
+# resolved recursively into a flat list of (symbol, exponent) pairs so exponents compose correctly even when a composite code raises an already-compound unit
 # to a further power (e.g. "EMIR.AREA-1" must give m\u207b\u00b2, not (m\u00b2)\u207b\u00b9 mis-rendered as m\u00b2\u207b\u00b9).
 
 rdf_q <- rdf_parse(path("reference", "quantities.ttl"), format = "turtle")
@@ -119,14 +127,7 @@ RDF_TYPE <- "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
 SI    <- "https://si-digital-framework.org/SI#"
 QBASE <- "https://si-digital-framework.org/quantities/"
 
-# symbol_map <- c(
-#   ampere = "A", becquerel = "Bq", bel = "B", candela = "cd", coulomb = "C",
-#   degreeCelsius = "\u00b0C", farad = "F", gray = "Gy", henry = "H", hertz = "Hz",
-#   joule = "J", katal = "kat", kelvin = "K", kilogram = "kg", lumen = "lm",
-#   lux = "lx", metre = "m", mole = "mol", neper = "Np", newton = "N",
-#   ohm = "\u03a9", pascal = "Pa", radian = "rad", second = "s", siemens = "S",
-#   sievert = "Sv", steradian = "sr", tesla = "T", volt = "V", watt = "W", weber = "Wb"
-# )
+
 rdf_units <- rdf_parse(path("reference", "units.ttl"), format = "turtle")
 symbol_rows <- rdf_query(rdf_units, "
   PREFIX si: <https://si-digital-framework.org/SI#>
@@ -144,8 +145,7 @@ to_sup <- function(n) paste0(sup_map[strsplit(as.character(n), "")[[1]]], collap
 empty_pairs <- function() tibble(sym = character(0), exp = numeric(0))
 scale_pairs <- function(pairs, k) { if (nrow(pairs) > 0) pairs$exp <- pairs$exp * k; pairs }
 
-# Recursively render one si:hasUnit node (a URI leaf or a blank-node tree)
-# into a tibble of (symbol, exponent) pairs.
+# Recursively render one si:hasUnit node (a URI leaf or a blank-node tree) into a tibble of (symbol, exponent) pairs.
 render_unit_node <- function(node) {
   if (is.na(node)) return(empty_pairs())
   if (grepl("^https?://", node)) {
@@ -171,8 +171,7 @@ render_unit_node <- function(node) {
   empty_pairs()
 }
 
-# Direct lookup: quantity code -> pairs. An entry that exists but has no
-# si:hasUnit (a dimensionless quantity like RHUM, REFI) is stored as an empty
+# Direct lookup: quantity code -> pairs. An entry that exists but has no si:hasUnit (a dimensionless quantity like RHUM, REFI) is stored as an empty
 # tibble, distinct from a code that has no entry at all (NULL on lookup).
 quantity_rows <- triples %>%
   filter(p == RDF_TYPE, o == paste0(SI, "QuantityKind"), grepl(paste0("^", QBASE), s))
@@ -184,10 +183,8 @@ for (s_uri in quantity_rows$s) {
   direct_unit_pairs[[code]] <- if (length(unit_node) == 0) empty_pairs() else render_unit_node(unit_node[1])
 }
 
-# A composite relatedSIQuantity code like "MASS.TIME-1" or "PRES.VOLU.TIME-1"
-# is a dot-separated product of base codes, each optionally suffixed "-N" for
-# a negative exponent N (no genuine base code in this graph contains a
-# hyphen, confirmed, so this parsing is unambiguous).
+# A composite relatedSIQuantity code like "MASS.TIME-1" or "PRES.VOLU.TIME-1" is a dot-separated product of base codes, each optionally suffixed "-N" for
+# a negative exponent N (no genuine base code in this graph contains a hyphen, confirmed, so this parsing is unambiguous).
 token_re <- "^([A-Za-z]+)(-([0-9]+))?$"
 
 resolve_quantity_code <- function(code, depth = 0) {
@@ -216,18 +213,13 @@ format_pairs <- function(pairs) {
   )
 }
 
-# Public entry point used by parse_area(): code -> formatted unit string, "1"
-# (dimensionless), or NA (code not present in quantities.ttl at all).
+# Public entry point used by parse_area(): code -> formatted unit string, "1" dimensionless), or NA (code not present in quantities.ttl at all).
 unit_lookup <- function(code) format_pairs(resolve_quantity_code(code))
 
-# Spelled-out quantity names (e.g. "density"), resolved the same way as
-# units above: a direct dictionary from quantities.ttl's skos:prefLabel@en
-# for atomic codes, recursively combined for composite codes like
-# "MASS.TIME-1". This deliberately mirrors the symbolic unit notation
-# (word\u00b7word\u207b\u00b9) rather than attempting idiomatic English phrasing
-# ("mass per time") -- composing that kind of natural-language "per"
-# scoping correctly is exactly the open metrological-linguistics question,
-# so a literal symbolic join avoids silently taking a stance on it. Treat
+# Spelled-out quantity names (e.g. "density"), resolved the same way as units above: a direct dictionary from quantities.ttl's skos:prefLabel@en
+# for atomic codes, recursively combined for composite codes like MASS.TIME-1". This deliberately mirrors the symbolic unit notation
+# (word\u00b7word\u207b\u00b9) rather than attempting idiomatic English phrasing mass per time") -- composing that kind of natural-language "per"
+# scoping correctly is exactly the open metrological-linguistics question, so a literal symbolic join avoids silently taking a stance on it. Treat
 # these as a starting point to hand-adjust, not a finished gloss.
 sparql_quantity_pref_label <- "
 PREFIX si:   <https://si-digital-framework.org/SI#>
@@ -274,12 +266,9 @@ quantity_name_lookup <- function(code) format_name_pairs(resolve_quantity_name(c
 ```{r safe-query-helper}
 #| include: false
 
-# A query that legitimately matches nothing (e.g. sparql_section for a
-# non-RI area, which has no sc:hasSection triples at all) can come back from
-# rdf_query() as a bare 0-row/0-column data frame rather than a 0-row frame
-# with the expected variable names -- which then breaks a downstream
-# left_join() that expects those column names to exist. This wrapper
-# guarantees the expected columns are always present, even when empty.
+# A query that legitimately matches nothing (e.g. sparql_section for a non-RI area, which has no sc:hasSection triples at all) can come back from
+# rdf_query() as a bare 0-row/0-column data frame rather than a 0-row frame with the expected variable names -- which then breaks a downstream
+# left_join() that expects those column names to exist. This wrapper guarantees the expected columns are always present, even when empty.
 safe_query <- function(rdf, query, cols) {
   res <- rdf_query(rdf, query)
   if (nrow(res) == 0 || !all(cols %in% names(res))) {
@@ -292,12 +281,9 @@ safe_query <- function(rdf, query, cols) {
 ```{r parse-function}
 #| include: false
 
-# Parses one metrology-area ABox file and returns a single merged table (plus
-# a human-readable title): one row per (service category, related SI
-# quantity) pair. Writes the fully-derived data to
-# generated/<code>_service_categories.csv (always overwritten) and
-# re-attaches any confirmation_status / comment from
-# annotations/<code>_annotations.csv, keyed by mapping_id -- that file is
+# Parses one metrology-area ABox file and returns a single merged table (plus a human-readable title): one row per (service category, related SI
+# quantity) pair. Writes the fully-derived data to generated/<code>_service_categories.csv (always overwritten) and
+# re-attaches any confirmation_status / comment from annotations/<code>_annotations.csv, keyed by mapping_id -- that file is
 # only ever written once, the first time it doesn't exist; never overwritten.
 parse_area <- function(code) {
 
@@ -313,10 +299,8 @@ parse_area <- function(code) {
     if (nrow(t) > 0) t$title[1] else code
   }, error = function(e) code)
 
-  # Build the wide table entirely via R-side left_join()s on atomic,
-  # OPTIONAL-free query results -- see the note in the `queries` chunk.
-  # safe_query() guards every call since several of these legitimately match
-  # zero rows for a given area (e.g. no Section/Medium/Source/Quantity-axis
+  # Build the wide table entirely via R-side left_join()s on atomic, OPTIONAL-free query results -- see the note in the `queries` chunk.
+  # safe_query() guards every call since several of these legitimately match zero rows for a given area (e.g. no Section/Medium/Source/Quantity-axis
   # triples at all in the non-RI files).
   universe <- safe_query(rdf, sparql_universe, "sc")
 
@@ -347,12 +331,10 @@ parse_area <- function(code) {
     mutate(related_si_quantity = str_remove(as.character(quantity), "^.*/")) %>%
     transmute(notation, related_si_quantity) %>%
     distinct() %>%
-    arrange(notation_sort_key(notation), related_si_quantity)
+    arrange(notation_sort_key(notation, text = code == "RI"), related_si_quantity)
 
-  # A service category with zero related quantities still gets a single
-  # placeholder row here (related_si_quantity left blank), so it has a
-  # mapping_id of its own and its confirmation_status/comment are editable
-  # and persistable too -- e.g. to note "needs a quantity mapping" -- rather
+  # A service category with zero related quantities still gets a single placeholder row here (related_si_quantity left blank), so it has a
+  # mapping_id of its own and its confirmation_status/comment are editable and persistable too -- e.g. to note "needs a quantity mapping" -- rather
   # than being permanently locked out just because there's no quantity yet.
   no_quantity_notations <- setdiff(unique(main_raw$notation), qty$notation)
   if (length(no_quantity_notations) > 0) {
@@ -360,41 +342,31 @@ parse_area <- function(code) {
       qty,
       tibble(notation = no_quantity_notations, related_si_quantity = NA_character_)
     ) %>%
-      arrange(notation_sort_key(notation), related_si_quantity)
+      arrange(notation_sort_key(notation, text = code == "RI"), related_si_quantity)
   }
 
   qty <- qty %>%
     mutate(
-      # A single explicit join key shared by the mappings CSV and the
-      # annotations CSV, rather than relying on (notation,
-      # related_si_quantity) as an implicit two-column key -- simpler to
-      # match on by hand (e.g. in Excel) and stays valid even if a service
-      # category later gains more quantities, since each new quantity just
-      # gets its own new mapping_id alongside the untouched existing ones.
-      # For the no-quantity placeholder rows above, related_si_quantity is
-      # blank in the key too (e.g. "M/Dens-2.3.3::"), still unique per
-      # notation, and stable if a real quantity is added later (that gets
-      # its own new, different mapping_id rather than reusing this one).
+      # A single explicit join key shared by the mappings CSV and the annotations CSV, rather than relying on (notation,
+      # related_si_quantity) as an implicit two-column key -- simpler to match on by hand (e.g. in Excel) and stays valid even if a service
+      # category later gains more quantities, since each new quantity just gets its own new mapping_id alongside the untouched existing ones.
+      # For the no-quantity placeholder rows above, related_si_quantity is blank in the key too (e.g. "M/Dens-2.3.3::"), still unique per
+      # notation, and stable if a real quantity is added later (that gets its own new, different mapping_id rather than reusing this one).
       mapping_id    = paste(notation, coalesce(related_si_quantity, ""), sep = "::"),
       quantity_name = vapply(coalesce(related_si_quantity, ""), quantity_name_lookup, character(1)),
       si_unit       = vapply(coalesce(related_si_quantity, ""), unit_lookup, character(1))
     ) %>%
-    # unit_lookup("") resolves to "1" (its "genuinely dimensionless" case),
-    # which is wrong here -- there's no quantity at all, not a dimensionless
+    # unit_lookup("") resolves to "1" (its "genuinely dimensionless" case), which is wrong here -- there's no quantity at all, not a dimensionless
     # one -- so blank it back out specifically for the placeholder rows.
     mutate(
       quantity_name = ifelse(is.na(related_si_quantity), NA_character_, quantity_name),
       si_unit       = ifelse(is.na(related_si_quantity), NA_character_, si_unit)
     )
 
-  # The annotations file is the single persistent source of truth for
-  # confirmation_status/comment, and is NEVER overwritten once it exists --
-  # not even to append newly-appeared mappings, so a manual edit (or a
-  # replaced download) is never at risk of being silently clobbered by a
-  # re-render. It's only written the first time, as a starting point to edit
-  # directly on disk. A mapping_id that isn't in it yet (e.g. a service
-  # category just gained an additional related quantity) simply shows up
-  # with default values ("unknown", "") in the live report/CSV until it's
+  # The annotations file is the single persistent source of truth for confirmation_status/comment, and is NEVER overwritten once it exists --
+  # not even to append newly-appeared mappings, so a manual edit (or a replaced download) is never at risk of being silently clobbered by a
+  # re-render. It's only written the first time, as a starting point to edit directly on disk. A mapping_id that isn't in it yet (e.g. a service
+  # category just gained an additional related quantity) simply shows up with default values ("unknown", "") in the live report/CSV until it's
   # added to this file -- by hand, or via the in-browser download button.
   annot_path <- path(annotations_dir, paste0(code, "_annotations.csv"))
   if (file_exists(annot_path)) {
@@ -436,14 +408,11 @@ parse_area <- function(code) {
       status
     ) %>%
     distinct() %>%
-    arrange(notation_sort_key(notation))
+    arrange(notation_sort_key(notation, text = code == "RI"))
 
-  # Branch/Service/Subservice and Section/Medium/Source/QuantityAxis are two
-  # mutually exclusive classification schemes (generic Consultative
-  # Committees vs. RI's Section-based one -- see the Overview note). Which
-  # scheme an area uses is looked up from the hardcoded area_scheme registry
-  # above, not inferred from the data, so a future third scheme can't be
-  # silently misclassified.
+  # Branch/Service/Subservice and Section/Medium/Source/QuantityAxis are two mutually exclusive classification schemes (generic Consultative
+  # Committees vs. RI's Section-based one -- see the Overview note). Which scheme an area uses is looked up from the hardcoded area_scheme registry
+  # above, not inferred from the data, so a future third scheme can't be silently misclassified.
   scheme <- area_scheme[[code]]
   if (is.null(scheme)) {
     stop(sprintf(
@@ -453,17 +422,15 @@ parse_area <- function(code) {
   }
   main <- switch(scheme,
     generic = main %>% select(-section, -medium, -source, -quantity_axis),
-    section = main %>% select(-branch, -service, -subservice),
+    section = main %>% select(-branch, -service, -subservice, -individual_service),
     stop(sprintf(
       "Unknown scheme '%s' for area '%s' -- add a matching case to the switch() in parse_area().",
       scheme, code
     ))
   )
 
-  # This "mappings" CSV is fully derived from the source graphs plus
-  # quantities.ttl on every render, and is always safe to overwrite --
-  # confirmation_status/comment live only in the separate, never-overwritten
-  # annotations CSV above; they're merged in here purely for a convenient
+  # This "mappings" CSV is fully derived from the source graphs plus quantities.ttl on every render, and is always safe to overwrite --
+  # confirmation_status/comment live only in the separate, never-overwritten annotations CSV above; they're merged in here purely for a convenient
   # single-table view/export, not stored here.
   combined <- main %>%
     left_join(qty, by = "notation") %>%
@@ -716,10 +683,10 @@ editable_combined_table <- function(code, df) {
     "Download updated CSV file for ", cc_label, "</button>",
     "<input type=\"text\" class=\"search-box\" placeholder=\"Filter rows...\" oninput=\"applyAllFilters('", table_id, "')\">",
     "</div>",
-    " <span class=\"dl-hint\"><b>Note:</b> The unit expressions in column <code>si_unit</code> are the default for the quantity in <code>quantity_name</code>. However, other expressions dimensionally consistent will be accepted in the CMCs of that SC (e.g. a quantity set to radians per second will also accept degrees per hour. Dimensionless quantities will accept percent values.)</span>",
+    " <span class=\"dl-hint\"><b>Note:</b> The unit expressions in column <code>si_unit</code> are the default for the quantity in <code>quantity_name</code>. However, other expressions dimensionally consistent will be accepted in the CMCs of that SC. This means that, for example, a quantity set to radians per second will also accept degrees per hour. Dimensionless quantities will accept percent values unless explictly forbiden, (e.g. refractive index in CCPR.)</span>",
     "<br>",
-    " <span class=\"dl-hint\"><b>Note:</b> The table can be reorganized by clicking on column headers (default order by numbers in column <code>notation</code>). There is a general filter (above) and filters per each column that can be applied simultaneously. Use ",
-   "<code>=empty</code> to filter the rows with a missing field.</span>",
+  " <span class=\"dl-hint\"><b>Note:</b> The table can be reorganized by clicking on column headers. The default order is column <code>notation</code> (by numbers, except CCRI, which is ordered alphanumerically)). There is a general filter (above) and filters per each column that can be applied simultaneously. Use ",
+   "<code>=empty</code> to get the rows with a empty values in a given column.</span>",
     "<div class=\"table-scroll\">",
     "<table id=\"", table_id, "\" class=\"editable-qty-table\">",
     colgroup_html,
@@ -735,23 +702,37 @@ editable_combined_table <- function(code, df) {
 
 
 ::: {.column-screen-inset}
-**The BIPM is working with the Consultative Committees of the CIPM (CCs) to make the CMCs machine-actionable.**
+**The BIPM is working with the Consultative Committees (CC) of the CIPM to make the CMCs machine-actionable.**
 
-The machine-actionability of the CMCs requires establishing a solid semantic link between the information in the [KCDB Appendix C](https://www.bipm.org/kcdb/cmc/advanced-search) and the knowledge models of the SI Digital Framework. The first step is to relate each [KCDB service categories](https://www.bipm.org/en/cipm-mra/cipm-mra-documents/service-categories) to appropriate quantities and quantity expressions of the [SI Digital Framework](https://si-digital-framework.org/quantities). The mappings must be confirmed by experts in each CC. This webpage reports the confirmation status of these service category-to-quantity expression mappings, which are currently published as knowledge graphs in the [preproduction server](https://preprod.si-digital-framework.org/kcdb-sc) (only available for whitelisted IP addresses).
+The machine-actionability of the CMCs starts by establishing a solid semantic link between the information in the [KCDB Appendix C](https://www.bipm.org/kcdb/cmc/advanced-search) and the knowledge models of the SI Digital Framework (SIDF).
+The first step is to relate each [KCDB service categories](https://www.bipm.org/en/cipm-mra/cipm-mra-documents/service-categories) to appropriate quantities and quantity expressions of the [SI Digital Framework](https://si-digital-framework.org/quantities).
+This process, known generically as **quantity mappings**, requires an important contribution from experts in each of the CIPM Consultative Committees.
 
-The information for each CC's Service Categories is presented in each of the tabs in the panel below. It inccludes a short summary, a progress bar, and a table with one row for each mapping pair (an individual service category may have several rows, one per quantity expression). Each pair has a confirmation status value:
-
-- <span class="status-badge status-confirmed">Confirmed:</span> The quantity assignment (name and units) has been <u>confirmed by the CC delegate</u>.
-- <span class="status-badge status-pending-bipm">Pending BIPM:</span> An <u>action is pending from the BIPM</u> (e.g. adding/removing a quantity mapping or updating the [SI Reference Point](https://preprod.si-digital-framework.org/SI) to support new units or unit expressions).
-- <span class="status-badge status-pending-cc">Pending CC:</span> Confirmation or feedback is <u>required from the CC delegate</u>.
-
-and the option to add details or comments.
+This webpage reports the status and requests of these service category-to-quantity expression mappings.
 
 ---
 
-For updating of this report, send your feedback to [Cristhian Paredes](mailto:cristhian.paredes@bipm.org). Please reference the **mapping_id** (e.g. `L/Laser-1.1.1::FREQ`) or the service category **notation** (e.g. `L/Laser-1.1.1`) for each topic addressed.
+**Instructions**
 
-Alternatively, to provide feedback for several entries, you can do it directly in the table of your CC by modifying the **confirmation_status** or adding a **comment** in the respective column. In that case, <u>please download the updated csv file and share it via email</u> (the webpage will not save changes on refreshing). We kindly ask you to indicate your name and organization initials in square brackets before your comment, and to separate each comment by three dashes (e.g. `[FL-NMI] comment 1. --- [CP-BIPM] reply. --- [FL-NMI] comment 2.`).
+1. The preliminary quantity mappings are encoded as machine-actionable knowledge graphs in the [preproduction server of the SIDF](https://preprod.si-digital-framework.org/kcdb-sc).
+2. The information in these knowledge graphs is summarized in the tabs below, one per CC.
+3. Each tab includes a progress bar, a collapsible section with the latest conclusions of the interactions with that CC (click on _See latest conclusions_) and a table where each row contains a service category–quantity pair.
+4. Each individual service category should be related to at least one quantity or quantity expression. More than one quantity is accepted when the service covers several kinds of measurand.
+5. Each service category-quantity pair has a confirmation status:
+    a) <span class="status-badge status-confirmed">Confirmed:</span> The mapping is <u>confirmed by the CC expert</u> (quantity name and units are correct).
+    b) <span class="status-badge status-pending-bipm">Pending BIPM:</span> An <u>action is pending from the BIPM</u> (e.g. adding or removing a quantity mapping, or creating a new quantity).
+    c) <span class="status-badge status-pending-cc">Pending CC:</span> Confirmation or feedback is <u>required from a CC expert</u>.
+6. For pairs with the status <span class="status-badge status-pending-cc">Pending CC</span>, the CC expert has the following options:
+    a) Confirm the mapping: change the status to <span class="status-badge status-confirmed">Confirmed</span> (a comment in the `comment` column is optional).
+    b) Request a different quantity or different units: change the status to <span class="status-badge status-pending-bipm">Pending BIPM</span> **and** describe the change in the `comment` column. The existing quantities are available in the [SIDF](https://si-digital-framework.org/quantities).
+    c) Request the deletion of the pair: change the status to <span class="status-badge status-pending-bipm">Pending BIPM</span> **and** explain the request in the `comment` column.
+    d) Request a new quantity and its mapping to that service category: change the status to <span class="status-badge status-pending-bipm">Pending BIPM</span> **and** describe the new quantity in the `comment` column: minimally its name and units, and optionally its decomposition into other quantities and a reference to its definition in another vocabulary (e.g. [ISO 80000-7, 6.2](https://www.iso.org/standard/64977.html) or [e-ILV 17-21-056](https://cie.co.at/eilvterm/17-21-056)).
+7. When you have finished, <u>please download the updated CSV file</u> and share it with [Cristhian Paredes](mailto:cristhian.paredes@bipm.org). The webpage does not save changes when it is refreshed.
+8. Please include in your email any other general topics, questions or concerns. We will update this website to indicate your feedback, and later on, we will update the machine-actionable knowledge graphs of the service categories accordingly.
+
+**Please note that a service category can be mapped to a quantity expression built by combining quantities already defined in the SIDF (e.g. mass per time, MASS.TIME-1), or to a new quantity created at your request (see step 6.d). <br><u>If a quantity is widely used in your community, please request its explicit definition rather than using a combination of existing quantities.</u>**
+
+---
 
 ___
 

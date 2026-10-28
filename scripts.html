@@ -35,6 +35,27 @@ function compareNumericKey(a, b) {
   }
   return 0;
 }
+
+function notationTokens(text) {
+  return (text.toLowerCase().match(/\d+|[^\d]+/g) || []);
+}
+// Natural order on the whole notation: text chunks alphabetically,
+// digit chunks numerically; a prefix sorts before its extensions.
+function compareNotation(a, b) {
+  var ta = notationTokens(a), tb = notationTokens(b);
+  var len = Math.min(ta.length, tb.length);
+  for (var i = 0; i < len; i++) {
+    var x = ta[i], y = tb[i];
+    if (x === y) continue;
+    var nx = /^\d/.test(x), ny = /^\d/.test(y);
+    if (nx && ny) return Number(x) - Number(y);
+    if (nx !== ny) return nx ? -1 : 1;
+    return x < y ? -1 : 1;
+  }
+  return ta.length - tb.length;
+}
+
+
 function sortTable(tableId, colIdx) {
   var table = document.getElementById(tableId);
   var tbody = table.querySelector("tbody");
@@ -42,10 +63,11 @@ function sortTable(tableId, colIdx) {
   var th = table.querySelectorAll("th")[colIdx];
   var asc = th.getAttribute("data-asc") !== "true";
   var isNotationCol = th.textContent.trim() === "notation";
+  var textNotation = (tableId === "tbl-RI");   // text + numbers only for CCRI
   rows.sort(function(a, b) {
     var av = cellValue(a.children[colIdx]), bv = cellValue(b.children[colIdx]);
     var cmp = isNotationCol
-      ? compareNumericKey(av, bv)
+      ? (textNotation ? compareNotation(av, bv) : compareNumericKey(av, bv))
       : av.localeCompare(bv, undefined, {numeric: true});
     return asc ? cmp : -cmp;
   });
@@ -53,6 +75,7 @@ function sortTable(tableId, colIdx) {
   table.querySelectorAll("th").forEach(function(h) { h.removeAttribute("data-asc"); });
   th.setAttribute("data-asc", asc ? "true" : "false");
 }
+
 function applyAllFilters(tableId) {
   var table = document.getElementById(tableId);
   var wrap = table.closest(".editable-qty-wrap");
