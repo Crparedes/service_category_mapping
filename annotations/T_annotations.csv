@@ -72,19 +72,19 @@ T/H-4.4.1::MASS.MASS-1,T/H-4.4.1,MASS.MASS-1,confirmed,
 T/H-4.4.1::RHUM,T/H-4.4.1,RHUM,pending CC,(See T/H-3.3.1::RHUM)
 T/H-5.1.1::RHUM,T/H-5.1.1,RHUM,pending CC,(See T/H-3.3.1::RHUM)
 T/H-5.2.1::MASS.MASS-1,T/H-5.2.1,MASS.MASS-1,confirmed,
-T/TQ-6.1.1::TCON,T/TQ-6.1.1,TCON,pending CC,
-T/TQ-6.1.2::TDIF,T/TQ-6.1.2,TDIF,pending CC,
-T/TQ-6.2.1::SHEC,T/TQ-6.2.1,SHEC,pending CC,
-T/TQ-6.2.2::ENGY,T/TQ-6.2.2,ENGY,pending CC,
-T/TQ-6.2.3::ENGY.AMSU-1,T/TQ-6.2.3,ENGY.AMSU-1,pending CC,
-T/TQ-6.2.3::ENGY.MASS-1,T/TQ-6.2.3,ENGY.MASS-1,pending CC,
-T/TQ-6.2.3::ENGY.VOLU-1,T/TQ-6.2.3,ENGY.VOLU-1,pending CC,
-T/TQ-6.3.1::EMIS,T/TQ-6.3.1,EMIS,pending CC,
-T/TQ-6.3.2::EMIS,T/TQ-6.3.2,EMIS,pending CC,
-T/TQ-6.4.1::LENG.LENG-1.ITSC-1,T/TQ-6.4.1,LENG.LENG-1.ITSC-1,pending CC,
-T/TQ-6.4.1::LENG.LENG-1.ITSK-1,T/TQ-6.4.1,LENG.LENG-1.ITSK-1,pending CC,
-T/TQ-6.4.1::VOLU.VOLU-1.ITSC-1,T/TQ-6.4.1,VOLU.VOLU-1.ITSC-1,pending CC,
-T/TQ-6.4.1::VOLU.VOLU-1.ITSK-1,T/TQ-6.4.1,VOLU.VOLU-1.ITSK-1,pending CC,
+T/TQ-6.1.1::TCON,T/TQ-6.1.1,TCON,confirmed,
+T/TQ-6.1.2::TDIF,T/TQ-6.1.2,TDIF,confirmed,
+T/TQ-6.2.1::SHEC,T/TQ-6.2.1,SHEC,pending BIPM,[PP-SMU] Change units from K.K-1.kg-1 to K.kg-1.K-1 ---
+T/TQ-6.2.2::ENGY,T/TQ-6.2.2,ENGY,pending CC,"[PP-SMU] Change individual_service name from heat of fusion to enthalpy of fusion; Change quantity from energy to energy per mass (with units J/kg) --- [CP-BIPM] The change of the quantity will be done, but changes in the individual_service name should occur in the CCT document and the KCDB first. Until this is done, I cannot proceed."
+T/TQ-6.2.3::ENGY.AMSU-1,T/TQ-6.2.3,ENGY.AMSU-1,confirmed,
+T/TQ-6.2.3::ENGY.MASS-1,T/TQ-6.2.3,ENGY.MASS-1,confirmed,
+T/TQ-6.2.3::ENGY.VOLU-1,T/TQ-6.2.3,ENGY.VOLU-1,confirmed,
+T/TQ-6.3.1::EMIS,T/TQ-6.3.1,EMIS,pending CC,"[PP-SMU] define quantity spectral directional emissivity (dimensionless) Use the same name for the individual_service name --- [CP-BIPM] we will define the quantity EMSP for Spectral directional emissivity, but the name in the individual service must be approved by the CCT and changed in the KCDB first."
+T/TQ-6.3.2::EMIS,T/TQ-6.3.2,EMIS,pending CC,"[PP-SMU] define quantity total hemispherical emissivity (dimensionless) Use the same name for the individual_service name --- [CP-BIPM] we will define the quantity EMTH for Total hemispherical emissivity, but the name in the individual service must be approved by the CCT and changed in the KCDB first."
+T/TQ-6.4.1::LENG.LENG-1.ITSC-1,T/TQ-6.4.1,LENG.LENG-1.ITSC-1,pending BIPM,[PP-SMU] Delete duplication of ITS-90.
+T/TQ-6.4.1::LENG.LENG-1.ITSK-1,T/TQ-6.4.1,LENG.LENG-1.ITSK-1,pending CC,[CP-BIPM] Should this be related to temperature differences? --- [CP-BIPM] Can we use the quantity |TEXL-thermal expansion coefficient (linear)| used by CCL?
+T/TQ-6.4.1::VOLU.VOLU-1.ITSC-1,T/TQ-6.4.1,VOLU.VOLU-1.ITSC-1,pending BIPM,[PP-SMU] Delete duplication of ITS-90.
+T/TQ-6.4.1::VOLU.VOLU-1.ITSK-1,T/TQ-6.4.1,VOLU.VOLU-1.ITSK-1,pending CC,[CP-BIPM] Should this be related to temperature differences? --- [CP-BIPM] Can we define a quantity |TEXV-thermal expansion coefficient (volumetric)| similar to the TEXL used by CCL?
 T/T-7.1.1::TEMC,T/T-7.1.1,TEMC,pending BIPM,"[PR-NRC] Thermodinamic temperature is a quantity that can be expressed in K or °C. --- [CP-BIPM] The quantities TEMT and TEMC will be merged, and the duplication will be removed from the mapping."
 T/T-7.1.1::TEMT,T/T-7.1.1,TEMT,confirmed,
 T/T-7.1.2::TEMC,T/T-7.1.2,TEMC,pending BIPM,(See comment in T/T-7.1.1::TEMC)
